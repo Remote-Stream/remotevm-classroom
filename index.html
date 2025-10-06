@@ -241,17 +241,13 @@
             width: auto;
         }
 
-        .share-section {
+        /* Success Message Section */
+        .success-section {
             background: linear-gradient(135deg, var(--success), var(--primary-color));
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 2rem;
             margin-top: 2rem;
-            display: none;
             animation: slideDown 0.5s ease;
-        }
-
-        .share-section.show {
-            display: block;
         }
 
         @keyframes slideDown {
@@ -265,43 +261,53 @@
             }
         }
 
-        .share-title {
+        .success-icon {
+            text-align: center;
+            font-size: 3rem;
             color: white;
             margin-bottom: 1rem;
-            font-size: 1.2rem;
-            text-align: center;
         }
 
-        .link-item {
+        .success-title {
+            color: white;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .info-box {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .link-label {
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
             color: white;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
             font-weight: 600;
         }
 
-        .link-box {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .link-input {
-            flex: 1;
-            padding: 0.5rem;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            color: var(--dark-bg);
-            font-size: 0.85rem;
+        .info-value {
+            color: var(--warning);
             font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
         }
 
         .copy-btn {
@@ -313,36 +319,14 @@
             cursor: pointer;
             transition: all 0.3s;
             font-weight: bold;
+            font-size: 0.85rem;
         }
 
         .copy-btn:hover {
-            background: var(--text-primary);
             transform: scale(1.05);
         }
 
-        .info-box {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .info-box p {
-            color: white;
-            margin-bottom: 0.5rem;
-        }
-
-        .info-box strong {
-            color: white;
-        }
-
-        .info-box span {
-            color: var(--warning);
-            font-weight: bold;
-            font-family: monospace;
-            font-size: 1.1rem;
-        }
-
+        /* Classroom Container */
         .classroom-container {
             display: none;
             height: 100vh;
@@ -354,6 +338,7 @@
             flex-direction: column;
         }
 
+        /* Top Bar */
         .top-bar {
             height: 60px;
             background: var(--card-bg);
@@ -408,27 +393,28 @@
             gap: 1rem;
         }
 
+        /* Main Content */
         .main-content {
             flex: 1;
             display: flex;
             overflow: hidden;
-        }
-
-        .video-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-            gap: 1rem;
-        }
-
-        .teacher-video-container {
-            flex: 1;
-            background: var(--card-bg);
-            border-radius: 12px;
             position: relative;
-            overflow: hidden;
-            border: 2px solid var(--teacher-color);
+        }
+
+        /* Video Section */
+        .video-container {
+            flex: 1;
+            background: var(--dark-bg);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .video-label {
@@ -443,314 +429,10 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-        }
-
-        .video-iframe, .teacher-video, .student-video {
-            width: 100%;
-            height: 100%;
-            border: none;
-            object-fit: cover;
-        }
-
-        .video-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--dark-bg);
-        }
-
-        .video-placeholder i {
-            font-size: 3rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .video-placeholder p {
-            color: var(--text-secondary);
-        }
-
-        .students-grid {
-            height: 180px;
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding: 0.5rem 0;
-        }
-
-        .student-video-card {
-            min-width: 240px;
-            height: 100%;
-            background: var(--card-bg);
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .student-video-card:hover {
-            border-color: var(--primary-color);
-            transform: scale(1.05);
-        }
-
-        .student-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,0.7);
-            padding: 0.5rem;
-            font-size: 0.85rem;
-            text-align: center;
             color: white;
         }
 
-        .sidebar {
-            width: 350px;
-            background: var(--card-bg);
-            border-left: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 1rem;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .tab-btn.active {
-            color: var(--primary-color);
-        }
-
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--primary-color);
-        }
-
-        .tab-content {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .tab-content.active {
-            display: flex;
-        }
-
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .message {
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border-radius: 8px;
-        }
-
-        .message.teacher {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), transparent);
-            border: 1px solid var(--teacher-color);
-        }
-
-        .message-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.25rem;
-        }
-
-        .message-author {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .message-body {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-        }
-
-        .chat-input-container {
-            padding: 1rem;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-        }
-
-        .send-btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .participants-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-        }
-
-        .participant-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-        }
-
-        .participant-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .participant-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-        }
-
-        .participant-controls {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .control-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .control-icon.active {
-            background: var(--success);
-            color: white;
-        }
-
-        .control-icon.muted {
-            background: var(--danger);
-            color: white;
-        }
-
-        .control-icon.inactive {
-            background: var(--border-color);
-            color: var(--text-secondary);
-        }
-
-        .control-bar {
-            height: 70px;
-            background: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            padding: 0 2rem;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            font-size: 1.2rem;
-        }
-
-        .control-btn.primary {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .control-btn.danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .control-btn.secondary {
-            background: var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .control-btn.active {
-            background: var(--success);
-            color: white;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .separator {
-            width: 2px;
-            height: 30px;
-            background: var(--border-color);
-        }
-
+        /* Loading Spinner */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -789,6 +471,7 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Toast */
         .toast {
             position: fixed;
             top: 80px;
@@ -820,44 +503,36 @@
             }
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                right: -350px;
-                transition: right 0.3s;
-                z-index: 90;
-                height: calc(100vh - 130px);
-                top: 60px;
-            }
-
-            .sidebar.open {
-                right: 0;
-            }
-
             .role-buttons {
                 grid-template-columns: 1fr;
-            }
-
-            .students-grid {
-                height: 120px;
-            }
-
-            .student-video-card {
-                min-width: 180px;
             }
 
             .login-card {
                 padding: 2rem;
             }
+
+            .top-bar {
+                padding: 0 1rem;
+            }
+
+            .info-item {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
         <div class="loading-text">در حال آماده‌سازی کلاس...</div>
     </div>
 
+    <!-- Login Screen -->
     <div class="login-container" id="loginScreen">
         <div class="login-card">
             <div class="login-header">
@@ -868,6 +543,7 @@
                 <p class="login-subtitle">پلتفرم آموزش مجازی حرفه‌ای</p>
             </div>
 
+            <!-- Role Selection -->
             <div id="roleSelection">
                 <div class="role-buttons">
                     <div class="role-btn teacher" onclick="selectRole('teacher')">
@@ -883,6 +559,7 @@
                 </div>
             </div>
 
+            <!-- Teacher Form -->
             <div class="form-section" id="teacherForm">
                 <h2 style="margin-bottom: 1.5rem; color: var(--teacher-color);">
                     <i class="fas fa-chalkboard-teacher"></i> ایجاد کلاس جدید
@@ -906,50 +583,66 @@
                         <i class="fas fa-info-circle"></i> فقط حروف انگلیسی (a-z, A-Z) و اعداد (0-9) مجاز است
                     </div>
                     <div class="error-message" id="roomIdError">
-                        شناسه اتاق فقط می‌تواند شامل حروف انگلیسی (a-z, A-Z) و اعداد (0-9) باشد
+                        شناسه اتاق فقط می‌تواند شامل حروف انگلیسی و اعداد باشد
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">رمز عبور اتاق (اختیاری)</label>
+                    <label class="form-label">رمز عبور اتاق</label>
                     <input type="password" class="form-input" id="roomPassword" placeholder="رمز عبور برای امنیت کلاس">
+                    <div class="help-text">
+                        <i class="fas fa-info-circle"></i> در صورت خالی گذاشتن، رمز پیش‌فرض استفاده می‌شود
+                    </div>
                 </div>
 
                 <button class="btn btn-primary" onclick="createClassroom()">
-                    <i class="fas fa-plus-circle"></i> ایجاد کلاس
+                    <i class="fas fa-plus-circle"></i> ایجاد کلاس و ورود
                 </button>
                 <button class="btn btn-secondary" onclick="backToRoleSelection()">
                     <i class="fas fa-arrow-right"></i> بازگشت
                 </button>
 
-                <div class="share-section" id="shareSection">
-                    <h3 class="share-title">
-                        <i class="fas fa-check-circle"></i> کلاس با موفقیت ایجاد شد!
-                    </h3>
-                    
-                    <div class="info-box">
-                        <p><strong>شناسه اتاق:</strong> <span id="roomIdDisplay"></span></p>
-                        <p><strong>رمز عبور:</strong> <span id="roomPassDisplay"></span></p>
-                    </div>
-                    
-                    <div class="link-item">
-                        <div class="link-label">
-                            <i class="fas fa-link"></i> لینک دعوت دانش‌آموزان:
+                <!-- Success Message -->
+                <div id="successMessage" style="display: none;">
+                    <div class="success-section">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
                         </div>
-                        <div class="link-box">
-                            <input type="text" class="link-input" id="studentLink" readonly>
-                            <button class="copy-btn" onclick="copyLink('studentLink')">
-                                <i class="fas fa-copy"></i>
-                            </button>
+                        <h3 class="success-title">کلاس با موفقیت ایجاد شد!</h3>
+                        
+                        <div class="info-box">
+                            <div class="info-item">
+                                <span class="info-label">شناسه اتاق:</span>
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <span class="info-value" id="roomIdDisplay"></span>
+                                    <button class="copy-btn" onclick="copyText('roomIdDisplay')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">رمز عبور:</span>
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <span class="info-value" id="roomPassDisplay"></span>
+                                    <button class="copy-btn" onclick="copyText('roomPassDisplay')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <p style="text-align: center; color: white; margin-bottom: 1rem;">
+                            این اطلاعات را برای دانش‌آموزان ارسال کنید
+                        </p>
+                        
+                        <button class="btn btn-success" onclick="enterClassAsTeacher()">
+                            <i class="fas fa-sign-in-alt"></i> ورود به کلاس
+                        </button>
                     </div>
-
-                    <button class="btn btn-success" onclick="enterClassAsTeacher()" style="margin-top: 1rem;">
-                        <i class="fas fa-sign-in-alt"></i> ورود به کلاس به عنوان استاد
-                    </button>
                 </div>
             </div>
 
+            <!-- Student Form -->
             <div class="form-section" id="studentForm">
                 <h2 style="margin-bottom: 1.5rem; color: var(--student-color);">
                     <i class="fas fa-user-graduate"></i> پیوستن به کلاس
@@ -962,14 +655,11 @@
 
                 <div class="form-group">
                     <label class="form-label">شناسه اتاق (Room ID)</label>
-                    <input type="text" class="form-input" id="studentRoomId" placeholder="شناسه‌ای که از استاد دریافت کرده‌اید" oninput="validateRoomId(this)">
-                    <div class="error-message" id="studentRoomIdError">
-                        شناسه اتاق فقط می‌تواند شامل حروف انگلیسی (a-z, A-Z) و اعداد (0-9) باشد
-                    </div>
+                    <input type="text" class="form-input" id="studentRoomId" placeholder="شناسه‌ای که از استاد دریافت کرده‌اید">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">رمز عبور اتاق (در صورت نیاز)</label>
+                    <label class="form-label">رمز عبور اتاق</label>
                     <input type="password" class="form-input" id="studentRoomPassword" placeholder="رمز عبور کلاس">
                 </div>
 
@@ -983,7 +673,9 @@
         </div>
     </div>
 
+    <!-- Classroom Container -->
     <div class="classroom-container" id="classroomContainer">
+        <!-- Top Bar -->
         <div class="top-bar">
             <div class="class-info">
                 <div class="class-title">
@@ -1001,133 +693,45 @@
             </div>
             
             <div class="top-controls">
-                <button class="btn btn-sm btn-secondary" onclick="toggleSidebar()">
-                    <i class="fas fa-comments"></i> چت
-                </button>
                 <button class="btn btn-sm btn-danger" onclick="leaveClass()">
                     <i class="fas fa-sign-out-alt"></i> خروج
                 </button>
             </div>
         </div>
 
+        <!-- Main Content -->
         <div class="main-content">
-            <div class="video-section">
-                <div class="teacher-video-container" id="mainVideoContainer">
-                    <div class="video-label" id="teacherLabel">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <span id="teacherNameLabel">استاد</span>
-                    </div>
-                    <video id="teacherVideo" class="teacher-video" autoplay playsinline muted></video>
+            <div class="video-container">
+                <div class="video-label" id="videoLabel">
+                    <i class="fas fa-video"></i>
+                    <span id="videoLabelText">در حال اتصال...</span>
                 </div>
-
-                <div class="students-grid" id="studentsGrid"></div>
+                <iframe class="video-iframe" id="mainVideoFrame" allow="camera; microphone; display-capture; fullscreen"></iframe>
             </div>
-
-            <div class="sidebar" id="sidebar">
-                <div class="sidebar-tabs">
-                    <button class="tab-btn active" onclick="switchTab('chat')">
-                        <i class="fas fa-comments"></i> چت
-                    </button>
-                    <button class="tab-btn" onclick="switchTab('participants')">
-                        <i class="fas fa-users"></i> حاضرین
-                    </button>
-                </div>
-
-                <div class="tab-content active" id="chat-tab">
-                    <div class="chat-container">
-                        <div class="chat-messages" id="chatMessages"></div>
-                        <div class="chat-input-container">
-                            <input type="text" class="chat-input" id="chatInput" 
-                                   placeholder="پیام خود را بنویسید..." 
-                                   onkeypress="handleChatKeyPress(event)">
-                            <button class="send-btn" onclick="sendMessage()">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-content" id="participants-tab">
-                    <div class="participants-list" id="participantsList"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="control-bar">
-            <button class="control-btn secondary" id="micBtn" onclick="toggleMic()">
-                <i class="fas fa-microphone-slash"></i>
-            </button>
-            
-            <button class="control-btn secondary" id="camBtn" onclick="toggleCamera()">
-                <i class="fas fa-video-slash"></i>
-            </button>
-            
-            <div class="separator"></div>
-            
-            <button class="control-btn primary" onclick="shareScreen()">
-                <i class="fas fa-desktop"></i>
-            </button>
-            
-            <button class="control-btn primary" id="recordBtn" onclick="toggleRecord()">
-                <i class="fas fa-record-vinyl"></i>
-            </button>
-            
-            <button class="control-btn primary" onclick="raiseHand()">
-                <i class="fas fa-hand-paper"></i>
-            </button>
-            
-            <div class="separator"></div>
-            
-            <button class="control-btn danger" onclick="leaveClass()">
-                <i class="fas fa-phone-slash"></i>
-            </button>
         </div>
     </div>
 
+    <!-- Toast Notification -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">عملیات با موفقیت انجام شد</span>
     </div>
 
     <script>
+        // Global Variables
         const SERVER_URL = 'https://server.remotevm.ir';
-        const SIGNALING_SERVER = 'wss://your-signaling-server.com'; // Replace with actual signaling server
         let currentRole = null;
         let roomInfo = {};
         let userInfo = {};
-        let micEnabled = false;
-        let camEnabled = false;
-        let isRecording = false;
         let classStartTime = null;
         let timerInterval = null;
-        let localStream = null;
-        let peerConnections = {};
-        let socket = null;
-        let studentCount = 0;
-        let userId = Date.now().toString();
 
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Application initialized');
-            checkURLParams();
         });
 
-        function checkURLParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const room = urlParams.get('room');
-            const password = urlParams.get('password');
-            const role = urlParams.get('role');
-            
-            if (room) {
-                document.getElementById('studentRoomId').value = room;
-                if (password && password !== 'null') {
-                    document.getElementById('studentRoomPassword').value = password;
-                }
-                if (role === 'student') {
-                    selectRole('student');
-                }
-            }
-        }
-
+        // Role Selection
         function selectRole(role) {
             console.log('Role selected:', role);
             currentRole = role;
@@ -1141,6 +745,7 @@
             }
         }
 
+        // Generate Random Room ID
         function generateRoomId() {
             const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
             let roomId = 'class';
@@ -1150,30 +755,32 @@
             document.getElementById('roomId').value = roomId;
         }
 
+        // Validate Room ID - Only a-z, A-Z, 0-9
         function validateRoomId(input) {
             const value = input.value;
             const regex = /^[a-zA-Z0-9]*$/;
-            const errorElement = input.id === 'roomId' ? 'roomIdError' : 'studentRoomIdError';
             
             if (!regex.test(value)) {
                 input.classList.add('error');
-                document.getElementById(errorElement).classList.add('show');
+                document.getElementById('roomIdError').classList.add('show');
                 input.value = value.replace(/[^a-zA-Z0-9]/g, '');
             } else {
                 input.classList.remove('error');
-                document.getElementById(errorElement).classList.remove('show');
+                document.getElementById('roomIdError').classList.remove('show');
             }
         }
 
+        // Back to Role Selection
         function backToRoleSelection() {
             document.querySelectorAll('.form-section').forEach(section => {
                 section.classList.remove('active');
             });
-            document.getElementById('shareSection').classList.remove('show');
+            document.getElementById('successMessage').style.display = 'none';
             document.getElementById('roleSelection').style.display = 'block';
             currentRole = null;
         }
 
+        // Create Classroom (Teacher)
         function createClassroom() {
             console.log('Creating classroom...');
             
@@ -1182,21 +789,25 @@
             const roomId = document.getElementById('roomId').value.trim();
             let password = document.getElementById('roomPassword').value.trim();
             
+            // Validation
             if (!teacherName || !className || !roomId) {
                 showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
                 return;
             }
             
+            // Final validation for room ID
             const regex = /^[a-zA-Z0-9]+$/;
             if (!regex.test(roomId)) {
-                showToast('شناسه اتاق فقط می‌تواند شامل حروف انگلیسی (a-z, A-Z) و اعداد (0-9) باشد', 'error');
+                showToast('شناسه اتاق فقط می‌تواند شامل حروف انگلیسی و اعداد باشد', 'error');
                 return;
             }
             
+            // Set default password if empty
             if (!password) {
                 password = 'demo123';
             }
             
+            // Store room info
             roomInfo = {
                 roomId: roomId,
                 password: password,
@@ -1206,377 +817,135 @@
             
             userInfo = {
                 name: teacherName,
-                role: 'teacher',
-                id: userId
+                role: 'teacher'
             };
             
-            const studentLink = `${SERVER_URL}?room=${roomId}&password=${encodeURIComponent(password)}&role=student`;
-            
-            document.getElementById('studentLink').value = studentLink;
+            // Display room info
             document.getElementById('roomIdDisplay').textContent = roomId;
             document.getElementById('roomPassDisplay').textContent = password;
             
-            const shareSection = document.getElementById('shareSection');
-            shareSection.classList.add('show');
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
             
+            // Scroll to success message
             setTimeout(() => {
-                shareSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
             
-            showToast('کلاس با موفقیت ایجاد شد! اطلاعات را برای دانش‌آموزان ارسال کنید', 'success');
+            showToast('کلاس با موفقیت ایجاد شد!', 'success');
             
             console.log('Classroom created:', roomInfo);
         }
 
-        async function enterClassAsTeacher() {
+        // Enter Class as Teacher
+        function enterClassAsTeacher() {
             console.log('Entering class as teacher...');
             showLoading(true);
             
-            try {
-                await initializeWebSocket();
-                await requestMediaPermissions();
-                initializeClassroom();
-            } catch (err) {
-                console.error('Error entering class:', err);
-                showToast('خطا در ورود به کلاس', 'error');
-                showLoading(false);
-            }
+            // Hide login screen
+            document.getElementById('loginScreen').style.display = 'none';
+            
+            // Show classroom
+            document.getElementById('classroomContainer').classList.add('active');
+            
+            // Update UI
+            document.getElementById('classNameDisplay').textContent = roomInfo.className;
+            document.getElementById('userNameDisplay').textContent = userInfo.name;
+            document.getElementById('userRoleDisplay').className = 'user-role teacher';
+            document.getElementById('userRoleDisplay').innerHTML = `
+                <i class="fas fa-chalkboard-teacher"></i> ${userInfo.name} (استاد)
+            `;
+            
+            // Update video label
+            document.getElementById('videoLabelText').textContent = `استاد: ${userInfo.name}`;
+            document.getElementById('videoLabel').style.background = 'var(--teacher-color)';
+            
+            // Build teacher URL according to the specified format
+            const teacherUrl = `${SERVER_URL}/?proxy&director=${roomInfo.roomId}&password=${roomInfo.password}&showdirector`;
+            
+            console.log('Teacher URL:', teacherUrl);
+            
+            // Set iframe source
+            const iframe = document.getElementById('mainVideoFrame');
+            iframe.src = teacherUrl;
+            
+            // Start timer
+            startClassTimer();
+            
+            showLoading(false);
+            
+            setTimeout(() => {
+                showToast('به کلاس خوش آمدید!', 'success');
+            }, 1000);
         }
 
-        async function joinClassroom() {
-            console.log('Joining classroom...');
+        // Join Classroom (Student)
+        function joinClassroom() {
+            console.log('Joining classroom as student...');
             
             const studentName = document.getElementById('studentName').value.trim();
             const roomId = document.getElementById('studentRoomId').value.trim();
-            let password = document.getElementById('studentRoomPassword').value.trim();
+            const password = document.getElementById('studentRoomPassword').value.trim();
             
-            if (!studentName || !roomId) {
-                showToast('لطفاً نام خود و شناسه اتاق را وارد کنید', 'error');
+            // Validation
+            if (!studentName || !roomId || !password) {
+                showToast('لطفاً همه فیلدها را پر کنید', 'error');
                 return;
             }
             
-            const regex = /^[a-zA-Z0-9]+$/;
-            if (!regex.test(roomId)) {
-                showToast('شناسه اتاق فقط می‌تواند شامل حروف انگلیسی (a-z, A-Z) و اعداد (0-9) باشد', 'error');
-                return;
-            }
-            
-            if (!password) {
-                password = 'demo123';
-            }
-            
+            // Store info
             roomInfo = {
                 roomId: roomId,
-                password: password,
-                className: `اتاق ${roomId}`,
-                teacherName: 'استاد'
+                password: password
             };
             
             userInfo = {
                 name: studentName,
-                role: 'student',
-                id: userId
+                role: 'student'
             };
             
             showLoading(true);
-            try {
-                await initializeWebSocket();
-                await requestMediaPermissions();
-                initializeClassroom();
-            } catch (err) {
-                console.error('Error joining class:', err);
-                showToast('خطا در پیوستن به کلاس', 'error');
-                showLoading(false);
-            }
-        }
-
-        async function initializeWebSocket() {
-            socket = new WebSocket(SIGNALING_SERVER);
             
-            socket.onopen = () => {
-                socket.send(JSON.stringify({
-                    type: 'join',
-                    roomId: roomInfo.roomId,
-                    userId: userInfo.id,
-                    role: userInfo.role,
-                    name: userInfo.name,
-                    password: roomInfo.password
-                }));
-            };
-            
-            socket.onmessage = async (event) => {
-                const msg = JSON.parse(event.data);
-                switch (msg.type) {
-                    case 'new-user':
-                        if (msg.userId !== userInfo.id) {
-                            addStudentVideo(msg.userId, msg.name, false);
-                            addParticipant(msg.name, 'student', true, true);
-                            addSystemMessage(`${msg.name} وارد کلاس شد`);
-                            studentCount++;
-                        }
-                        break;
-                    case 'offer':
-                        if (userInfo.role === 'teacher' && msg.userId !== userInfo.id) {
-                            await handleOffer(msg);
-                        }
-                        break;
-                    case 'answer':
-                        if (userInfo.role === 'student' && msg.userId === userInfo.id) {
-                            await handleAnswer(msg);
-                        }
-                        break;
-                    case 'ice-candidate':
-                        await handleIceCandidate(msg);
-                        break;
-                    case 'user-left':
-                        removeStudent(msg.userId);
-                        break;
-                    case 'error':
-                        showToast(msg.message, 'error');
-                        leaveClass();
-                        break;
-                }
-            };
-            
-            socket.onclose = () => {
-                showToast('اتصال به سرور قطع شد', 'error');
-            };
-        }
-
-        async function requestMediaPermissions() {
-            console.log('Requesting media permissions...');
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({
-                    video: { 
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    },
-                    audio: {
-                        echoCancellation: true,
-                        noiseSuppression: true
-                    }
-                });
-                
-                console.log('Media permissions granted');
-                
-                if (currentRole === 'student') {
-                    localStream.getAudioTracks().forEach(track => track.enabled = false);
-                    localStream.getVideoTracks().forEach(track => track.enabled = false);
-                } else {
-                    micEnabled = true;
-                    camEnabled = true;
-                }
-                
-                showToast('دسترسی به دوربین و میکروفون داده شد', 'success');
-                return true;
-            } catch (error) {
-                console.error('Error accessing media devices:', error);
-                showToast('خطا در دسترسی به دستگاه‌های صوتی و تصویری', 'warning');
-                return false;
-            }
-        }
-
-        async function initializeClassroom() {
-            console.log('Initializing classroom...');
-            
+            // Hide login screen
             document.getElementById('loginScreen').style.display = 'none';
+            
+            // Show classroom
             document.getElementById('classroomContainer').classList.add('active');
             
-            document.getElementById('classNameDisplay').textContent = roomInfo.className;
+            // Update UI
+            document.getElementById('classNameDisplay').textContent = `کلاس ${roomId}`;
             document.getElementById('userNameDisplay').textContent = userInfo.name;
-            document.getElementById('userRoleDisplay').className = `user-role ${userInfo.role}`;
+            document.getElementById('userRoleDisplay').className = 'user-role student';
+            document.getElementById('userRoleDisplay').innerHTML = `
+                <i class="fas fa-user-graduate"></i> ${userInfo.name} (دانش‌آموز)
+            `;
             
-            if (userInfo.role === 'teacher') {
-                document.getElementById('userRoleDisplay').innerHTML = `
-                    <i class="fas fa-chalkboard-teacher"></i> ${userInfo.name} (استاد)
-                `;
-                document.getElementById('teacherNameLabel').textContent = userInfo.name;
-                initializeTeacherVideo();
-            } else {
-                document.getElementById('userRoleDisplay').innerHTML = `
-                    <i class="fas fa-user-graduate"></i> ${userInfo.name} (دانش‌آموز)
-                `;
-                document.getElementById('teacherNameLabel').textContent = roomInfo.teacherName;
-                await initializeStudentView();
-            }
+            // Update video label
+            document.getElementById('videoLabelText').textContent = `دانش‌آموز: ${userInfo.name}`;
+            document.getElementById('videoLabel').style.background = 'var(--student-color)';
             
-            classStartTime = Date.now();
+            // Build student URL according to the specified format
+            const studentUrl = `${SERVER_URL}/?room=${roomInfo.roomId}&p=${roomInfo.password}&sl&broadcast`;
+            
+            console.log('Student URL:', studentUrl);
+            
+            // Set iframe source
+            const iframe = document.getElementById('mainVideoFrame');
+            iframe.src = studentUrl;
+            
+            // Start timer
             startClassTimer();
-            
-            updateControlButtons();
-            loadParticipants();
-            
-            setTimeout(() => {
-                addSystemMessage(`${userInfo.name} به کلاس خوش آمدید!`);
-            }, 1000);
             
             showLoading(false);
             
-            console.log('Classroom initialized successfully');
+            setTimeout(() => {
+                showToast('به کلاس خوش آمدید!', 'success');
+            }, 1000);
         }
 
-        function initializeTeacherVideo() {
-            console.log('Initializing teacher video...');
-            
-            const teacherVideo = document.getElementById('teacherVideo');
-            if (localStream) {
-                teacherVideo.srcObject = localStream;
-            }
-            
-            addStudentPlaceholder('در انتظار دانش‌آموزان...');
-        }
-
-        async function initializeStudentView() {
-            console.log('Initializing student view...');
-            
-            const studentId = userInfo.id;
-            addStudentVideo(studentId, userInfo.name, true);
-            await createOffer();
-        }
-
-        async function createOffer() {
-            const pc = new RTCPeerConnection({
-                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-            });
-            peerConnections[userInfo.id] = pc;
-            
-            localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
-            
-            pc.onicecandidate = (event) => {
-                if (event.candidate) {
-                    socket.send(JSON.stringify({
-                        type: 'ice-candidate',
-                        roomId: roomInfo.roomId,
-                        userId: userInfo.id,
-                        candidate: event.candidate
-                    }));
-                }
-            };
-            
-            pc.ontrack = (event) => {
-                const teacherVideo = document.getElementById('teacherVideo');
-                if (!teacherVideo.srcObject) {
-                    teacherVideo.srcObject = event.streams[0];
-                }
-            };
-            
-            const offer = await pc.createOffer();
-            await pc.setLocalDescription(offer);
-            
-            socket.send(JSON.stringify({
-                type: 'offer',
-                roomId: roomInfo.roomId,
-                userId: userInfo.id,
-                sdp: offer
-            }));
-        }
-
-        async function handleOffer(msg) {
-            const pc = new RTCPeerConnection({
-                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-            });
-            peerConnections[msg.userId] = pc;
-            
-            pc.onicecandidate = (event) => {
-                if (event.candidate) {
-                    socket.send(JSON.stringify({
-                        type: 'ice-candidate',
-                        roomId: roomInfo.roomId,
-                        userId: msg.userId,
-                        candidate: event.candidate
-                    }));
-                }
-            };
-            
-            pc.ontrack = (event) => {
-                const videoElement = document.getElementById(`studentVideo-${msg.userId}`);
-                if (videoElement && !videoElement.srcObject) {
-                    videoElement.srcObject = event.streams[0];
-                }
-            };
-            
-            await pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
-            localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
-            
-            const answer = await pc.createAnswer();
-            await pc.setLocalDescription(answer);
-            
-            socket.send(JSON.stringify({
-                type: 'answer',
-                roomId: roomInfo.roomId,
-                userId: msg.userId,
-                sdp: answer
-            }));
-        }
-
-        async function handleAnswer(msg) {
-            const pc = peerConnections[userInfo.id];
-            if (pc) {
-                await pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
-            }
-        }
-
-        async function handleIceCandidate(msg) {
-            const pc = peerConnections[msg.userId];
-            if (pc && msg.candidate) {
-                await pc.addIceCandidate(new RTCIceCandidate(msg.candidate));
-            }
-        }
-
-        function addStudentVideo(studentId, studentName, isSelf = false) {
-            const studentsGrid = document.getElementById('studentsGrid');
-            const studentCard = document.createElement('div');
-            studentCard.className = 'student-video-card';
-            studentCard.id = `student_${studentId}`;
-            
-            studentCard.innerHTML = `
-                <video id="studentVideo-${studentId}" class="student-video" autoplay playsinline ${isSelf ? 'muted' : ''}></video>
-                <div class="student-name">${studentName}${isSelf ? ' (شما)' : ''}</div>
-            `;
-            
-            studentsGrid.appendChild(studentCard);
-            
-            if (isSelf && localStream) {
-                const videoElement = document.getElementById(`studentVideo-${studentId}`);
-                videoElement.srcObject = localStream;
-            }
-        }
-
-        function addStudentPlaceholder(name) {
-            const studentsGrid = document.getElementById('studentsGrid');
-            const studentCard = document.createElement('div');
-            studentCard.className = 'student-video-card';
-            
-            studentCard.innerHTML = `
-                <div class="video-placeholder" style="height: 100%;">
-                    <i class="fas fa-users"></i>
-                    <p style="font-size: 0.8rem;">${name}</p>
-                </div>
-                <div class="student-name">${name}</div>
-            `;
-            
-            studentsGrid.appendChild(studentCard);
-        }
-
-        function removeStudent(studentId) {
-            const studentCard = document.getElementById(`student_${studentId}`);
-            if (studentCard) {
-                studentCard.remove();
-            }
-            const participantItem = document.getElementById(`participant_${studentId}`);
-            if (participantItem) {
-                participantItem.remove();
-            }
-            studentCount--;
-            addSystemMessage(`کاربر ${studentId} از کلاس خارج شد`);
-            const pc = peerConnections[studentId];
-            if (pc) {
-                pc.close();
-                delete peerConnections[studentId];
-            }
-        }
-
+        // Start Class Timer
         function startClassTimer() {
+            classStartTime = Date.now();
             timerInterval = setInterval(() => {
                 const elapsed = Math.floor((Date.now() - classStartTime) / 1000);
                 const hours = Math.floor(elapsed / 3600);
@@ -1588,250 +957,91 @@
             }, 1000);
         }
 
-        function toggleMic() {
-            micEnabled = !micEnabled;
-            if (localStream) {
-                localStream.getAudioTracks().forEach(track => track.enabled = micEnabled);
-            }
-            updateControlButtons();
-            updateParticipantStatus();
-            showToast(micEnabled ? 'میکروفون فعال شد' : 'میکروفون غیرفعال شد');
-        }
-
-        function toggleCamera() {
-            camEnabled = !camEnabled;
-            if (localStream) {
-                localStream.getVideoTracks().forEach(track => track.enabled = camEnabled);
-            }
-            updateControlButtons();
-            updateParticipantStatus();
-            showToast(camEnabled ? 'دوربین فعال شد' : 'دوربین غیرفعال شد');
-        }
-
-        async function shareScreen() {
+        // Copy Text Function
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            
+            // Create temporary input
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
             try {
-                const screenStream = await navigator.mediaDevices.getDisplayMedia({
-                    video: true,
-                    audio: true
+                document.execCommand('copy');
+                showToast('کپی شد!', 'success');
+            } catch (err) {
+                // Fallback for modern browsers
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('کپی شد!', 'success');
+                }).catch(() => {
+                    showToast('خطا در کپی کردن', 'error');
                 });
-                
-                if (userInfo.role === 'teacher') {
-                    const teacherVideo = document.getElementById('teacherVideo');
-                    teacherVideo.srcObject = screenStream;
-                } else {
-                    const studentVideo = document.getElementById(`studentVideo-${userInfo.id}`);
-                    if (studentVideo) {
-                        studentVideo.srcObject = screenStream;
-                    }
-                }
-                
-                screenStream.getVideoTracks()[0].onended = () => {
-                    showToast('اشتراک‌گذاری صفحه پایان یافت');
-                    if (localStream) {
-                        if (userInfo.role === 'teacher') {
-                            document.getElementById('teacherVideo').srcObject = localStream;
-                        } else {
-                            const studentVideo = document.getElementById(`studentVideo-${userInfo.id}`);
-                            if (studentVideo) {
-                                studentVideo.srcObject = localStream;
-                            }
-                        }
-                    }
-                };
-                
-                showToast('اشتراک‌گذاری صفحه شروع شد');
-            } catch (error) {
-                console.error('Error sharing screen:', error);
-                showToast('خطا در اشتراک‌گذاری صفحه', 'error');
-            }
-        }
-
-        function toggleRecord() {
-            isRecording = !isRecording;
-            const btn = document.getElementById('recordBtn');
-            
-            if (isRecording) {
-                btn.classList.add('active');
-                btn.style.background = 'var(--danger)';
-                showToast('ضبط جلسه شروع شد');
-            } else {
-                btn.classList.remove('active');
-                btn.style.background = '';
-                showToast('ضبط جلسه متوقف شد');
-            }
-        }
-
-        function raiseHand() {
-            showToast('دست شما بلند شد');
-            addSystemMessage(`${userInfo.name} دست خود را بلند کرد`);
-        }
-
-        function updateControlButtons() {
-            const micBtn = document.getElementById('micBtn');
-            const camBtn = document.getElementById('camBtn');
-            
-            micBtn.className = `control-btn ${micEnabled ? 'active' : 'secondary'}`;
-            micBtn.innerHTML = `<i class="fas fa-microphone${micEnabled ? '' : '-slash'}"></i>`;
-            
-            camBtn.className = `control-btn ${camEnabled ? 'active' : 'secondary'}`;
-            camBtn.innerHTML = `<i class="fas fa-video${camEnabled ? '' : '-slash'}"></i>`;
-        }
-
-        function loadParticipants() {
-            const participantsList = document.getElementById('participantsList');
-            participantsList.innerHTML = '';
-            
-            if (roomInfo.teacherName || userInfo.role === 'teacher') {
-                addParticipant(roomInfo.teacherName || userInfo.name, 'teacher', userInfo.role === 'teacher' ? micEnabled : true, userInfo.role === 'teacher' ? camEnabled : true);
             }
             
-            if (userInfo.role === 'student') {
-                addParticipant(userInfo.name, 'student', micEnabled, camEnabled);
-            }
+            document.body.removeChild(tempInput);
         }
 
-        function addParticipant(name, role, micOn, camOn) {
-            const participantsList = document.getElementById('participantsList');
-            const item = document.createElement('div');
-            item.className = 'participant-item';
-            item.id = `participant_${userInfo.id}`;
-            
-            const avatarColor = role === 'teacher' ? 'var(--teacher-color)' : 'var(--student-color)';
-            
-            item.innerHTML = `
-                <div class="participant-info">
-                    <div class="participant-avatar" style="background: ${avatarColor};">
-                        ${role === 'teacher' ? '<i class="fas fa-chalkboard-teacher"></i>' : name.charAt(0)}
-                    </div>
-                    <div>
-                        <div style="font-weight: 600;">${name}</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary);">
-                            ${role === 'teacher' ? 'استاد' : 'دانش‌آموز'}
-                        </div>
-                    </div>
-                </div>
-                <div class="participant-controls">
-                    <button class="control-icon ${micOn ? 'active' : 'muted'}">
-                        <i class="fas fa-microphone${micOn ? '' : '-slash'}"></i>
-                    </button>
-                    <button class="control-icon ${camOn ? 'active' : 'muted'}">
-                        <i class="fas fa-video${camOn ? '' : '-slash'}"></i>
-                    </button>
-                </div>
-            `;
-            
-            participantsList.appendChild(item);
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(`${tabName}-tab`).classList.add('active');
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                addChatMessage(userInfo.name, message, userInfo.role === 'teacher');
-                if (socket) {
-                    socket.send(JSON.stringify({
-                        type: 'message',
-                        roomId: roomInfo.roomId,
-                        userId: userInfo.id,
-                        name: userInfo.name,
-                        message: message,
-                        isTeacher: userInfo.role === 'teacher'
-                    }));
-                }
-                input.value = '';
-            }
-        }
-
-        function handleChatKeyPress(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        }
-
-        function addChatMessage(author, message, isTeacher) {
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = isTeacher ? 'message teacher' : 'message';
-            
-            const time = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <div class="message-header">
-                    <span class="message-author">${author}</span>
-                    <span class="message-time">${time}</span>
-                </div>
-                <div class="message-body">${message}</div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function addSystemMessage(message) {
-            addChatMessage('سیستم', message, false);
-        }
-
-        function copyLink(inputId) {
-            const input = document.getElementById(inputId);
-            input.select();
-            navigator.clipboard.writeText(input.value).then(() => {
-                showToast('لینک با موفقیت کپی شد!');
-            }).catch(() => {
-                showToast('خطا در کپی کردن لینک', 'error');
-            });
-        }
-
+        // Leave Class
         function leaveClass() {
             if (confirm('آیا از خروج از کلاس اطمینان دارید؟')) {
-                if (localStream) {
-                    localStream.getTracks().forEach(track => track.stop());
-                }
-                Object.values(peerConnections).forEach(pc => pc.close());
-                peerConnections = {};
-                if (socket) {
-                    socket.send(JSON.stringify({
-                        type: 'leave',
-                        roomId: roomInfo.roomId,
-                        userId: userInfo.id
-                    }));
-                    socket.close();
-                }
+                // Clear timer
                 if (timerInterval) {
                     clearInterval(timerInterval);
                 }
+                
+                // Clear iframe
+                document.getElementById('mainVideoFrame').src = '';
+                
                 showToast('در حال خروج از کلاس...');
+                
                 setTimeout(() => {
-                    window.location.href = SERVER_URL;
+                    // Reset and go back to login
+                    document.getElementById('classroomContainer').classList.remove('active');
+                    document.getElementById('loginScreen').style.display = 'flex';
+                    
+                    // Reset forms
+                    document.getElementById('teacherForm').classList.remove('active');
+                    document.getElementById('studentForm').classList.remove('active');
+                    document.getElementById('successMessage').style.display = 'none';
+                    document.getElementById('roleSelection').style.display = 'block';
+                    
+                    // Clear inputs
+                    document.querySelectorAll('.form-input').forEach(input => input.value = '');
+                    
+                    currentRole = null;
+                    roomInfo = {};
+                    userInfo = {};
                 }, 1500);
             }
         }
 
+        // Utility Functions
         function showLoading(show) {
-            document.getElementById('loadingOverlay').classList.toggle('active', show);
+            const overlay = document.getElementById('loadingOverlay');
+            if (show) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
         }
 
         function showToast(message, type = 'success') {
             console.log('Toast:', message, type);
+            
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
             
             toastMessage.textContent = message;
-            toast.style.background = type === 'error' ? 'var(--danger)' : type === 'warning' ? 'var(--warning)' : 'var(--success)';
+            
+            if (type === 'error') {
+                toast.style.background = 'var(--danger)';
+            } else if (type === 'warning') {
+                toast.style.background = 'var(--warning)';
+            } else {
+                toast.style.background = 'var(--success)';
+            }
+            
             toast.classList.add('show');
             
             setTimeout(() => {
@@ -1839,16 +1049,9 @@
             }, 3000);
         }
 
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                console.log('User switched tabs');
-            } else {
-                console.log('User returned to class');
-            }
-        });
-
+        // Event Listeners
         window.addEventListener('beforeunload', (e) => {
-            if (localStream) {
+            if (document.getElementById('classroomContainer').classList.contains('active')) {
                 e.preventDefault();
                 e.returnValue = 'آیا از خروج از کلاس اطمینان دارید؟';
             }
@@ -1862,7 +1065,8 @@
             showToast('اتصال اینترنت قطع شد', 'error');
         });
 
-        console.log('RemoteVM Class Platform v1.0 loaded');
+        // Debug
+        console.log('RemoteVM Class Platform v2.0 loaded');
     </script>
 </body>
 </html>

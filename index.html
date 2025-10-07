@@ -940,6 +940,10 @@
                             <input type="checkbox" id="simplePassword" onchange="togglePasswordMode()" checked>
                             <label for="simplePassword">استفاده از رمز عبور ساده</label>
                         </div>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="minimalRoom" onchange="toggleRoomMode()" checked>
+                            <label for="minimalRoom">اتاق مینیمال (پیش‌فرض) / پیشرفته</label>
+                        </div>
                     </div>
 
                     <button type="button" class="btn btn-primary" onclick="createClassroom()">
@@ -1150,13 +1154,14 @@
         let timerInterval = null;
         let isFullscreen = false;
         let isSimplePassword = true; // Default to simple password mode
+        let isMinimalRoom = true; // Default to minimal room mode
         let directLink = ''; // Store direct link for copying
 
         /* ========================================
            Initialization
            ======================================== */
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('RemoteVM Class Platform v4.5 - Optimized with Updated Hamburger Menu');
+            console.log('RemoteVM Class Platform v4.7 - Added Minimal/Advanced Room Toggle');
             checkBrowserCompatibility();
             initializeEventListeners();
             loadStoredData();
@@ -1320,6 +1325,10 @@
             validatePassword(passwordInput);
         }
 
+        function toggleRoomMode() {
+            isMinimalRoom = document.getElementById('minimalRoom').checked;
+        }
+
         function backToRoleSelection() {
             document.querySelectorAll('.form-section').forEach(section => {
                 section.classList.remove('active');
@@ -1343,7 +1352,7 @@
                 document.getElementById('teacherInfoBox').style.display = 'block';
                 document.getElementById('menuRoomId').textContent = roomInfo.roomId || '';
                 document.getElementById('menuRoomPassword').textContent = roomInfo.password || '';
-                directLink = `${SERVER_URL}/?proxy&director=${roomInfo.roomId}&password=${roomInfo.password}&showdirector`;
+                directLink = `${SERVER_URL}/?room=${roomInfo.roomId}&p=${roomInfo.password}&sl&broadcast`;
             } else {
                 document.getElementById('teacherInfoBox').style.display = 'none';
             }
@@ -1431,8 +1440,11 @@
                     document.getElementById('videoLabelText').textContent = `استاد: ${userInfo.name}`;
                     document.getElementById('videoLabel').style.background = 'var(--teacher-color)';
                     
-                    // Build teacher URL
-                    const teacherUrl = `${SERVER_URL}/?proxy&director=${roomInfo.roomId}&password=${roomInfo.password}&showdirector`;
+                    // Build teacher URL with optional minidirector parameter
+                    let teacherUrl = `${SERVER_URL}/?proxy&director=${roomInfo.roomId}&password=${roomInfo.password}&showdirector`;
+                    if (isMinimalRoom) {
+                        teacherUrl += '&minidirector';
+                    }
                     document.getElementById('mainVideoFrame').src = teacherUrl;
                     
                     // Update hamburger menu
@@ -1490,7 +1502,7 @@
                     document.getElementById('classroomHeader').style.display = 'flex';
                     
                     // Update UI
-                    document.getElementById('classNameDisplay').textContent = `کلاس ${roomId}`;
+                    document.getElementById('classNameDisplay').textContent = `کلاس ${roomInfo.roomId}`;
                     document.getElementById('userNameDisplay').textContent = userInfo.name;
                     document.getElementById('userRoleDisplay').className = 'user-role student';
                     document.getElementById('userRoleDisplay').innerHTML = `
@@ -1691,7 +1703,7 @@
             }
         }
 
-        function showLoading(show) {
+        function showLoading( show) {
             const overlay = document.getElementById('loadingOverlay');
             if (show) {
                 overlay.classList.add('active');

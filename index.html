@@ -2,13 +2,39 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RemoteVM Class - پلتفرم کلاس آنلاین حرفه‌ای</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- SEO Meta Tags -->
+    <title>RemoteVM Class - پلتفرم کلاس آنلاین حرفه‌ای | آموزش مجازی</title>
+    <meta name="description" content="پلتفرم کلاس آنلاین RemoteVM برای برگزاری جلسات آموزشی با کیفیت بالا. امکان ایجاد کلاس توسط اساتید و حضور دانش‌آموزان به صورت آنلاین.">
+    <meta name="keywords" content="کلاس آنلاین, آموزش مجازی, RemoteVM, تدریس آنلاین, وبینار, کنفرانس ویدیویی">
+    <meta name="author" content="RemoteVM">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="RemoteVM Class - پلتفرم کلاس آنلاین حرفه‌ای">
+    <meta property="og:description" content="پلتفرم کلاس آنلاین RemoteVM برای برگزاری جلسات آموزشی با کیفیت بالا">
+    <meta property="og:url" content="https://class.remotevm.ir">
+    <meta property="og:site_name" content="RemoteVM Class">
+    <meta property="og:locale" content="fa_IR">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://server.remotevm.ir">
+    <link rel="dns-prefetch" href="https://server.remotevm.ir">
     
     <style>
+        /* ========================================
+           Root Variables & Reset - Dark Theme Only
+           ======================================== */
         * {
             margin: 0;
             padding: 0;
@@ -27,60 +53,58 @@
             --warning: #f59e0b;
             --danger: #ef4444;
             --info: #06b6d4;
-            --purple: #8b5cf6;
             --teacher-color: #f59e0b;
             --student-color: #06b6d4;
+            --transition: all 0.3s ease;
         }
 
+        /* Base Styles */
         body {
-            font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, var(--dark-bg) 0%, var(--card-bg) 100%);
             color: var(--text-primary);
             min-height: 100vh;
-            overflow: hidden;
+            overflow-y: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Header Styles */
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* ========================================
+           Header Styles
+           ======================================== */
         .main-header {
             background: var(--card-bg);
             border-bottom: 1px solid var(--border-color);
             padding: 1rem 2rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             position: relative;
             z-index: 100;
+            transition: var(--transition);
         }
 
         .main-header.hide-in-fullscreen {
             display: none;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .menu-toggle {
-            background: var(--primary-color);
-            border: none;
-            color: white;
-            padding: 0.75rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-        }
-
-        .menu-toggle:hover {
-            background: var(--secondary-color);
-            transform: scale(1.05);
         }
 
         .logo-section {
@@ -95,121 +119,9 @@
             color: var(--primary-color);
         }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .status-badge {
-            background: var(--dark-bg);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        /* Menu Panel */
-        .menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 199;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .menu-panel {
-            position: fixed;
-            top: 0;
-            right: -320px;
-            width: 300px;
-            height: 100%;
-            background: var(--card-bg);
-            box-shadow: -2px 0 10px rgba(0,0,0,0.3);
-            z-index: 200;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-        }
-
-        .menu-panel.active {
-            right: 0;
-        }
-
-        .menu-content {
-            padding: 2rem 1.5rem;
-        }
-
-        .menu-content h2 {
-            color: var(--primary-color);
-            margin-bottom: 2rem;
-            font-size: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .menu-content ul {
-            list-style: none;
-        }
-
-        .menu-content li {
-            margin-bottom: 0.5rem;
-        }
-
-        .menu-content a {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem 1rem;
-            color: var(--text-primary);
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-        }
-
-        .menu-content a:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateX(-5px);
-        }
-
-        .menu-content a i {
-            width: 20px;
-            text-align: center;
-            color: var(--primary-color);
-        }
-
-        .menu-content a:hover i {
-            color: white;
-        }
-
-        /* Login Screen */
+        /* ========================================
+           Login Screen
+           ======================================== */
         .login-container {
             display: flex;
             align-items: center;
@@ -227,6 +139,14 @@
             max-width: 600px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             border: 1px solid var(--border-color);
+            animation: slideUp 0.5s ease;
+            overflow-y: auto;
+            max-height: calc(100vh - 120px);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .login-header {
@@ -238,6 +158,12 @@
             font-size: 4rem;
             color: var(--primary-color);
             margin-bottom: 1rem;
+            animation: bounce 1s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .login-title {
@@ -263,13 +189,14 @@
             border: 2px solid var(--border-color);
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             text-align: center;
         }
 
         .role-btn:hover {
             border-color: var(--primary-color);
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .role-btn.teacher {
@@ -305,13 +232,21 @@
             color: var(--text-secondary);
         }
 
-        /* Form Section */
+        /* ========================================
+           Form Styles
+           ======================================== */
         .form-section {
             display: none;
         }
 
         .form-section.active {
             display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .form-group {
@@ -333,11 +268,13 @@
             border-radius: 8px;
             color: var(--text-primary);
             font-size: 1rem;
+            transition: var(--transition);
         }
 
         .form-input:focus {
             outline: none;
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .form-input.error {
@@ -353,6 +290,13 @@
 
         .error-message.show {
             display: block;
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
         .help-text {
@@ -361,19 +305,32 @@
             margin-top: 0.25rem;
         }
 
+        /* ========================================
+           Button Styles
+           ======================================== */
         .btn {
             padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
             font-size: 1rem;
             width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
         }
 
         .btn-primary {
@@ -388,7 +345,6 @@
         .btn-secondary {
             background: var(--border-color);
             color: var(--text-primary);
-            margin-top: 0.5rem;
         }
 
         .btn-secondary:hover {
@@ -404,13 +360,9 @@
             background: #059669;
         }
 
-        .btn-sm {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            width: auto;
-        }
-
-        /* Success Message Section */
+        /* ========================================
+           Success Message Section
+           ======================================== */
         .success-section {
             background: linear-gradient(135deg, var(--success), var(--primary-color));
             border-radius: 12px;
@@ -435,6 +387,7 @@
             font-size: 3rem;
             color: white;
             margin-bottom: 1rem;
+            animation: bounce 1s ease;
         }
 
         .success-title {
@@ -474,7 +427,7 @@
 
         .info-value {
             color: var(--warning);
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             font-size: 1.1rem;
             font-weight: bold;
         }
@@ -486,16 +439,19 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             font-weight: bold;
             font-size: 0.85rem;
         }
 
         .copy-btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.3);
         }
 
-        /* Classroom Container */
+        /* ========================================
+           Classroom Container
+           ======================================== */
         .classroom-container {
             display: none;
             height: calc(100vh - 77px);
@@ -505,13 +461,16 @@
         .classroom-container.active {
             display: flex;
             flex-direction: column;
+            animation: fadeIn 0.5s ease;
         }
 
         .classroom-container.fullscreen-mode {
             height: 100vh;
         }
 
-        /* Top Bar */
+        /* ========================================
+           Top Bar
+           ======================================== */
         .top-bar {
             height: 60px;
             background: var(--card-bg);
@@ -520,6 +479,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 2rem;
+            transition: var(--transition);
         }
 
         .top-bar.hide-in-fullscreen {
@@ -570,7 +530,9 @@
             gap: 1rem;
         }
 
-        /* Main Content */
+        /* ========================================
+           Main Content Area
+           ======================================== */
         .main-content {
             flex: 1;
             display: flex;
@@ -578,7 +540,9 @@
             position: relative;
         }
 
-        /* Video Section */
+        /* ========================================
+           Video Section
+           ======================================== */
         .video-section {
             flex: 1;
             display: flex;
@@ -614,6 +578,7 @@
             align-items: center;
             gap: 0.5rem;
             color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         /* Fullscreen Button */
@@ -631,7 +596,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition);
             z-index: 10;
         }
 
@@ -644,7 +609,9 @@
             background: var(--danger);
         }
 
-        /* Control Bar */
+        /* ========================================
+           Control Bar
+           ======================================== */
         .control-bar {
             background: var(--card-bg);
             border-top: 1px solid var(--border-color);
@@ -653,6 +620,7 @@
             justify-content: center;
             align-items: center;
             gap: 1rem;
+            transition: var(--transition);
         }
 
         .control-bar.hide-in-fullscreen {
@@ -673,7 +641,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition);
             font-size: 1.2rem;
             background: var(--border-color);
             color: var(--text-primary);
@@ -700,7 +668,9 @@
             margin: 0 0.5rem;
         }
 
-        /* Floating Controls for Fullscreen */
+        /* ========================================
+           Floating Controls for Fullscreen
+           ======================================== */
         .floating-controls {
             position: fixed;
             bottom: 20px;
@@ -714,10 +684,17 @@
             align-items: center;
             gap: 1rem;
             z-index: 100;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
 
         .floating-controls.show {
             display: flex;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); }
+            to { transform: translateY(0); }
         }
 
         .floating-control-btn {
@@ -731,7 +708,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
 
         .floating-control-btn:hover {
@@ -747,288 +724,9 @@
             background: var(--danger);
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 350px;
-            background: var(--card-bg);
-            border-left: 1px solid var(--border-color);
-            display: none;
-            flex-direction: column;
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            z-index: 50;
-        }
-
-        .sidebar.active {
-            display: flex;
-        }
-
-        .sidebar-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 1rem;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .tab-btn.active {
-            color: var(--primary-color);
-        }
-
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--primary-color);
-        }
-
-        .tab-content {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .tab-content.active {
-            display: flex;
-        }
-
-        /* Chat Tab */
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .message {
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border-radius: 8px;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .message.teacher {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), transparent);
-            border: 1px solid var(--teacher-color);
-        }
-
-        .message-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.25rem;
-        }
-
-        .message-author {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .message-body {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-        }
-
-        .chat-input-container {
-            padding: 1rem;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-        }
-
-        .send-btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        /* Participants Tab */
-        .participants-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-        }
-
-        .participant-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-        }
-
-        .participant-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .participant-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-        }
-
-        .participant-controls {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .participant-control-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            cursor: pointer;
-            background: var(--border-color);
-            color: var(--text-secondary);
-        }
-
-        .participant-control-btn.active {
-            background: var(--success);
-            color: white;
-        }
-
-        .participant-control-btn.muted {
-            background: var(--danger);
-            color: white;
-        }
-
-        /* Settings Tab */
-        .settings-container {
-            padding: 1rem;
-            overflow-y: auto;
-        }
-
-        .setting-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .setting-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .setting-select {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-        }
-
-        .toggle-switch {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border-radius: 8px;
-        }
-
-        .switch {
-            position: relative;
-            width: 50px;
-            height: 26px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--border-color);
-            transition: 0.4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--success);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
-
-        /* Loading Spinner */
+        /* ========================================
+           Loading & Toast
+           ======================================== */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -1036,6 +734,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
             display: none;
             flex-direction: column;
             align-items: center;
@@ -1067,7 +766,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             top: 80px;
@@ -1089,66 +787,13 @@
         }
 
         @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
         }
 
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-            color: var(--text-primary);
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Responsive */
+        /* ========================================
+           Responsive Design
+           ======================================== */
         @media (max-width: 768px) {
             .main-header {
                 padding: 1rem;
@@ -1181,13 +826,19 @@
                 height: 40px;
                 font-size: 1rem;
             }
+        }
 
-            .sidebar {
-                width: 100%;
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
             }
 
-            .header-right .status-badge span {
-                display: none;
+            .top-controls {
+                flex-direction: column;
+            }
+
+            .control-btn-group {
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -1195,40 +846,11 @@
 <body>
     <!-- Main Header -->
     <header class="main-header" id="mainHeader">
-        <div class="header-left">
-            <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="logo-section">
-                <i class="fas fa-graduation-cap" style="font-size: 1.5rem; color: var(--primary-color);"></i>
-                <span class="logo-text">RemoteVM Class</span>
-            </div>
-        </div>
-        <div class="header-right">
-            <div class="status-badge">
-                <div class="status-dot"></div>
-                <span>آنلاین</span>
-            </div>
+        <div class="logo-section">
+            <i class="fas fa-graduation-cap" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+            <span class="logo-text">RemoteVM Class</span>
         </div>
     </header>
-
-    <!-- Menu Overlay -->
-    <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
-
-    <!-- Menu Panel -->
-    <nav id="menu-panel" class="menu-panel">
-        <div class="menu-content">
-            <h2>منو</h2>
-            <ul>
-                <li><a href="https://remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-home"></i> خانه</a></li>
-                <li><a href="https://remotevm.ir/remotevm-tut.html" target="_blank" rel="noopener noreferrer"><i class="fas fa-book"></i> راهنما</a></li>
-                <li><a href="https://call.remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-video"></i> تماس تصویری</a></li>
-                <li><a href="https://about.remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-info-circle"></i> درباره ما</a></li>
-                <li><a href="https://room.remotevm.ir" target="_blank" rel="noopener noreferrer"><i class="fas fa-users-cog"></i> پنل حرفه‌ای</a></li>
-                <li><a href="https://remotevm.ir/product" target="_blank" rel="noopener noreferrer"><i class="fas fa-box-open"></i> محصولات</a></li>
-            </ul>
-        </div>
-    </nav>
 
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
@@ -1237,7 +859,7 @@
     </div>
 
     <!-- Login Screen -->
-    <div class="login-container" id="loginScreen">
+    <main class="login-container" id="loginScreen">
         <div class="login-card">
             <div class="login-header">
                 <div class="login-logo">
@@ -1248,63 +870,65 @@
             </div>
 
             <!-- Role Selection -->
-            <div id="roleSelection">
+            <section id="roleSelection">
                 <div class="role-buttons">
-                    <div class="role-btn teacher" onclick="selectRole('teacher')">
+                    <div class="role-btn teacher" onclick="selectRole('teacher')" tabindex="0" role="button" aria-label="ورود به عنوان استاد">
                         <i class="fas fa-chalkboard-teacher"></i>
                         <h3>ورود به عنوان استاد</h3>
                         <p>ایجاد کلاس جدید</p>
                     </div>
-                    <div class="role-btn student" onclick="selectRole('student')">
+                    <div class="role-btn student" onclick="selectRole('student')" tabindex="0" role="button" aria-label="پیوستن به کلاس">
                         <i class="fas fa-user-graduate"></i>
                         <h3>پیوستن به کلاس</h3>
                         <p>ورود به کلاس موجود</p>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- Teacher Form -->
-            <div class="form-section" id="teacherForm">
+            <section class="form-section" id="teacherForm">
                 <h2 style="margin-bottom: 1.5rem; color: var(--teacher-color);">
                     <i class="fas fa-chalkboard-teacher"></i> ایجاد کلاس جدید
                 </h2>
                 
-                <div class="form-group">
-                    <label class="form-label">نام شما</label>
-                    <input type="text" class="form-input" id="teacherName" placeholder="مثال: استاد محمدی">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">نام کلاس</label>
-                    <input type="text" class="form-input" id="className" placeholder="مثال: ریاضی پایه دهم">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">شناسه اتاق (Room ID)</label>
-                    <input type="text" class="form-input" id="roomId" placeholder="مثال: math101" 
-                           oninput="validateRoomId(this)" maxlength="20">
-                    <div class="help-text">
-                        <i class="fas fa-info-circle"></i> فقط حروف انگلیسی (a-z, A-Z) و اعداد (0-9) مجاز است
+                <form onsubmit="return false;">
+                    <div class="form-group">
+                        <label class="form-label" for="teacherName">نام شما</label>
+                        <input type="text" class="form-input" id="teacherName" placeholder="مثال: استاد محمدی" required>
                     </div>
-                    <div class="error-message" id="roomIdError">
-                        شناسه اتاق فقط می‌تواند شامل حروف انگلیسی و اعداد باشد
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label class="form-label">رمز عبور اتاق</label>
-                    <input type="password" class="form-input" id="roomPassword" placeholder="رمز عبور برای امنیت کلاس">
-                    <div class="help-text">
-                        <i class="fas fa-info-circle"></i> در صورت خالی گذاشتن، رمز پیش‌فرض استفاده می‌شود
+                    <div class="form-group">
+                        <label class="form-label" for="className">نام کلاس</label>
+                        <input type="text" class="form-input" id="className" placeholder="مثال: ریاضی پایه دهم" required>
                     </div>
-                </div>
 
-                <button class="btn btn-primary" onclick="createClassroom()">
-                    <i class="fas fa-plus-circle"></i> ایجاد کلاس و ورود
-                </button>
-                <button class="btn btn-secondary" onclick="backToRoleSelection()">
-                    <i class="fas fa-arrow-right"></i> بازگشت
-                </button>
+                    <div class="form-group">
+                        <label class="form-label" for="roomId">شناسه اتاق (Room ID)</label>
+                        <input type="text" class="form-input" id="roomId" placeholder="مثال: math101" 
+                               oninput="validateRoomId(this)" maxlength="20" pattern="[a-zA-Z0-9]+" required>
+                        <div class="help-text">
+                            <i class="fas fa-info-circle"></i> فقط حروف انگلیسی (a-z, A-Z) و اعداد (0-9) مجاز است
+                        </div>
+                        <div class="error-message" id="roomIdError">
+                            شناسه اتاق فقط می‌تواند شامل حروف انگلیسی و اعداد باشد
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="roomPassword">رمز عبور اتاق</label>
+                        <input type="password" class="form-input" id="roomPassword" placeholder="رمز عبور برای امنیت کلاس">
+                        <div class="help-text">
+                            <i class="fas fa-info-circle"></i> در صورت خالی گذاشتن، رمز پیش‌فرض استفاده می‌شود
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="createClassroom()">
+                        <i class="fas fa-plus-circle"></i> ایجاد کلاس و ورود
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="backToRoleSelection()">
+                        <i class="fas fa-arrow-right"></i> بازگشت
+                    </button>
+                </form>
 
                 <!-- Success Message -->
                 <div id="successMessage" style="display: none;">
@@ -1319,7 +943,7 @@
                                 <span class="info-label">شناسه اتاق:</span>
                                 <div style="display: flex; gap: 0.5rem; align-items: center;">
                                     <span class="info-value" id="roomIdDisplay"></span>
-                                    <button class="copy-btn" onclick="copyText('roomIdDisplay')">
+                                    <button class="copy-btn" onclick="copyText('roomIdDisplay')" aria-label="کپی شناسه">
                                         <i class="fas fa-copy"></i>
                                     </button>
                                 </div>
@@ -1328,7 +952,7 @@
                                 <span class="info-label">رمز عبور:</span>
                                 <div style="display: flex; gap: 0.5rem; align-items: center;">
                                     <span class="info-value" id="roomPassDisplay"></span>
-                                    <button class="copy-btn" onclick="copyText('roomPassDisplay')">
+                                    <button class="copy-btn" onclick="copyText('roomPassDisplay')" aria-label="کپی رمز">
                                         <i class="fas fa-copy"></i>
                                     </button>
                                 </div>
@@ -1344,38 +968,40 @@
                         </button>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- Student Form -->
-            <div class="form-section" id="studentForm">
+            <section class="form-section" id="studentForm">
                 <h2 style="margin-bottom: 1.5rem; color: var(--student-color);">
                     <i class="fas fa-user-graduate"></i> پیوستن به کلاس
                 </h2>
                 
-                <div class="form-group">
-                    <label class="form-label">نام شما</label>
-                    <input type="text" class="form-input" id="studentName" placeholder="نام و نام خانوادگی">
-                </div>
+                <form onsubmit="return false;">
+                    <div class="form-group">
+                        <label class="form-label" for="studentName">نام شما</label>
+                        <input type="text" class="form-input" id="studentName" placeholder="نام و نام خانوادگی" required>
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label">شناسه اتاق (Room ID)</label>
-                    <input type="text" class="form-input" id="studentRoomId" placeholder="شناسه‌ای که از استاد دریافت کرده‌اید">
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="studentRoomId">شناسه اتاق (Room ID)</label>
+                        <input type="text" class="form-input" id="studentRoomId" placeholder="شناسه‌ای که از استاد دریافت کرده‌اید" required>
+                    </div>
 
-                <div class="form-group">
-                    <label class="form-label">رمز عبور اتاق</label>
-                    <input type="password" class="form-input" id="studentRoomPassword" placeholder="رمز عبور کلاس">
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="studentRoomPassword">رمز عبور اتاق</label>
+                        <input type="password" class="form-input" id="studentRoomPassword" placeholder="رمز عبور کلاس" required>
+                    </div>
 
-                <button class="btn btn-primary" onclick="joinClassroom()">
-                    <i class="fas fa-sign-in-alt"></i> ورود به کلاس
-                </button>
-                <button class="btn btn-secondary" onclick="backToRoleSelection()">
-                    <i class="fas fa-arrow-right"></i> بازگشت
-                </button>
-            </div>
+                    <button type="button" class="btn btn-primary" onclick="joinClassroom()">
+                        <i class="fas fa-sign-in-alt"></i> ورود به کلاس
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="backToRoleSelection()">
+                        <i class="fas fa-arrow-right"></i> بازگشت
+                    </button>
+                </form>
+            </section>
         </div>
-    </div>
+    </main>
 
     <!-- Classroom Container -->
     <div class="classroom-container" id="classroomContainer">
@@ -1397,9 +1023,6 @@
             </div>
             
             <div class="top-controls">
-                <button class="btn btn-sm btn-secondary" onclick="toggleSidebar()">
-                    <i class="fas fa-comments"></i> پنل کناری
-                </button>
                 <button class="btn btn-sm btn-danger" onclick="leaveClass()">
                     <i class="fas fa-sign-out-alt"></i> خروج
                 </button>
@@ -1417,20 +1040,22 @@
                     </div>
                     
                     <!-- Fullscreen Button -->
-                    <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="تمام صفحه">
+                    <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="تمام صفحه" aria-label="تمام صفحه">
                         <i class="fas fa-expand" id="fullscreenIcon"></i>
                     </button>
                     
-                    <iframe class="video-iframe" id="mainVideoFrame" allow="camera; microphone; display-capture; fullscreen"></iframe>
+                    <iframe class="video-iframe" id="mainVideoFrame" 
+                            allow="camera; microphone; display-capture; fullscreen" 
+                            allowfullscreen></iframe>
                 </div>
 
                 <!-- Control Bar -->
                 <div class="control-bar" id="controlBar">
                     <div class="control-btn-group">
-                        <button class="control-btn" id="micBtn" onclick="toggleMic()" title="میکروفون">
+                        <button class="control-btn" id="micBtn" onclick="toggleMic()" title="میکروفون" aria-label="میکروفون">
                             <i class="fas fa-microphone-slash"></i>
                         </button>
-                        <button class="control-btn" id="camBtn" onclick="toggleCamera()" title="دوربین">
+                        <button class="control-btn" id="camBtn" onclick="toggleCamera()" title="دوربین" aria-label="دوربین">
                             <i class="fas fa-video-slash"></i>
                         </button>
                     </div>
@@ -1438,16 +1063,16 @@
                     <div class="separator"></div>
                     
                     <div class="control-btn-group">
-                        <button class="control-btn" onclick="shareScreen()" title="اشتراک صفحه">
+                        <button class="control-btn" onclick="shareScreen()" title="اشتراک صفحه" aria-label="اشتراک صفحه">
                             <i class="fas fa-desktop"></i>
                         </button>
-                        <button class="control-btn" id="recordBtn" onclick="toggleRecord()" title="ضبط">
+                        <button class="control-btn" id="recordBtn" onclick="toggleRecord()" title="ضبط" aria-label="ضبط">
                             <i class="fas fa-record-vinyl"></i>
                         </button>
-                        <button class="control-btn" onclick="raiseHand()" title="دست بلند کردن">
+                        <button class="control-btn" onclick="raiseHand()" title="دست بلند کردن" aria-label="دست بلند کردن">
                             <i class="fas fa-hand-paper"></i>
                         </button>
-                        <button class="control-btn" onclick="toggleFullscreen()" title="تمام صفحه">
+                        <button class="control-btn" onclick="toggleFullscreen()" title="تمام صفحه" aria-label="تمام صفحه">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
@@ -1455,10 +1080,7 @@
                     <div class="separator"></div>
                     
                     <div class="control-btn-group">
-                        <button class="control-btn" onclick="openSettings()" title="تنظیمات">
-                            <i class="fas fa-cog"></i>
-                        </button>
-                        <button class="control-btn danger" onclick="leaveClass()" title="خروج">
+                        <button class="control-btn danger" onclick="leaveClass()" title="خروج" aria-label="خروج">
                             <i class="fas fa-phone-slash"></i>
                         </button>
                     </div>
@@ -1483,122 +1105,21 @@
                     </button>
                 </div>
             </div>
-
-            <!-- Sidebar -->
-            <div class="sidebar" id="sidebar">
-                <!-- Tabs -->
-                <div class="sidebar-tabs">
-                    <button class="tab-btn active" onclick="switchTab('chat')">
-                        <i class="fas fa-comments"></i> چت
-                    </button>
-                    <button class="tab-btn" onclick="switchTab('participants')">
-                        <i class="fas fa-users"></i> حاضرین
-                    </button>
-                    <button class="tab-btn" onclick="switchTab('settings')">
-                        <i class="fas fa-cog"></i> تنظیمات
-                    </button>
-                </div>
-
-                <!-- Chat Tab -->
-                <div class="tab-content active" id="chat-tab">
-                    <div class="chat-container">
-                        <div class="chat-messages" id="chatMessages"></div>
-                        <div class="chat-input-container">
-                            <input type="text" class="chat-input" id="chatInput" 
-                                   placeholder="پیام خود را بنویسید..." 
-                                   onkeypress="handleChatKeyPress(event)">
-                            <button class="send-btn" onclick="sendMessage()">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Participants Tab -->
-                <div class="tab-content" id="participants-tab">
-                    <div class="participants-list" id="participantsList"></div>
-                </div>
-
-                <!-- Settings Tab -->
-                <div class="tab-content" id="settings-tab">
-                    <div class="settings-container">
-                        <div class="setting-group">
-                            <label class="setting-label">کیفیت ویدیو</label>
-                            <select class="setting-select">
-                                <option>خودکار</option>
-                                <option>1080p</option>
-                                <option>720p</option>
-                                <option>480p</option>
-                                <option>360p</option>
-                            </select>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">حذف نویز</label>
-                            <div class="toggle-switch">
-                                <span>حذف نویز پس‌زمینه</span>
-                                <label class="switch">
-                                    <input type="checkbox" checked>
-                                    <span class="slider"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="setting-group">
-                            <label class="setting-label">اعلان‌ها</label>
-                            <div class="toggle-switch">
-                                <span>اعلان ورود و خروج</span>
-                                <label class="switch">
-                                    <input type="checkbox" checked>
-                                    <span class="slider"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">تنظیمات پیشرفته</h2>
-                <button class="modal-close" onclick="closeSettings()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div class="setting-group">
-                <label class="setting-label">دستگاه‌های صوتی و تصویری</label>
-                <select class="setting-select" id="micSelect">
-                    <option>میکروفون پیش‌فرض</option>
-                </select>
-            </div>
-            
-            <div class="setting-group">
-                <select class="setting-select" id="camSelect">
-                    <option>دوربین پیش‌فرض</option>
-                </select>
-            </div>
-            
-            <div class="setting-group">
-                <select class="setting-select" id="speakerSelect">
-                    <option>اسپیکر پیش‌فرض</option>
-                </select>
-            </div>
         </div>
     </div>
 
     <!-- Toast Notification -->
-    <div class="toast" id="toast">
+    <div class="toast" id="toast" role="alert">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">عملیات با موفقیت انجام شد</span>
     </div>
 
     <script>
-        // Global Variables
+        'use strict';
+
+        /* ========================================
+           Global Variables
+           ======================================== */
         const SERVER_URL = 'https://server.remotevm.ir';
         let currentRole = null;
         let roomInfo = {};
@@ -1608,24 +1129,248 @@
         let micEnabled = false;
         let camEnabled = false;
         let isRecording = false;
-        let sidebarOpen = false;
         let isFullscreen = false;
 
-        // Initialize
+        /* ========================================
+           Initialization
+           ======================================== */
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('RemoteVM Class Platform v3.1 initialized');
+            console.log('RemoteVM Class Platform v4.1 - Dark Theme');
+            checkBrowserCompatibility();
+            initializeEventListeners();
         });
 
-        // Menu Toggle
-        function toggleMenu() {
-            const menuPanel = document.getElementById('menu-panel');
-            const menuOverlay = document.getElementById('menuOverlay');
+        /* ========================================
+           Browser Compatibility Check
+           ======================================== */
+        function checkBrowserCompatibility() {
+            const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+            const isFirefox = /Firefox/.test(navigator.userAgent);
+            const isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+            const isEdge = /Edg/.test(navigator.userAgent);
             
-            menuPanel.classList.toggle('active');
-            menuOverlay.classList.toggle('active');
+            if (!isChrome && !isFirefox && !isSafari && !isEdge) {
+                showToast('برای تجربه بهتر، از مرورگرهای Chrome، Firefox، Safari یا Edge استفاده کنید', 'warning');
+            }
         }
 
-        // Fullscreen Toggle
+        /* ========================================
+           Event Listeners
+           ======================================== */
+        function initializeEventListeners() {
+            // Fullscreen change events
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+            document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', handleKeyboardShortcuts);
+
+            // Page visibility
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+
+            // Network status
+            window.addEventListener('online', () => showToast('اتصال اینترنت برقرار شد', 'success'));
+            window.addEventListener('offline', () => showToast('اتصال اینترنت قطع شد', 'error'));
+
+            // Before unload
+            window.addEventListener('beforeunload', handleBeforeUnload);
+        }
+
+        /* ========================================
+           Role Selection
+           ======================================== */
+        function selectRole(role) {
+            currentRole = role;
+            document.getElementById('roleSelection').style.display = 'none';
+            
+            if (role === 'teacher') {
+                document.getElementById('teacherForm').classList.add('active');
+                generateRoomId();
+            } else {
+                document.getElementById('studentForm').classList.add('active');
+            }
+        }
+
+        /* ========================================
+           Room Management
+           ======================================== */
+        function generateRoomId() {
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let roomId = 'class';
+            for (let i = 0; i < 6; i++) {
+                roomId += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('roomId').value = roomId;
+        }
+
+        function validateRoomId(input) {
+            const value = input.value;
+            const regex = /^[a-zA-Z0-9]*$/;
+            
+            if (!regex.test(value)) {
+                input.classList.add('error');
+                document.getElementById('roomIdError').classList.add('show');
+                input.value = value.replace(/[^a-zA-Z0-9]/g, '');
+            } else {
+                input.classList.remove('error');
+                document.getElementById('roomIdError').classList.remove('show');
+            }
+        }
+
+        function backToRoleSelection() {
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('roleSelection').style.display = 'block';
+            currentRole = null;
+        }
+
+        /* ========================================
+           Classroom Creation & Joining
+           ======================================== */
+        function createClassroom() {
+            const teacherName = document.getElementById('teacherName').value.trim();
+            const className = document.getElementById('className').value.trim();
+            const roomId = document.getElementById('roomId').value.trim();
+            let password = document.getElementById('roomPassword').value.trim();
+            
+            // Validation
+            if (!teacherName || !className || !roomId) {
+                showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
+                return;
+            }
+            
+            const regex = /^[a-zA-Z0-9]+$/;
+            if (!regex.test(roomId)) {
+                showToast('شناسه اتاق فقط می‌تواند شامل حروف انگلیسی و اعداد باشد', 'error');
+                return;
+            }
+            
+            // Set default password if empty
+            if (!password) {
+                password = 'demo123';
+            }
+            
+            // Store room info
+            roomInfo = {
+                roomId: roomId,
+                password: password,
+                className: className,
+                teacherName: teacherName
+            };
+            
+            userInfo = {
+                name: teacherName,
+                role: 'teacher'
+            };
+            
+            // Display room info
+            document.getElementById('roomIdDisplay').textContent = roomId;
+            document.getElementById('roomPassDisplay').textContent = password;
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Smooth scroll to success message
+            setTimeout(() => {
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+            
+            showToast('کلاس با موفقیت ایجاد شد!', 'success');
+        }
+
+        function enterClassAsTeacher() {
+            showLoading(true);
+            
+            // Hide login screen
+            document.getElementById('loginScreen').style.display = 'none';
+            
+            // Show classroom
+            document.getElementById('classroomContainer').classList.add('active');
+            
+            // Update UI
+            document.getElementById('classNameDisplay').textContent = roomInfo.className;
+            document.getElementById('userNameDisplay').textContent = userInfo.name;
+            document.getElementById('userRoleDisplay').className = 'user-role teacher';
+            document.getElementById('userRoleDisplay').innerHTML = `
+                <i class="fas fa-chalkboard-teacher"></i> ${userInfo.name} (استاد)
+            `;
+            
+            document.getElementById('videoLabelText').textContent = `استاد: ${userInfo.name}`;
+            document.getElementById('videoLabel').style.background = 'var(--teacher-color)';
+            
+            // Build teacher URL
+            const teacherUrl = `${SERVER_URL}/?proxy&director=${roomInfo.roomId}&password=${roomInfo.password}&showdirector`;
+            document.getElementById('mainVideoFrame').src = teacherUrl;
+            
+            // Initialize classroom components
+            startClassTimer();
+            
+            showLoading(false);
+            
+            setTimeout(() => {
+                showToast('به کلاس خوش آمدید!', 'success');
+            }, 1000);
+        }
+
+        function joinClassroom() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const roomId = document.getElementById('studentRoomId').value.trim();
+            const password = document.getElementById('studentRoomPassword').value.trim();
+            
+            // Validation
+            if (!studentName || !roomId || !password) {
+                showToast('لطفاً همه فیلدها را پر کنید', 'error');
+                return;
+            }
+            
+            roomInfo = {
+                roomId: roomId,
+                password: password
+            };
+            
+            userInfo = {
+                name: studentName,
+                role: 'student'
+            };
+            
+            showLoading(true);
+            
+            // Hide login screen
+            document.getElementById('loginScreen').style.display = 'none';
+            
+            // Show classroom
+            document.getElementById('classroomContainer').classList.add('active');
+            
+            // Update UI
+            document.getElementById('classNameDisplay').textContent = `کلاس ${roomId}`;
+            document.getElementById('userNameDisplay').textContent = userInfo.name;
+            document.getElementById('userRoleDisplay').className = 'user-role student';
+            document.getElementById('userRoleDisplay').innerHTML = `
+                <i class="fas fa-user-graduate"></i> ${userInfo.name} (دانش‌آموز)
+            `;
+            
+            document.getElementById('videoLabelText').textContent = `دانش‌آموز: ${userInfo.name}`;
+            document.getElementById('videoLabel').style.background = 'var(--student-color)';
+            
+            // Build student URL
+            const studentUrl = `${SERVER_URL}/?room=${roomInfo.roomId}&p=${roomInfo.password}&sl&broadcast`;
+            document.getElementById('mainVideoFrame').src = studentUrl;
+            
+            // Initialize classroom components
+            startClassTimer();
+            
+            showLoading(false);
+            
+            setTimeout(() => {
+                showToast('به کلاس خوش آمدید!', 'success');
+            }, 1000);
+        }
+
+        /* ========================================
+           Fullscreen Management
+           ======================================== */
         function toggleFullscreen() {
             const iframe = document.getElementById('mainVideoFrame');
             const fullscreenBtn = document.getElementById('fullscreenBtn');
@@ -1685,12 +1430,6 @@
             }
         }
 
-        // Listen for fullscreen changes
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
-
         function handleFullscreenChange() {
             if (!document.fullscreenElement && !document.webkitFullscreenElement && 
                 !document.mozFullScreenElement && !document.msFullscreenElement) {
@@ -1717,182 +1456,9 @@
             }
         }
 
-        // Role Selection
-        function selectRole(role) {
-            console.log('Role selected:', role);
-            currentRole = role;
-            document.getElementById('roleSelection').style.display = 'none';
-            
-            if (role === 'teacher') {
-                document.getElementById('teacherForm').classList.add('active');
-                generateRoomId();
-            } else {
-                document.getElementById('studentForm').classList.add('active');
-            }
-        }
-
-        // Generate Random Room ID
-        function generateRoomId() {
-            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            let roomId = 'class';
-            for (let i = 0; i < 6; i++) {
-                roomId += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            document.getElementById('roomId').value = roomId;
-        }
-
-        // Validate Room ID
-        function validateRoomId(input) {
-            const value = input.value;
-            const regex = /^[a-zA-Z0-9]*$/;
-            
-            if (!regex.test(value)) {
-                input.classList.add('error');
-                document.getElementById('roomIdError').classList.add('show');
-                input.value = value.replace(/[^a-zA-Z0-9]/g, '');
-            } else {
-                input.classList.remove('error');
-                document.getElementById('roomIdError').classList.remove('show');
-            }
-        }
-
-        // Back to Role Selection
-        function backToRoleSelection() {
-            document.querySelectorAll('.form-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById('successMessage').style.display = 'none';
-            document.getElementById('roleSelection').style.display = 'block';
-            currentRole = null;
-        }
-
-        // Create Classroom (Teacher)
-        function createClassroom() {
-            const teacherName = document.getElementById('teacherName').value.trim();
-            const className = document.getElementById('className').value.trim();
-            const roomId = document.getElementById('roomId').value.trim();
-            let password = document.getElementById('roomPassword').value.trim();
-            
-            if (!teacherName || !className || !roomId) {
-                showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
-                return;
-            }
-            
-            const regex = /^[a-zA-Z0-9]+$/;
-            if (!regex.test(roomId)) {
-                showToast('شناسه اتاق فقط می‌تواند شامل حروف انگلیسی و اعداد باشد', 'error');
-                return;
-            }
-            
-            if (!password) {
-                password = 'demo123';
-            }
-            
-            roomInfo = {
-                roomId: roomId,
-                password: password,
-                className: className,
-                teacherName: teacherName
-            };
-            
-            userInfo = {
-                name: teacherName,
-                role: 'teacher'
-            };
-            
-            document.getElementById('roomIdDisplay').textContent = roomId;
-            document.getElementById('roomPassDisplay').textContent = password;
-            document.getElementById('successMessage').style.display = 'block';
-            
-            setTimeout(() => {
-                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
-            
-            showToast('کلاس با موفقیت ایجاد شد!', 'success');
-        }
-
-        // Enter Class as Teacher
-        function enterClassAsTeacher() {
-            showLoading(true);
-            
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('classroomContainer').classList.add('active');
-            
-            document.getElementById('classNameDisplay').textContent = roomInfo.className;
-            document.getElementById('userNameDisplay').textContent = userInfo.name;
-            document.getElementById('userRoleDisplay').className = 'user-role teacher';
-            document.getElementById('userRoleDisplay').innerHTML = `
-                <i class="fas fa-chalkboard-teacher"></i> ${userInfo.name} (استاد)
-            `;
-            
-            document.getElementById('videoLabelText').textContent = `استاد: ${userInfo.name}`;
-            document.getElementById('videoLabel').style.background = 'var(--teacher-color)';
-            
-            const teacherUrl = `${SERVER_URL}/?proxy&director=${roomInfo.roomId}&password=${roomInfo.password}&showdirector`;
-            document.getElementById('mainVideoFrame').src = teacherUrl;
-            
-            startClassTimer();
-            loadParticipants();
-            initializeChat();
-            
-            showLoading(false);
-            
-            setTimeout(() => {
-                showToast('به کلاس خوش آمدید!', 'success');
-            }, 1000);
-        }
-
-        // Join Classroom (Student)
-        function joinClassroom() {
-            const studentName = document.getElementById('studentName').value.trim();
-            const roomId = document.getElementById('studentRoomId').value.trim();
-            const password = document.getElementById('studentRoomPassword').value.trim();
-            
-            if (!studentName || !roomId || !password) {
-                showToast('لطفاً همه فیلدها را پر کنید', 'error');
-                return;
-            }
-            
-            roomInfo = {
-                roomId: roomId,
-                password: password
-            };
-            
-            userInfo = {
-                name: studentName,
-                role: 'student'
-            };
-            
-            showLoading(true);
-            
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('classroomContainer').classList.add('active');
-            
-            document.getElementById('classNameDisplay').textContent = `کلاس ${roomId}`;
-            document.getElementById('userNameDisplay').textContent = userInfo.name;
-            document.getElementById('userRoleDisplay').className = 'user-role student';
-            document.getElementById('userRoleDisplay').innerHTML = `
-                <i class="fas fa-user-graduate"></i> ${userInfo.name} (دانش‌آموز)
-            `;
-            
-            document.getElementById('videoLabelText').textContent = `دانش‌آموز: ${userInfo.name}`;
-            document.getElementById('videoLabel').style.background = 'var(--student-color)';
-            
-            const studentUrl = `${SERVER_URL}/?room=${roomInfo.roomId}&p=${roomInfo.password}&sl&broadcast`;
-            document.getElementById('mainVideoFrame').src = studentUrl;
-            
-            startClassTimer();
-            loadParticipants();
-            initializeChat();
-            
-            showLoading(false);
-            
-            setTimeout(() => {
-                showToast('به کلاس خوش آمدید!', 'success');
-            }, 1000);
-        }
-
-        // Timer
+        /* ========================================
+           Timer Management
+           ======================================== */
         function startClassTimer() {
             classStartTime = Date.now();
             timerInterval = setInterval(() => {
@@ -1906,7 +1472,9 @@
             }, 1000);
         }
 
-        // Control Functions
+        /* ========================================
+           Control Functions
+           ======================================== */
         function toggleMic() {
             micEnabled = !micEnabled;
             const btn = document.getElementById('micBtn');
@@ -1915,14 +1483,18 @@
             if (micEnabled) {
                 btn.classList.add('active');
                 btn.innerHTML = '<i class="fas fa-microphone"></i>';
-                floatingBtn.classList.add('active');
-                floatingBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                if (floatingBtn) {
+                    floatingBtn.classList.add('active');
+                    floatingBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                }
                 showToast('میکروفون فعال شد');
             } else {
                 btn.classList.remove('active');
                 btn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
-                floatingBtn.classList.remove('active');
-                floatingBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                if (floatingBtn) {
+                    floatingBtn.classList.remove('active');
+                    floatingBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                }
                 showToast('میکروفون غیرفعال شد');
             }
         }
@@ -1935,14 +1507,18 @@
             if (camEnabled) {
                 btn.classList.add('active');
                 btn.innerHTML = '<i class="fas fa-video"></i>';
-                floatingBtn.classList.add('active');
-                floatingBtn.innerHTML = '<i class="fas fa-video"></i>';
+                if (floatingBtn) {
+                    floatingBtn.classList.add('active');
+                    floatingBtn.innerHTML = '<i class="fas fa-video"></i>';
+                }
                 showToast('دوربین فعال شد');
             } else {
                 btn.classList.remove('active');
                 btn.innerHTML = '<i class="fas fa-video-slash"></i>';
-                floatingBtn.classList.remove('active');
-                floatingBtn.innerHTML = '<i class="fas fa-video-slash"></i>';
+                if (floatingBtn) {
+                    floatingBtn.classList.remove('active');
+                    floatingBtn.innerHTML = '<i class="fas fa-video-slash"></i>';
+                }
                 showToast('دوربین غیرفعال شد');
             }
         }
@@ -1968,140 +1544,26 @@
 
         function raiseHand() {
             showToast('دست شما بلند شد');
-            addSystemMessage(`${userInfo.name} دست خود را بلند کرد`);
         }
 
-        // Sidebar
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebarOpen = !sidebarOpen;
-            
-            if (sidebarOpen) {
-                sidebar.classList.add('active');
-            } else {
-                sidebar.classList.remove('active');
-            }
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(`${tabName}-tab`).classList.add('active');
-        }
-
-        // Chat
-        function initializeChat() {
-            addSystemMessage('به کلاس خوش آمدید!');
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                addChatMessage(userInfo.name, message, userInfo.role === 'teacher');
-                input.value = '';
-            }
-        }
-
-        function handleChatKeyPress(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        }
-
-        function addChatMessage(author, message, isTeacher) {
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = isTeacher ? 'message teacher' : 'message';
-            
-            const time = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <div class="message-header">
-                    <span class="message-author">${author}</span>
-                    <span class="message-time">${time}</span>
-                </div>
-                <div class="message-body">${message}</div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function addSystemMessage(message) {
-            addChatMessage('سیستم', message, false);
-        }
-
-        // Participants
-        function loadParticipants() {
-            const participantsList = document.getElementById('participantsList');
-            participantsList.innerHTML = '';
-            
-            if (userInfo.role === 'teacher' || roomInfo.teacherName) {
-                const teacherItem = createParticipantItem(
-                    roomInfo.teacherName || userInfo.name,
-                    'teacher'
-                );
-                participantsList.appendChild(teacherItem);
-            }
-            
-            if (userInfo.role === 'student') {
-                const studentItem = createParticipantItem(
-                    userInfo.name,
-                    'student'
-                );
-                participantsList.appendChild(studentItem);
-            }
-        }
-
-        function createParticipantItem(name, role) {
-            const item = document.createElement('div');
-            item.className = 'participant-item';
-            
-            const avatarColor = role === 'teacher' ? 'var(--teacher-color)' : 'var(--student-color)';
-            
-            item.innerHTML = `
-                <div class="participant-info">
-                    <div class="participant-avatar" style="background: ${avatarColor};">
-                        ${role === 'teacher' ? '<i class="fas fa-chalkboard-teacher"></i>' : name.charAt(0)}
-                    </div>
-                    <div>
-                        <div style="font-weight: 600;">${name}</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary);">
-                            ${role === 'teacher' ? 'استاد' : 'دانش‌آموز'}
-                        </div>
-                    </div>
-                </div>
-                <div class="participant-controls">
-                    <button class="participant-control-btn ${micEnabled ? 'active' : 'muted'}">
-                        <i class="fas fa-microphone${micEnabled ? '' : '-slash'}"></i>
-                    </button>
-                    <button class="participant-control-btn ${camEnabled ? 'active' : 'muted'}">
-                        <i class="fas fa-video${camEnabled ? '' : '-slash'}"></i>
-                    </button>
-                </div>
-            `;
-            
-            return item;
-        }
-
-        // Settings
-        function openSettings() {
-            document.getElementById('settingsModal').classList.add('show');
-        }
-
-        function closeSettings() {
-            document.getElementById('settingsModal').classList.remove('show');
-        }
-
-        // Utility Functions
+        /* ========================================
+           Utility Functions
+           ======================================== */
         function copyText(elementId) {
             const text = document.getElementById(elementId).textContent;
             
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('کپی شد!', 'success');
+                }).catch(() => {
+                    fallbackCopyText(text);
+                });
+            } else {
+                fallbackCopyText(text);
+            }
+        }
+
+        function fallbackCopyText(text) {
             const tempInput = document.createElement('input');
             tempInput.value = text;
             document.body.appendChild(tempInput);
@@ -2111,11 +1573,7 @@
                 document.execCommand('copy');
                 showToast('کپی شد!', 'success');
             } catch (err) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast('کپی شد!', 'success');
-                }).catch(() => {
-                    showToast('خطا در کپی کردن', 'error');
-                });
+                showToast('خطا در کپی کردن', 'error');
             }
             
             document.body.removeChild(tempInput);
@@ -2128,28 +1586,40 @@
                     toggleFullscreen();
                 }
                 
+                // Clear timer
                 if (timerInterval) {
                     clearInterval(timerInterval);
                 }
                 
+                // Clear iframe
                 document.getElementById('mainVideoFrame').src = '';
                 
                 showToast('در حال خروج از کلاس...');
                 
                 setTimeout(() => {
+                    // Reset UI
                     document.getElementById('classroomContainer').classList.remove('active');
                     document.getElementById('loginScreen').style.display = 'flex';
                     
+                    // Reset forms
                     document.getElementById('teacherForm').classList.remove('active');
                     document.getElementById('studentForm').classList.remove('active');
                     document.getElementById('successMessage').style.display = 'none';
                     document.getElementById('roleSelection').style.display = 'block';
                     
+                    // Clear inputs
                     document.querySelectorAll('.form-input').forEach(input => input.value = '');
                     
+                    // Reset variables
                     currentRole = null;
                     roomInfo = {};
                     userInfo = {};
+                    classStartTime = null;
+                    micEnabled = false;
+                    camEnabled = false;
+                    isRecording = false;
+                    
+                    showToast('شما از کلاس خارج شدید', 'success');
                 }, 1500);
             }
         }
@@ -2169,6 +1639,7 @@
             
             toastMessage.textContent = message;
             
+            // Update toast color based on type
             if (type === 'error') {
                 toast.style.background = 'var(--danger)';
             } else if (type === 'warning') {
@@ -2184,24 +1655,10 @@
             }, 3000);
         }
 
-        // Event Listeners
-        window.addEventListener('beforeunload', (e) => {
-            if (document.getElementById('classroomContainer').classList.contains('active')) {
-                e.preventDefault();
-                e.returnValue = 'آیا از خروج از کلاس اطمینان دارید؟';
-            }
-        });
-
-        window.addEventListener('online', () => {
-            showToast('اتصال اینترنت برقرار شد', 'success');
-        });
-
-        window.addEventListener('offline', () => {
-            showToast('اتصال اینترنت قطع شد', 'error');
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
+        /* ========================================
+           Event Handlers
+           ======================================== */
+        function handleKeyboardShortcuts(e) {
             // F11 for fullscreen
             if (e.key === 'F11') {
                 e.preventDefault();
@@ -2212,7 +1669,34 @@
             if (e.key === 'Escape' && isFullscreen) {
                 toggleFullscreen();
             }
-        });
+            
+            // Ctrl/Cmd + M: Toggle Mic
+            if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
+                e.preventDefault();
+                toggleMic();
+            }
+            
+            // Ctrl/Cmd + D: Toggle Camera
+            if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                e.preventDefault();
+                toggleCamera();
+            }
+        }
+
+        function handleVisibilityChange() {
+            if (document.hidden) {
+                console.log('User switched tabs');
+            } else {
+                console.log('User returned to class');
+            }
+        }
+
+        function handleBeforeUnload(e) {
+            if (document.getElementById('classroomContainer').classList.contains('active')) {
+                e.preventDefault();
+                e.returnValue = 'آیا از خروج از کلاس اطمینان دارید؟';
+            }
+        }
     </script>
 </body>
 </html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>راهنمای جامع RemoteVM Class - آموزش آنلاین</title>
+
+    <meta name="description" content="راهنمای کامل استفاده از پلتفرم کلاس آنلاین RemoteVM Class برای اساتید و دانشجویان.">
+    <meta name="keywords" content="RemoteVM, کلاس آنلاین, راهنما, استاد, دانشجو, آموزش مجازی">
+    <link rel="canonical" href="[آدرس_این_صفحه]"> <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    
+    <link rel="preload" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css" as="style">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+
+    <div class="guide-container">
+        <header class="guide-header">
+            <h1>
+                <i class="fas fa-book-reader" style="color: var(--primary-color);"></i>
+                راهنمای  <span class="app-name">RemoteVM Class</span>
+            </h1>
+            <p> راهنمای استفاده از پلتفرم آموزش آنلاین  RemoteVM Class است.</p>
+        </header>
+
+        <section id="introduction">
+            <h2 class="section-title">معرفی و ویژگی‌های کلیدی</h2>
+            <p class="section-intro-text">
+                RemoteVM Class یک پلتفرم پیشرفته کلاس آنلاین است که با هدف ارائه تجربه‌ای روان و کامل برای اساتید و دانش‌آموزان طراحی شده است.
+            </p>
+
+            <div class="feature-grid">
+
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h4>طراحی واکنش‌گرا (Responsive)</h4>
+                    <p>سازگاری کامل با انواع دستگاه‌ها (موبایل، تبلت، دسکتاپ) برای دسترسی آسان به کلاس.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-lock"></i>
+                    <h4>کنترل‌های امنیتی و حریم خصوصی</h4>
+                    <p>استفاده از فیلدهای رمز عبور و اعتبار سنجی‌های فرم جهت ایجاد کلاس‌های امن.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-plug"></i>
+                    <h4>عملکرد بهینه</h4>
+                    <p>استفاده از Preconnect و DNS-prefetch برای بهبود سرعت اتصال و بارگذاری منابع.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="roles-guide">
+            <h2 class="section-title">راهنمای ورود بر اساس نقش</h2>
+            <p class="section-intro-text">
+                در صفحه ورود، شما می‌توانید نقش خود را به عنوان «استاد» یا «دانشجو» انتخاب کنید تا فرم مناسب نمایش داده شود.
+            </p>
+
+            <div class="role-section">
+                <div class="role-card teacher">
+                    <h3><i class="fas fa-chalkboard-teacher"></i> راهنمای استاد</h3>
+                    <p class="role-description">این نقش برای **مدیریت کلاس**، **تدریس** و **ایجاد اتاق جدید** است.</p>
+                    <ul class="role-steps">
+                        <li><strong>انتخاب نقش:</strong> دکمه **«ورود به عنوان استاد»** را انتخاب کنید.</li>
+                        <li><strong>فرم ایجاد کلاس:</strong>
+                            <ul class="nested-steps">
+                                <li>**کلاس‌های قبلی (اختیاری):** می‌توانید از لیست، یک کلاس قبلی را بارگذاری کنید.</li>
+                                <li>**نام شما:** نام کامل خود را وارد کنید (اجباری).</li>
+                                <li>**نام کلاس:** نام نمایشی کلاس (اجباری).</li>
+                                <li>**شناسه اتاق (Room ID):** یک شناسه منحصر به فرد و امن (فقط حروف انگلیسی و اعداد، حداقل ۶ کاراکتر) انتخاب کنید (اجباری).</li>
+                                <li>**رمز عبور اتاق (Room Password):** رمز عبوری برای تأیید ورود شما و دانشجویان (حداقل ۴ یا ۸ کاراکتر).</li>
+                                <li><strong>تنظیمات پیشرفته:</strong>
+                                    <ul class="advanced-settings">
+                                        <li>**رمز عبور ساده/پیچیده:** با جابجایی دکمه، قانون حداقل طول رمز عبور را بین ۴ (ساده) و ۸ کاراکتر (پیچیده) تنظیم کنید.</li>
+                                        <li>**اتاق مینیمال/پیشرفته:** نوع محیط کلاس را مشخص کنید.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>ورود:</strong> پس از تکمیل دقیق فرم، دکمه **«ایجاد و ورود»**
+                            <button class="btn btn-primary" disabled><i class="fas fa-plus-circle"></i> ایجاد و ورود</button>
+                            را بزنید.
+                        </li>
+                        <li><strong>اشتراک‌گذاری:</strong> پس از ایجاد موفق، **شناسه اتاق** و **رمز عبور** را با دانشجویان به اشتراک بگذارید.</li>
+                    </ul>
+                </div>
+
+                <div class="role-card student">
+                    <h3><i class="fas fa-user-graduate"></i> راهنمای دانشجو</h3>
+                    <p class="role-description">این نقش برای **پیوستن به کلاس** و **شرکت در بحث‌ها** است.</p>
+                    <ul class="role-steps">
+                        <li><strong>انتخاب نقش:</strong> دکمه **«پیوستن به کلاس»** را انتخاب کنید.</li>
+                        <li><strong>فرم پیوستن به کلاس:</strong>
+                            <ul class="nested-steps">
+                                <li>**نام شما:** نامی که می‌خواهید در کلاس نمایش داده شود (اجباری).</li>
+                                <li>**شناسه اتاق (Room ID):** شناسه کلاسی که استاد در اختیار شما قرار داده است (اجباری).</li>
+                                <li>**رمز عبور اتاق (Room Password):** رمز عبوری که استاد برای ورود به کلاس تعیین کرده است (اجباری).</li>
+                            </ul>
+                        </li>
+                        <li><strong>ورود:</strong> دکمه **«پیوستن به کلاس»**
+                            <button class="btn btn-success" disabled><i class="fas fa-sign-in-alt"></i> پیوستن به کلاس</button>
+                            را فشار دهید.
+                        </li>
+                        <li><strong>پیام خطا:</strong> در صورت عدم تطابق شناسه یا رمز عبور، پیام خطای مربوطه را مشاهده خواهید کرد.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="classroom-interface">
+            <h2 class="section-title">راهنمای محیط کلاس درس (Classroom Interface)</h2>
+            <p class="section-intro-text">
+                پس از ورود موفق، وارد محیط کلاس خواهید شد که شامل اجزای زیر است:
+            </p>
+
+            <div class="role-section">
+                <div class="role-card">
+                    <h3><i class="fas fa-desktop"></i> نوار ابزار بالا (Header)</h3>
+                    <ul class="interface-features">
+                        <li>**عنوان کلاس:** نمایش نام کلاس به رنگ <span class="text-primary-color">آبی</span>.</li>
+                        <li>**نقش کاربر:** نمایش نقش شما (استاد به رنگ <span class="text-teacher-color">نارنجی</span> یا دانشجو به رنگ <span class="text-student-color">فیروزه‌ای</span>).</li>
+                        <li>**زمان کلاس:** نمایش مدت زمان فعال بودن کلاس با رنگ <span class="text-success-color">سبز</span>.</li>
+                        <li>**دکمه همبرگری:** برای دسترسی به **منوی کناری** شامل لینک‌های دیگر و اطلاعات بیشتر.</li>
+                    </ul>
+                </div>
+
+                <div class="role-card">
+                    <h3><i class="fas fa-video"></i> ناحیه نمایش ویدیو</h3>
+                    <ul class="interface-features">
+                        <li>**Video Container:** محل نمایش اصلی محتوای ویدیویی (معمولاً iframe).</li>
+                        <li>**برچسب استاد (Video Label):** برچسبی برای نمایش وضعیت یا هویت استاد در گوشه تصویر.</li>
+                        <li>**دکمه تمام‌صفحه (Fullscreen Button):** <span class="text-secondary-color">(<i class="fas fa-expand"></i>)</span> برای ورود به حالت تمام‌صفحه و خارج شدن از آن. در حالت تمام‌صفحه، هدر ناپدید می‌شود.</li>
+                    </ul>
+                </div>
+
+                <div class="role-card">
+                    <h3><i class="fas fa-bars"></i> منوی همبرگری (Hamburger Menu)</h3>
+                    <ul class="interface-features">
+                        <li>**منو:** حاوی لینک‌هایی برای ناوبری سریع.</li>
+                        <li>**اطلاعات استاد (Teacher Info Box):** در صورتی که استاد باشید، این بخش اطلاعات حیاتی مانند **Room ID** و **Room Pass** را با قابلیت <span class="text-info-color">(<i class="fas fa-copy"></i>) کپی کردن</span> نمایش می‌دهد.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="error-handling">
+            <h2 class="section-title">پیام‌ها و مدیریت خطا</h2>
+            <div class="role-card">
+                <h3><i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> مدیریت خطا و پیام‌ها</h3>
+                <ul class="interface-features">
+                    <li>**پیام‌های خطا (Error Message):** در صورت ورود نامعتبر در فیلدهای فرم، پیام‌های خطا به رنگ <span class="text-danger-color">قرمز</span> به همراه انیمیشن لرزش (`shake`) نمایش داده می‌شوند.</li>
+                    <li>**در حال بارگذاری (Loading Overlay):** هنگام اتصال به کلاس، یک صفحه شفاف با آیکون چرخشی (`spinner`) و متن <span class="text-primary-color">«در حال آماده‌سازی کلاس...»</span> نمایش داده می‌شود.</li>
+                    <li>**پیام موفقیت (Toast):** پیام‌های لحظه‌ای (مانند «کپی شد») به صورت موقت در بالا سمت چپ صفحه با رنگ <span class="text-success-color">سبز</span> نمایش داده می‌شوند.</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer class="guide-footer">
+            <p>RemoteVM Class - پلتفرم آموزش آنلاین حرفه‌ای. طراحی شده با ❤ در <span class="text-primary-color">Dark Mode</span>.</p>
+            <p class="copyright-text"><i class="fas fa-copyright"></i> 2025</p>
+        </footer>
+
+    </div>
+</body>
+<style>
+    /* ==================================== */
+/* 1. Root Variables & Base Settings */
+/* ==================================== */
+
+/* Import Vazirmatn Font */
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Color Palette */
+    --primary-color: #2563eb;    /* Indigo-500 */
+    --secondary-color: #1e40af;  /* Indigo-700 for hover */
+    --dark-bg: #0f172a;          /* Slate-900 (Main Background) */
+    --card-bg: #1e293b;          /* Slate-800 (Card/Container Background) */
+    --text-primary: #f1f5f9;     /* Slate-100 (Main Text) */
+    --text-secondary: #94a3b8;   /* Slate-400 (Secondary Text) */
+    --border-color: #334155;     /* Slate-600 (Borders/Dividers) */
+    --success: #10b981;          /* Emerald-500 */
+    --warning: #f59e0b;          /* Amber-500 */
+    --danger: #ef4444;           /* Red-500 */
+    --info: #06b6d4;             /* Cyan-500 */
+    
+    /* Role Colors */
+    --teacher-color: var(--warning);
+    --student-color: var(--info);
+    
+    /* Transitions */
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 3rem; /* Footer space */
+}
+
+/* ==================================== */
+/* 2. Utility & Helper Classes */
+/* ==================================== */
+
+/* Scrollbar Styles */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
+
+/* Text Color Helpers (Used to replace inline styles for text colors) */
+.text-primary-color { color: var(--primary-color) !important; }
+.text-secondary-color { color: var(--text-secondary) !important; }
+.text-success-color { color: var(--success) !important; }
+.text-teacher-color { color: var(--teacher-color) !important; }
+.text-student-color { color: var(--student-color) !important; }
+
+/* Section Separator */
+.section-divider {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 3rem 0;
+}
+
+/* Section Intro Text (Replaces inline margin-bottom) */
+.section-intro-text {
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+/* General Link/Button Style cleanup for nested elements */
+.role-card ul.nested-steps, .role-card ul.advanced-settings, .role-card ul.interface-features {
+    padding-right: 0; /* Remove extra padding for nested lists */
+}
+.role-card .btn {
+    padding: 0.3rem 0.6rem; 
+    margin-right: 0.5rem; 
+    cursor: default;
+    font-size: 0.8rem; /* Make button smaller within the list */
+}
+
+/* ==================================== */
+/* 3. Guide Layout & Components */
+/* ==================================== */
+
+.guide-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    border: 1px solid var(--border-color);
+}
+
+/* --- Header --- */
+.guide-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 1rem;
+}
+
+.guide-header h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+}
+
+.guide-header p {
+    color: var(--text-secondary);
+}
+
+/* --- Section Title --- */
+.section-title {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    border-right: 4px solid var(--success);
+    padding-right: 0.8rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+/* --- Role Cards (Instructions) --- */
+.role-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.role-card {
+    background: var(--dark-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.role-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+.role-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.role-card .role-description {
+    margin-bottom: 1rem;
+    color: var(--text-secondary); /* Ensure paragraph style applies */
+}
+
+.role-card.teacher h3 {
+    color: var(--teacher-color);
+}
+
+.role-card.student h3 {
+    color: var(--student-color);
+}
+
+.role-card ul {
+    list-style: none;
+    padding-right: 1.2rem;
+}
+
+.role-card ul li {
+    position: relative;
+    margin-bottom: 0.8rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* List Item Icon - Uses Font Awesome for bullets */
+.role-card ul li::before {
+    content: "\f058"; /* fa-check-circle */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    right: -1.2rem;
+    top: 2px;
+    color: var(--success); /* Default color for generic sections */
+}
+
+/* Override List Icon Color for Role Cards */
+.role-card.teacher ul li::before {
+    color: var(--teacher-color);
+}
+
+.role-card.student ul li::before {
+    color: var(--student-color);
+}
+
+/* --- Feature Grid --- */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.feature-item {
+    background: var(--dark-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--info);
+}
+
+.feature-item i {
+    font-size: 1.5rem;
+    color: var(--info);
+    margin-bottom: 0.5rem;
+}
+
+.feature-item h4 {
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+}
+
+.feature-item p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* --- Buttons --- */
+.btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+.btn-success:hover {
+    background: #0d946d; /* Slightly darker success color */
+    transform: translateY(-2px);
+}
+
+
+/* --- Footer --- */
+.guide-footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.guide-footer .copyright-text {
+    margin-top: 0.5rem;
+}
+
+/* ==================================== */
+/* 4. Responsive Design */
+/* ==================================== */
+
+@media (max-width: 768px) {
+    .guide-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    .guide-header h1 {
+        font-size: 1.5rem;
+    }
+    .section-title {
+        font-size: 1.3rem;
+    }
+    .feature-grid {
+        /* On small screens, the columns might stack better without a minmax, or adjust min to smaller size */
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr)); 
+    }
+}
+</style>
+</html>

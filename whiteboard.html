@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RemoteVM Whiteboard - تخته سفید آنلاین</title>
+    <meta name="theme-color" content="#0f172a">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23fff' x='10' y='10' width='80' height='80' rx='8'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-bg-primary: #0a0f1a;
+            --color-bg-secondary: #111827;
+            --color-bg-tertiary: #1f2937;
+            --color-bg-card: #1e293b;
+            --color-bg-elevated: #334155;
+            --color-primary: #3b82f6;
+            --color-primary-hover: #2563eb;
+            --color-primary-light: rgba(59, 130, 246, 0.15);
+            --color-secondary: #8b5cf6;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --color-text-primary: #f8fafc;
+            --color-text-secondary: #94a3b8;
+            --color-text-tertiary: #64748b;
+            --color-border: #334155;
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --font-family: 'Vazirmatn', system-ui, sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+        
+        body {
+            font-family: var(--font-family);
+            background: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+            user-select: none;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            background: var(--color-bg-secondary);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand__logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .brand__text {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Canvas Area */
+        .canvas-area {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            background: var(--color-bg-tertiary);
+        }
+
+        /* =============================================
+           Draggable Toolbar - قابل جابجایی
+           ============================================= */
+        .toolbar {
+            position: absolute;
+            top: 0.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            padding-right: 2.5rem; /* فضا برای دستگیره */
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            z-index: 50;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        /* حالت در حال درگ */
+        .toolbar.dragging {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 2px var(--color-primary);
+            border-color: var(--color-primary);
+            cursor: grabbing;
+            opacity: 0.95;
+        }
+
+        /* دستگیره درگ */
+        .toolbar__drag-handle {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0 ;
+            bottom: 0;
+            width: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            color: var(--color-text-tertiary);
+            border-left: 1px solid var(--color-border);
+            border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+            transition: all 0.15s ease;
+        }
+
+        .toolbar__drag-handle:hover {
+            background: var(--color-bg-elevated);
+            color: var(--color-text-primary);
+        }
+
+        .toolbar__drag-handle:active,
+        .toolbar.dragging .toolbar__drag-handle {
+            cursor: grabbing;
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .toolbar__drag-handle svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* نشانگر موقعیت */
+        .toolbar__position-indicator {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 2px 8px;
+            background: var(--color-bg-elevated);
+            border-radius: var(--radius-sm);
+            font-size: 0.65rem;
+            color: var(--color-text-tertiary);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toolbar.dragging .toolbar__position-indicator {
+            opacity: 1;
+        }
+
+        /* دکمه ریست موقعیت */
+        .toolbar__reset-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-bg-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: 50%;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.15s ease;
+            z-index: 10;
+        }
+
+        .toolbar:hover .toolbar__reset-btn.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .toolbar__reset-btn:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .toolbar__reset-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .toolbar__divider {
+            width: 1px;
+            height: 28px;
+            background: var(--color-border);
+            margin: 0 0.25rem;
+        }
+
+        /* Canvas */
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #canvas {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            cursor: crosshair;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .canvas-wrapper[data-tool="brush"] #canvas { cursor: crosshair; }
+        .canvas-wrapper[data-tool="highlighter"] #canvas { cursor: crosshair; }
+        .canvas-wrapper[data-tool="eraser"] #canvas { cursor: cell; }
+        .canvas-wrapper[data-tool="text"] #canvas { cursor: text; }
+        .canvas-wrapper[data-tool="fill"] #canvas { cursor: cell; }
+
+        /* Tool Buttons */
+        .tool-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .tool-btn:hover {
+            background: var(--color-bg-elevated);
+            color: var(--color-text-primary);
+        }
+
+        .tool-btn--active {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .tool-btn svg { width: 20px; height: 20px; }
+        .tool-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .tool-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.25rem 0.5rem;
+            background: var(--color-bg-elevated);
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.15s ease;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .tool-btn:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Undo Badge */
+        .tool-btn .undo-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 16px;
+            height: 16px;
+            padding: 0 4px;
+            background: var(--color-primary);
+            border-radius: 8px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.15s ease;
+        }
+
+        .tool-btn .undo-badge.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Color Picker */
+        .color-picker {
+            position: relative;
+            width: 32px;
+            height: 32px;
+        }
+
+        .color-picker__btn {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--color-border);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .color-picker__btn:hover {
+            border-color: var(--color-text-secondary);
+            transform: scale(1.05);
+        }
+
+        .color-picker__input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Size Slider */
+        .size-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0 0.5rem;
+        }
+
+        .size-control__slider {
+            width: 60px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: var(--color-border);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .size-control__slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .size-control__value {
+            font-size: 0.7rem;
+            color: var(--color-text-secondary);
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* =============================================
+           Draggable Side Tools
+           ============================================= */
+        .side-tools {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            padding-top: 2rem; /* فضا برای دستگیره */
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            z-index: 50;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .side-tools.dragging {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 2px var(--color-primary);
+            border-color: var(--color-primary);
+            cursor: grabbing;
+            opacity: 0.95;
+        }
+
+        /* دستگیره برای side tools */
+        .side-tools__drag-handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            color: var(--color-text-tertiary);
+            border-bottom: 1px solid var(--color-border);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            transition: all 0.15s ease;
+        }
+
+        .side-tools__drag-handle:hover {
+            background: var(--color-bg-elevated);
+            color: var(--color-text-primary);
+        }
+
+        .side-tools__drag-handle:active,
+        .side-tools.dragging .side-tools__drag-handle {
+            cursor: grabbing;
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+
+        .side-tools__drag-handle svg {
+            width: 16px;
+            height: 16px;
+            transform: rotate(90deg);
+        }
+
+        .side-tools .tool-btn::after {
+            bottom: auto;
+            left: calc(100% + 8px);
+            transform: none;
+        }
+
+        /* Share Box */
+        .share-box {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 50;
+            max-width: 350px;
+        }
+
+        .share-box--visible { display: flex; }
+
+        .share-box__input {
+            flex: 1;
+            padding: 0.4rem 0.6rem;
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            color: var(--color-text-primary);
+            font-size: 0.75rem;
+            min-width: 150px;
+        }
+
+        /* Text Input */
+        .text-input {
+            position: fixed;
+            background: white;
+            border: 2px dashed var(--color-primary);
+            outline: none;
+            font-family: Arial, sans-serif;
+            padding: 4px 8px;
+            min-width: 100px;
+            min-height: 30px;
+            resize: none;
+            z-index: 200;
+            display: none;
+            border-radius: var(--radius-sm);
+            color: black;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn--primary { background: var(--color-primary); color: white; }
+        .btn--primary:hover { background: var(--color-primary-hover); }
+        .btn--secondary { background: var(--color-bg-elevated); color: var(--color-text-primary); }
+        .btn--secondary:hover { background: var(--color-border); }
+        .btn--ghost { background: transparent; color: var(--color-text-secondary); }
+        .btn--ghost:hover { background: var(--color-bg-elevated); color: var(--color-text-primary); }
+        .btn--sm { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+        .btn--icon { width: 32px; height: 32px; padding: 0; }
+        .btn svg { width: 16px; height: 16px; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .modal-overlay--visible { opacity: 1; visibility: visible; }
+
+        .modal {
+            background: var(--color-bg-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--color-border);
+            width: 90%;
+            max-width: 420px;
+            transform: scale(0.95);
+            transition: all 0.25s ease;
+        }
+
+        .modal-overlay--visible .modal { transform: scale(1); }
+
+        .modal__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .modal__title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .modal__body { padding: 1.25rem; }
+
+        .modal__footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        /* Mode Tabs */
+        .mode-tabs {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+            padding: 0.25rem;
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+        }
+
+        .mode-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.5rem;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .mode-tab:hover { color: var(--color-text-primary); }
+        .mode-tab--active { background: var(--color-bg-card); color: var(--color-primary); }
+        .mode-tab svg { width: 16px; height: 16px; }
+
+        .mode-content { display: none; }
+        .mode-content--active { display: block; }
+
+        .mode-description {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--color-primary-light);
+            border-radius: var(--radius-md);
+            color: var(--color-primary);
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Form */
+        .form-group { margin-bottom: 0.75rem; }
+        .form-label { display: block; margin-bottom: 0.25rem; font-size: 0.8rem; font-weight: 500; color: var(--color-text-secondary); }
+
+        .form-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            color: var(--color-text-primary);
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: all 0.15s ease;
+        }
+
+        .form-input:focus { outline: none; border-color: var(--color-primary); }
+        .form-input::placeholder { color: var(--color-text-tertiary); }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 400;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            background: var(--color-bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--color-border);
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.25s ease;
+            font-size: 0.85rem;
+        }
+
+        .toast--visible { transform: translateY(0); opacity: 1; }
+        .toast--success { border-color: var(--color-success); }
+        .toast--error { border-color: var(--color-danger); }
+
+        /* Status */
+        .status-indicator {
+            position: absolute;
+            bottom: 0.75rem;
+            left: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.75rem;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            color: var(--color-text-secondary);
+            z-index: 40;
+        }
+
+        .status-indicator__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-success);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .status-indicator__dot--offline {
+            background: var(--color-warning);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Undo Info */
+        .undo-info {
+            position: absolute;
+            bottom: 0.75rem;
+            right: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.75rem;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            color: var(--color-text-secondary);
+            z-index: 40;
+        }
+
+        .undo-info__item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .undo-info__count {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        /* Shortcut Hint */
+        .shortcut-hint {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 1rem 1.5rem;
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            color: var(--color-text-primary);
+            z-index: 500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .shortcut-hint--visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .shortcut-hint__key {
+            padding: 0.25rem 0.5rem;
+            background: var(--color-bg-elevated);
+            border-radius: var(--radius-sm);
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .toolbar {
+                top: auto;
+                bottom: 0.75rem;
+                max-width: calc(100% - 1.5rem);
+                overflow-x: auto;
+                /* غیرفعال کردن درگ در موبایل */
+                transform: translateX(-50%) !important;
+                left: 50% !important;
+            }
+            .toolbar__drag-handle,
+            .toolbar__reset-btn,
+            .toolbar__position-indicator {
+                display: none;
+            }
+            .side-tools { display: none; }
+            .brand__text { display: none; }
+            .undo-info { display: none; }
+        }
+
+        .toolbar::-webkit-scrollbar { display: none; }
+        .toolbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="brand">
+                <div class="brand__logo">🎨</div>
+                <span class="brand__text">RemoteVM Whiteboard</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn--primary btn--sm" id="shareBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                    </svg>
+                    اشتراک
+                </button>
+            </div>
+        </header>
+
+        <main class="canvas-area" id="canvasArea">
+            <div class="share-box" id="shareBox">
+                <input type="text" class="share-box__input" id="viewLinkInput" readonly>
+                <button class="btn btn--secondary btn--sm" id="copyLinkBtn">کپی</button>
+                <button class="btn btn--ghost btn--icon btn--sm" id="closeShareBox">✕</button>
+            </div>
+
+            <!-- Main Toolbar - Draggable -->
+            <div class="toolbar" id="mainToolbar">
+                <!-- دستگیره درگ -->
+                <div class="toolbar__drag-handle" id="toolbarDragHandle" title="برای جابجایی بکشید">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/>
+                        <circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/>
+                    </svg>
+                </div>
+                
+                <!-- نشانگر موقعیت -->
+                <div class="toolbar__position-indicator" id="toolbarPositionIndicator">X: 0, Y: 0</div>
+                
+                <!-- دکمه ریست -->
+                <button class="toolbar__reset-btn" id="toolbarResetBtn" title="بازگشت به موقعیت پیش‌فرض">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                        <path d="M3 3v5h5"/>
+                    </svg>
+                </button>
+
+                <button class="tool-btn tool-btn--active" data-tool="brush" data-tooltip="قلم (B)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="highlighter" data-tooltip="هایلایتر (H)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 11l-6 6v3h9l3-3"/><path d="M22 12l-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="eraser" data-tooltip="پاک‌کن (E)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 20H7L3 16c-.4-.4-.4-1 0-1.4l9.6-9.6c.4-.4 1-.4 1.4 0l6.6 6.6c.4.4.4 1 0 1.4L14 20"/>
+                    </svg>
+                </button>
+
+                <div class="toolbar__divider"></div>
+
+                <button class="tool-btn" data-tool="line" data-tooltip="خط (L)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="19" x2="19" y2="5"/>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="arrow" data-tooltip="فلش (A)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="rectangle" data-tooltip="مستطیل (R)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="circle" data-tooltip="دایره (C)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                    </svg>
+                </button>
+
+                <div class="toolbar__divider"></div>
+
+                <button class="tool-btn" data-tool="text" data-tooltip="متن (T)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
+                    </svg>
+                </button>
+                <button class="tool-btn" data-tool="fill" data-tooltip="پر کردن (F)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 11l-8-8-8.6 8.6a2 2 0 0 0 0 2.8l5.2 5.2c.8.8 2 .8 2.8 0L19 11z"/><path d="M5 2l5 5"/>
+                    </svg>
+                </button>
+
+                <div class="toolbar__divider"></div>
+
+                <div class="color-picker">
+                    <div class="color-picker__btn" id="colorBtn" style="background: #000000;"></div>
+                    <input type="color" class="color-picker__input" id="colorInput" value="#000000">
+                </div>
+
+                <div class="size-control">
+                    <input type="range" class="size-control__slider" id="sizeSlider" min="1" max="50" value="5">
+                    <span class="size-control__value" id="sizeValue">5</span>
+                </div>
+
+                <div class="toolbar__divider"></div>
+
+                <button class="tool-btn" id="undoBtn" data-tooltip="برگرداندن (Ctrl+Z)" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
+                    </svg>
+                    <span class="undo-badge" id="undoBadge">0</span>
+                </button>
+                <button class="tool-btn" id="redoBtn" data-tooltip="دوباره (Ctrl+Y)" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/>
+                    </svg>
+                    <span class="undo-badge" id="redoBadge">0</span>
+                </button>
+                <button class="tool-btn" id="clearBtn" data-tooltip="پاک کردن همه">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Side Tools - Draggable -->
+            <div class="side-tools" id="sideTools">
+                <!-- دستگیره درگ -->
+                <div class="side-tools__drag-handle" id="sideToolsDragHandle" title="برای جابجایی بکشید">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/>
+                        <circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/>
+                    </svg>
+                </div>
+                
+                <button class="tool-btn" id="screenShareBtn" data-tooltip="اشتراک صفحه">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                </button>
+                <button class="tool-btn" id="downloadBtn" data-tooltip="دانلود تصویر">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="canvas-container">
+                <div class="canvas-wrapper" id="canvasWrapper" data-tool="brush">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+
+            <div class="status-indicator" id="statusIndicator">
+                <div class="status-indicator__dot" id="statusDot"></div>
+                <span id="statusText">آماده</span>
+            </div>
+
+            <div class="undo-info" id="undoInfo">
+                <div class="undo-info__item">
+                    <span>Undo:</span>
+                    <span class="undo-info__count" id="undoCount">0</span>
+                </div>
+                <div class="undo-info__item">
+                    <span>Redo:</span>
+                    <span class="undo-info__count" id="redoCount">0</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <textarea class="text-input" id="textInput"></textarea>
+
+    <div class="shortcut-hint" id="shortcutHint">
+        <span class="shortcut-hint__key" id="shortcutKey"></span>
+        <span id="shortcutAction"></span>
+    </div>
+
+    <div class="modal-overlay" id="startModal">
+        <div class="modal">
+            <div class="modal__header">
+                <h2 class="modal__title">🎨 شروع تخته whiteboard.</h2>
+            </div>
+            <div class="modal__body">
+                <div class="mode-tabs">
+                    <button class="mode-tab mode-tab--active" data-mode="stream">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/>
+                        </svg>
+                        استریم
+                    </button>
+                    <button class="mode-tab" data-mode="offline">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                        آفلاین
+                    </button>
+                </div>
+
+                <div class="mode-content mode-content--active" id="streamMode">
+                    <div class="mode-description">استریم زنده - دیگران می‌توانند تخته شما را ببینند</div>
+                    <div class="form-group">
+                        <label class="form-label">شناسه استریم (اختیاری)</label>
+                        <input type="text" class="form-input" id="streamId" placeholder="خالی = تولید خودکار">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">نام اتاق (اختیاری)</label>
+                        <input type="text" class="form-input" id="roomName">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">رمز عبور (اختیاری)</label>
+                        <input type="password" class="form-input" id="streamPassword">
+                    </div>
+                </div>
+
+                <div class="mode-content" id="offlineMode">
+                    <div class="mode-description">حالت آفلاین - بدون استریم</div>
+                    <p style="text-align: center; color: var(--color-text-secondary); font-size: 0.85rem;">تغییرات استریم نمی‌شود.</p>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--primary" id="startBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    شروع
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        'use strict';
+
+        /* =============================================
+           Configuration
+           ============================================= */
+        const CONFIG = {
+            SERVER_URL: 'https://server.remotevm.ir',
+            MAX_UNDO: 100,
+            ASPECT_RATIO: 16 / 9,
+            UNDO_DEBOUNCE: 300,
+            SHORTCUT_HINT_DURATION: 800,
+            TOOLBAR_STORAGE_KEY: 'wb_toolbar_pos',
+            SIDE_TOOLS_STORAGE_KEY: 'wb_side_tools_pos'
+        };
+
+        /* =============================================
+           Draggable Manager - مدیریت جابجایی نوار ابزار
+           ============================================= */
+        class DraggableManager {
+            constructor(element, handle, options = {}) {
+                this.element = element;
+                this.handle = handle;
+                this.options = {
+                    storageKey: options.storageKey || null,
+                    onDragStart: options.onDragStart || null,
+                    onDrag: options.onDrag || null,
+                    onDragEnd: options.onDragEnd || null,
+                    boundary: options.boundary || null,
+                    defaultPosition: options.defaultPosition || null,
+                    positionIndicator: options.positionIndicator || null,
+                    resetButton: options.resetButton || null
+                };
+                
+                this.isDragging = false;
+                this.startX = 0;
+                this.startY = 0;
+                this.initialX = 0;
+                this.initialY = 0;
+                this.currentX = 0;
+                this.currentY = 0;
+                this.hasMoved = false;
+                
+                this.init();
+            }
+
+            init() {
+                // Load saved position
+                this.loadPosition();
+                
+                // Bind events
+                this.handle.addEventListener('mousedown', this.onMouseDown.bind(this));
+                this.handle.addEventListener('touchstart', this.onTouchStart.bind(this), { passive: false });
+                
+                document.addEventListener('mousemove', this.onMouseMove.bind(this));
+                document.addEventListener('mouseup', this.onMouseUp.bind(this));
+                document.addEventListener('touchmove', this.onTouchMove.bind(this), { passive: false });
+                document.addEventListener('touchend', this.onTouchEnd.bind(this));
+                
+                // Reset button
+                if (this.options.resetButton) {
+                    this.options.resetButton.addEventListener('click', () => this.resetPosition());
+                    this.updateResetButtonVisibility();
+                }
+                
+                // Window resize
+                window.addEventListener('resize', () => this.constrainToBoundary());
+            }
+
+            loadPosition() {
+                if (!this.options.storageKey) return;
+                
+                try {
+                    const saved = localStorage.getItem(this.options.storageKey);
+                    if (saved) {
+                        const pos = JSON.parse(saved);
+                        this.setPosition(pos.x, pos.y);
+                        this.hasMoved = true;
+                    }
+                } catch (e) {
+                    console.warn('Failed to load toolbar position:', e);
+                }
+            }
+
+            savePosition() {
+                if (!this.options.storageKey) return;
+                
+                try {
+                    localStorage.setItem(this.options.storageKey, JSON.stringify({
+                        x: this.currentX,
+                        y: this.currentY
+                    }));
+                } catch (e) {
+                    console.warn('Failed to save toolbar position:', e);
+                }
+            }
+
+            setPosition(x, y) {
+                this.currentX = x;
+                this.currentY = y;
+                
+                // Remove default transform
+                this.element.style.transform = 'none';
+                this.element.style.left = `${x}px`;
+                this.element.style.top = `${y}px`;
+                
+                this.constrainToBoundary();
+            }
+
+            getPosition() {
+                const rect = this.element.getBoundingClientRect();
+                return { x: rect.left, y: rect.top };
+            }
+
+            constrainToBoundary() {
+                const boundary = this.options.boundary 
+                    ? document.querySelector(this.options.boundary) 
+                    : document.body;
+                
+                const boundaryRect = boundary.getBoundingClientRect();
+                const elementRect = this.element.getBoundingClientRect();
+                
+                let x = this.currentX;
+                let y = this.currentY;
+                
+                // Constrain X
+                if (x < boundaryRect.left) x = boundaryRect.left;
+                if (x + elementRect.width > boundaryRect.right) {
+                    x = boundaryRect.right - elementRect.width;
+                }
+                
+                // Constrain Y
+                if (y < boundaryRect.top) y = boundaryRect.top;
+                if (y + elementRect.height > boundaryRect.bottom) {
+                    y = boundaryRect.bottom - elementRect.height;
+                }
+                
+                if (x !== this.currentX || y !== this.currentY) {
+                    this.currentX = x;
+                    this.currentY = y;
+                    this.element.style.left = `${x}px`;
+                    this.element.style.top = `${y}px`;
+                }
+            }
+
+            onMouseDown(e) {
+                if (e.button !== 0) return; // Only left click
+                e.preventDefault();
+                this.startDrag(e.clientX, e.clientY);
+            }
+
+            onTouchStart(e) {
+                if (e.touches.length !== 1) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                this.startDrag(touch.clientX, touch.clientY);
+            }
+
+            startDrag(clientX, clientY) {
+                this.isDragging = true;
+                
+                // Get current position
+                const rect = this.element.getBoundingClientRect();
+                this.initialX = rect.left;
+                this.initialY = rect.top;
+                this.currentX = rect.left;
+                this.currentY = rect.top;
+                
+                // Remove transform and set position
+                this.element.style.transform = 'none';
+                this.element.style.left = `${this.currentX}px`;
+                this.element.style.top = `${this.currentY}px`;
+                
+                this.startX = clientX;
+                this.startY = clientY;
+                
+                this.element.classList.add('dragging');
+                
+                if (this.options.onDragStart) {
+                    this.options.onDragStart({ x: this.currentX, y: this.currentY });
+                }
+            }
+
+            onMouseMove(e) {
+                if (!this.isDragging) return;
+                e.preventDefault();
+                this.drag(e.clientX, e.clientY);
+            }
+
+            onTouchMove(e) {
+                if (!this.isDragging) return;
+                if (e.touches.length !== 1) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                this.drag(touch.clientX, touch.clientY);
+            }
+
+            drag(clientX, clientY) {
+                const deltaX = clientX - this.startX;
+                const deltaY = clientY - this.startY;
+                
+                this.currentX = this.initialX + deltaX;
+                this.currentY = this.initialY + deltaY;
+                
+                this.constrainToBoundary();
+                
+                this.element.style.left = `${this.currentX}px`;
+                this.element.style.top = `${this.currentY}px`;
+                
+                // Update position indicator
+                if (this.options.positionIndicator) {
+                    this.options.positionIndicator.textContent = `X: ${Math.round(this.currentX)}, Y: ${Math.round(this.currentY)}`;
+                }
+                
+                if (this.options.onDrag) {
+                    this.options.onDrag({ x: this.currentX, y: this.currentY });
+                }
+            }
+
+            onMouseUp() {
+                if (!this.isDragging) return;
+                this.endDrag();
+            }
+
+            onTouchEnd() {
+                if (!this.isDragging) return;
+                this.endDrag();
+            }
+
+            endDrag() {
+                this.isDragging = false;
+                this.element.classList.remove('dragging');
+                
+                // Check if actually moved
+                const moved = Math.abs(this.currentX - this.initialX) > 5 || 
+                             Math.abs(this.currentY - this.initialY) > 5;
+                
+                if (moved) {
+                    this.hasMoved = true;
+                    this.savePosition();
+                    this.updateResetButtonVisibility();
+                }
+                
+                if (this.options.onDragEnd) {
+                    this.options.onDragEnd({ x: this.currentX, y: this.currentY, moved });
+                }
+            }
+
+            resetPosition() {
+                this.hasMoved = false;
+                this.currentX = 0;
+                this.currentY = 0;
+                
+                // Reset to default CSS
+                this.element.style.transform = '';
+                this.element.style.left = '';
+                this.element.style.top = '';
+                
+                // Clear storage
+                if (this.options.storageKey) {
+                    localStorage.removeItem(this.options.storageKey);
+                }
+                
+                this.updateResetButtonVisibility();
+                
+                showToast('موقعیت نوار ابزار بازنشانی شد');
+            }
+
+            updateResetButtonVisibility() {
+                if (this.options.resetButton) {
+                    this.options.resetButton.classList.toggle('visible', this.hasMoved);
+                }
+            }
+        }
+
+        /* =============================================
+           History Manager
+           ============================================= */
+        class HistoryManager {
+            constructor(canvas, maxSteps = 100) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.maxSteps = maxSteps;
+                this.undoStack = [];
+                this.redoStack = [];
+                this.lastSaveTime = 0;
+                this.pendingSave = null;
+                this.isDrawing = false;
+                this.onUpdate = null;
+            }
+
+            saveState(force = false) {
+                const now = Date.now();
+                
+                if (this.isDrawing && !force) {
+                    this.pendingSave = true;
+                    return;
+                }
+
+                if (!force && now - this.lastSaveTime < CONFIG.UNDO_DEBOUNCE) {
+                    if (this.pendingSave === null) {
+                        this.pendingSave = setTimeout(() => {
+                            this.pendingSave = null;
+                            this.saveState(true);
+                        }, CONFIG.UNDO_DEBOUNCE);
+                    }
+                    return;
+                }
+
+                if (this.pendingSave && typeof this.pendingSave === 'number') {
+                    clearTimeout(this.pendingSave);
+                }
+                this.pendingSave = null;
+
+                const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                
+                if (this.undoStack.length > 0) {
+                    const lastState = this.undoStack[this.undoStack.length - 1];
+                    if (this.compareImageData(imageData, lastState)) {
+                        return;
+                    }
+                }
+
+                this.undoStack.push(imageData);
+                
+                if (this.undoStack.length > this.maxSteps) {
+                    this.undoStack.shift();
+                }
+
+                this.redoStack = [];
+                this.lastSaveTime = now;
+                this.notifyUpdate();
+            }
+
+            compareImageData(a, b) {
+                if (a.width !== b.width || a.height !== b.height) return false;
+                const sampleSize = 1000;
+                const step = Math.floor(a.data.length / sampleSize);
+                for (let i = 0; i < a.data.length; i += step) {
+                    if (a.data[i] !== b.data[i]) return false;
+                }
+                return true;
+            }
+
+            startDrawing() {
+                this.isDrawing = true;
+                this.saveState(true);
+            }
+
+            stopDrawing() {
+                this.isDrawing = false;
+                if (this.pendingSave === true) {
+                    this.pendingSave = null;
+                    this.saveState(true);
+                }
+            }
+
+            undo() {
+                if (this.undoStack.length === 0) return false;
+                const currentState = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                this.redoStack.push(currentState);
+                const previousState = this.undoStack.pop();
+                this.ctx.putImageData(previousState, 0, 0);
+                this.notifyUpdate();
+                return true;
+            }
+
+            redo() {
+                if (this.redoStack.length === 0) return false;
+                const currentState = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                this.undoStack.push(currentState);
+                const nextState = this.redoStack.pop();
+                this.ctx.putImageData(nextState, 0, 0);
+                this.notifyUpdate();
+                return true;
+            }
+
+            clear() {
+                this.undoStack = [];
+                this.redoStack = [];
+                this.notifyUpdate();
+            }
+
+            get undoCount() { return this.undoStack.length; }
+            get redoCount() { return this.redoStack.length; }
+            get canUndo() { return this.undoStack.length > 0; }
+            get canRedo() { return this.redoStack.length > 0; }
+
+            notifyUpdate() {
+                if (this.onUpdate) {
+                    this.onUpdate({
+                        canUndo: this.canUndo,
+                        canRedo: this.canRedo,
+                        undoCount: this.undoCount,
+                        redoCount: this.redoCount
+                    });
+                }
+            }
+        }
+
+        /* =============================================
+           State
+           ============================================= */
+        const State = {
+            tool: 'brush',
+            color: '#000000',
+            size: 5,
+            isDrawing: false,
+            lastPoint: null,
+            isStreaming: false,
+            streamConfig: null,
+            savedState: null,
+            shapeStart: null,
+            textPos: { x: 0, y: 0 },
+            screenShare: null,
+            screenImage: null
+        };
+
+        /* =============================================
+           DOM
+           ============================================= */
+        const $ = (s) => document.querySelector(s);
+        const $$ = (s) => document.querySelectorAll(s);
+
+        const canvas = $('#canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const canvasWrapper = $('#canvasWrapper');
+        const textInput = $('#textInput');
+
+        let history;
+        let mainToolbarDrag;
+        let sideToolsDrag;
+
+        /* =============================================
+           Canvas Setup
+           ============================================= */
+        function resizeCanvas() {
+            const container = $('.canvas-container');
+            const maxW = container.clientWidth - 16;
+            const maxH = container.clientHeight - 16;
+            
+            let w = maxW;
+            let h = w / CONFIG.ASPECT_RATIO;
+            
+            if (h > maxH) {
+                h = maxH;
+                w = h * CONFIG.ASPECT_RATIO;
+            }
+            
+            const scale = Math.max(1, window.devicePixelRatio || 1);
+            const internalW = Math.min(1920, w * scale);
+            const internalH = internalW / CONFIG.ASPECT_RATIO;
+            
+            canvas.width = internalW;
+            canvas.height = internalH;
+            canvas.style.width = `${w}px`;
+            canvas.style.height = `${h}px`;
+            
+            clearCanvas();
+        }
+
+        function clearCanvas() {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (State.screenImage) {
+                ctx.drawImage(State.screenImage, 0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        /* =============================================
+           UI Updates
+           ============================================= */
+        function updateUndoRedoUI(info) {
+            $('#undoBtn').disabled = !info.canUndo;
+            $('#redoBtn').disabled = !info.canRedo;
+            $('#undoBadge').textContent = info.undoCount;
+            $('#redoBadge').textContent = info.redoCount;
+            $('#undoBadge').classList.toggle('visible', info.undoCount > 0);
+            $('#redoBadge').classList.toggle('visible', info.redoCount > 0);
+            $('#undoCount').textContent = info.undoCount;
+            $('#redoCount').textContent = info.redoCount;
+        }
+
+        function showShortcutHint(key, action) {
+            const hint = $('#shortcutHint');
+            $('#shortcutKey').textContent = key;
+            $('#shortcutAction').textContent = action;
+            hint.classList.add('shortcut-hint--visible');
+            clearTimeout(hint.hideTimeout);
+            hint.hideTimeout = setTimeout(() => {
+                hint.classList.remove('shortcut-hint--visible');
+            }, CONFIG.SHORTCUT_HINT_DURATION);
+        }
+
+        /* =============================================
+           Drawing Functions
+           ============================================= */
+        function getPoint(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.touches ? e.touches[0].clientX : e.clientX;
+            const y = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (x - rect.left) * (canvas.width / rect.width),
+                y: (y - rect.top) * (canvas.height / rect.height)
+            };
+        }
+
+        function startDraw(e) {
+            const p = getPoint(e);
+            
+            if (State.tool === 'text') {
+                commitText();
+                const rect = canvas.getBoundingClientRect();
+                const cx = e.touches ? e.touches[0].clientX : e.clientX;
+                const cy = e.touches ? e.touches[0].clientY : e.clientY;
+                State.savedState = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                State.textPos = p;
+                textInput.style.display = 'block';
+                textInput.style.left = `${cx}px`;
+                textInput.style.top = `${cy}px`;
+                textInput.style.color = State.color;
+                textInput.style.fontSize = `${State.size * 2}px`;
+                textInput.value = '';
+                textInput.focus();
+                return;
+            }
+            
+            if (State.tool === 'fill') {
+                history.saveState(true);
+                floodFill(Math.floor(p.x), Math.floor(p.y), State.color);
+                history.saveState(true);
+                return;
+            }
+            
+            if (['line', 'arrow', 'rectangle', 'circle'].includes(State.tool)) {
+                State.savedState = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                State.shapeStart = p;
+            }
+            
+            history.startDrawing();
+            State.isDrawing = true;
+            State.lastPoint = p;
+            draw(p, p);
+        }
+
+        function continueDraw(e) {
+            if (!State.isDrawing) return;
+            const p = getPoint(e);
+            
+            if (['line', 'arrow', 'rectangle', 'circle'].includes(State.tool)) {
+                ctx.putImageData(State.savedState, 0, 0);
+                drawShape(State.shapeStart, p);
+            } else {
+                draw(State.lastPoint, p);
+                State.lastPoint = p;
+            }
+        }
+
+        function stopDraw() {
+            if (!State.isDrawing) return;
+            State.isDrawing = false;
+            history.stopDrawing();
+        }
+
+        function draw(from, to) {
+            ctx.beginPath();
+            ctx.moveTo(from.x, from.y);
+            ctx.lineTo(to.x, to.y);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = State.size;
+            
+            if (State.tool === 'eraser') {
+                ctx.strokeStyle = '#ffffff';
+            } else if (State.tool === 'highlighter') {
+                ctx.strokeStyle = State.color;
+                ctx.globalAlpha = 0.3;
+                ctx.lineWidth = State.size * 3;
+            } else {
+                ctx.strokeStyle = State.color;
+            }
+            
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
+
+        function drawShape(start, end) {
+            ctx.beginPath();
+            ctx.strokeStyle = State.color;
+            ctx.lineWidth = State.size;
+            ctx.lineCap = 'round';
+            
+            switch (State.tool) {
+                case 'line':
+                    ctx.moveTo(start.x, start.y);
+                    ctx.lineTo(end.x, end.y);
+                    break;
+                case 'arrow':
+                    const angle = Math.atan2(end.y - start.y, end.x - start.x);
+                    const headLen = 20;
+                    ctx.moveTo(start.x, start.y);
+                    ctx.lineTo(end.x, end.y);
+                    ctx.moveTo(end.x, end.y);
+                    ctx.lineTo(end.x - headLen * Math.cos(angle - Math.PI / 6), end.y - headLen * Math.sin(angle - Math.PI / 6));
+                    ctx.moveTo(end.x, end.y);
+                    ctx.lineTo(end.x - headLen * Math.cos(angle + Math.PI / 6), end.y - headLen * Math.sin(angle + Math.PI / 6));
+                    break;
+                case 'rectangle':
+                    ctx.strokeRect(start.x, start.y, end.x - start.x, end.y - start.y);
+                    return;
+                case 'circle':
+                    const rx = Math.abs(end.x - start.x) / 2;
+                    const ry = Math.abs(end.y - start.y) / 2;
+                    const cx = start.x + (end.x - start.x) / 2;
+                    const cy = start.y + (end.y - start.y) / 2;
+                    ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+                    break;
+            }
+            ctx.stroke();
+        }
+
+        function floodFill(startX, startY, fillColor) {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const pixels = imageData.data;
+            const w = canvas.width;
+            const h = canvas.height;
+            
+            const startPos = (startY * w + startX) * 4;
+            const startR = pixels[startPos];
+            const startG = pixels[startPos + 1];
+            const startB = pixels[startPos + 2];
+            
+            const hex = fillColor.replace('#', '');
+            const fillR = parseInt(hex.substr(0, 2), 16);
+            const fillG = parseInt(hex.substr(2, 2), 16);
+            const fillB = parseInt(hex.substr(4, 2), 16);
+            
+            if (startR === fillR && startG === fillG && startB === fillB) return;
+            
+            const stack = [[startX, startY]];
+            const visited = new Set();
+            
+            while (stack.length) {
+                const [x, y] = stack.pop();
+                const key = `${x},${y}`;
+                if (visited.has(key) || x < 0 || x >= w || y < 0 || y >= h) continue;
+                
+                const pos = (y * w + x) * 4;
+                if (pixels[pos] !== startR || pixels[pos + 1] !== startG || pixels[pos + 2] !== startB) continue;
+                
+                visited.add(key);
+                pixels[pos] = fillR;
+                pixels[pos + 1] = fillG;
+                pixels[pos + 2] = fillB;
+                pixels[pos + 3] = 255;
+                
+                stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        /* =============================================
+           Text Tool
+           ============================================= */
+        function commitText() {
+            if (textInput.value && State.savedState) {
+                ctx.putImageData(State.savedState, 0, 0);
+                const scale = canvas.width / canvas.getBoundingClientRect().width;
+                const fontSize = Math.floor(State.size * 2 * scale);
+                ctx.font = `${fontSize}px Vazirmatn, Arial, sans-serif`;
+                ctx.fillStyle = State.color;
+                ctx.textBaseline = 'top';
+                ctx.fillText(textInput.value, State.textPos.x, State.textPos.y);
+                history.saveState(true);
+                State.savedState = null;
+            }
+            textInput.value = '';
+            textInput.style.display = 'none';
+        }
+
+        function updateTextPreview() {
+            if (!State.savedState) return;
+            ctx.putImageData(State.savedState, 0, 0);
+            if (textInput.value) {
+                const scale = canvas.width / canvas.getBoundingClientRect().width;
+                const fontSize = Math.floor(State.size * 2 * scale);
+                ctx.font = `${fontSize}px Vazirmatn, Arial, sans-serif`;
+                ctx.fillStyle = State.color;
+                ctx.textBaseline = 'top';
+                ctx.fillText(textInput.value, State.textPos.x, State.textPos.y);
+            }
+        }
+
+        /* =============================================
+           Screen Share
+           ============================================= */
+        async function toggleScreenShare() {
+            if (State.screenShare) {
+                State.screenShare.getTracks().forEach(t => t.stop());
+                State.screenShare = null;
+                State.screenImage = null;
+                resizeCanvas();
+                $('#screenShareBtn').classList.remove('tool-btn--active');
+                showToast('اشتراک صفحه متوقف شد');
+                return;
+            }
+            
+            try {
+                State.screenShare = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                const video = document.createElement('video');
+                video.srcObject = State.screenShare;
+                video.play();
+                
+                video.onloadeddata = () => {
+                    State.screenImage = video;
+                    clearCanvas();
+                };
+                
+                State.screenShare.getVideoTracks()[0].onended = () => {
+                    State.screenShare = null;
+                    State.screenImage = null;
+                    resizeCanvas();
+                    $('#screenShareBtn').classList.remove('tool-btn--active');
+                };
+                
+                $('#screenShareBtn').classList.add('tool-btn--active');
+                showToast('اشتراک صفحه شروع شد');
+            } catch (e) {
+                showToast('خطا در اشتراک صفحه', 'error');
+            }
+        }
+
+        /* =============================================
+           Streaming
+           ============================================= */
+        let streamIframe = null;
+        let frameInterval = null;
+
+        function startStream(config) {
+            State.streamConfig = config;
+            
+            if (config.mode === 'offline') {
+                State.isStreaming = false;
+                updateStatus('آفلاین', false);
+                return;
+            }
+            
+            const url = new URL('./index.html', window.location.href);
+            if (config.room) url.searchParams.set('room', config.room);
+            if (config.push) url.searchParams.set('push', config.push);
+            if (config.password) url.searchParams.set('password', config.password);
+            url.searchParams.set('framegrab', '');
+            url.searchParams.set('view', '');
+            
+            streamIframe = document.createElement('iframe');
+            streamIframe.style.cssText = 'width:0;height:0;position:absolute;visibility:hidden;';
+            streamIframe.src = url.toString();
+            streamIframe.allow = 'camera;microphone;display-capture;fullscreen;autoplay;';
+            
+            streamIframe.onload = () => {
+                setTimeout(() => {
+                    if (typeof MediaStreamTrackProcessor === 'function') {
+                        streamWithProcessor();
+                    } else {
+                        streamWithDataUrl();
+                    }
+                }, 100);
+            };
+            
+            document.body.appendChild(streamIframe);
+            
+            const viewUrl = new URL('./', window.location.href);
+            if (config.push) viewUrl.searchParams.set('view', config.push);
+            if (config.room) viewUrl.searchParams.set('room', config.room);
+            if (config.push && config.room) viewUrl.searchParams.set('solo', '');
+            if (config.password) viewUrl.searchParams.set('password', config.password);
+            viewUrl.searchParams.set('sharperscreen', '');
+            
+            $('#viewLinkInput').value = viewUrl.toString();
+            $('#shareBox').classList.add('share-box--visible');
+            
+            State.isStreaming = true;
+            updateStatus('در حال استریم', true);
+            
+            localStorage.setItem('wb_push', config.push || '');
+            localStorage.setItem('wb_room', config.room || '');
+        }
+
+        async function streamWithProcessor() {
+            const stream = canvas.captureStream(30);
+            const track = stream.getVideoTracks()[0];
+            track.contentHint = 'detail';
+            
+            const processor = new MediaStreamTrackProcessor(track);
+            const reader = processor.readable.getReader();
+            
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                try {
+                    if (streamIframe?.contentWindow) {
+                        streamIframe.contentWindow.postMessage({ type: 'canvas-frame', frame: value }, '*');
+                    }
+                } finally {
+                    value.close();
+                }
+            }
+        }
+
+        function streamWithDataUrl() {
+            frameInterval = setInterval(() => {
+                if (streamIframe?.contentWindow) {
+                    const data = canvas.toDataURL('image/webp', 0.8);
+                    streamIframe.contentWindow.postMessage({ type: 'canvas-frame', frame: data }, '*');
+                }
+            }, 100);
+        }
+
+        function updateStatus(text, streaming) {
+            $('#statusText').textContent = text;
+            $('#statusDot').className = streaming ? 'status-indicator__dot' : 'status-indicator__dot status-indicator__dot--offline';
+        }
+
+        /* =============================================
+        /* =============================================
+           Tools & UI
+           ============================================= */
+        function setTool(tool) {
+            State.tool = tool;
+            $$('.tool-btn[data-tool]').forEach(b => b.classList.toggle('tool-btn--active', b.dataset.tool === tool));
+            canvasWrapper.dataset.tool = tool;
+            if (tool !== 'text') commitText();
+        }
+
+        function setColor(color) {
+            State.color = color;
+            $('#colorBtn').style.background = color;
+            $('#colorInput').value = color;
+        }
+
+        function setSize(size) {
+            State.size = parseInt(size);
+            $('#sizeSlider').value = size;
+            $('#sizeValue').textContent = size;
+        }
+
+        function download() {
+            const link = document.createElement('a');
+            link.download = `whiteboard-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast('تصویر دانلود شد');
+        }
+
+        /* =============================================
+           Modal
+           ============================================= */
+        function showModal() {
+            $('#startModal').classList.add('modal-overlay--visible');
+            $('#streamId').value = localStorage.getItem('wb_push') || '';
+            $('#roomName').value = localStorage.getItem('wb_room') || '';
+        }
+
+        function hideModal() {
+            $('#startModal').classList.remove('modal-overlay--visible');
+        }
+
+        function setMode(mode) {
+            $$('.mode-tab').forEach(t => t.classList.toggle('mode-tab--active', t.dataset.mode === mode));
+            $$('.mode-content').forEach(c => c.classList.toggle('mode-content--active', c.id === `${mode}Mode`));
+        }
+
+        function generateId(len = 8) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+        }
+
+        function handleStart() {
+            const mode = $('.mode-tab--active').dataset.mode;
+            
+            if (mode === 'offline') {
+                startStream({ mode: 'offline' });
+                hideModal();
+                return;
+            }
+            
+            const push = $('#streamId').value.trim() || generateId();
+            const room = $('#roomName').value.trim();
+            const password = $('#streamPassword').value.trim();
+            
+            startStream({ mode: 'stream', push, room, password });
+            hideModal();
+        }
+
+        /* =============================================
+           Toast
+           ============================================= */
+        function showToast(msg, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast--${type}`;
+            toast.textContent = msg;
+            $('#toastContainer').appendChild(toast);
+            
+            requestAnimationFrame(() => toast.classList.add('toast--visible'));
+            
+            setTimeout(() => {
+                toast.classList.remove('toast--visible');
+                setTimeout(() => toast.remove(), 250);
+            }, 3000);
+        }
+
+        /* =============================================
+           Copy Link
+           ============================================= */
+        async function copyLink() {
+            const text = $('#viewLinkInput').value;
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast('لینک کپی شد');
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                showToast('لینک کپی شد');
+            }
+        }
+
+        /* =============================================
+           Keyboard Shortcuts
+           ============================================= */
+        function handleKeyboard(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                if (e.key === 'Escape') {
+                    e.target.blur();
+                }
+                return;
+            }
+
+            const ctrl = e.ctrlKey || e.metaKey;
+            const shift = e.shiftKey;
+            const key = e.key.toLowerCase();
+
+            // Ctrl+Z - Undo
+            if (ctrl && key === 'z' && !shift) {
+                e.preventDefault();
+                if (history.undo()) {
+                    showShortcutHint('Ctrl+Z', 'برگرداندن');
+                }
+                return;
+            }
+
+            // Ctrl+Y or Ctrl+Shift+Z - Redo
+            if (ctrl && (key === 'y' || (key === 'z' && shift))) {
+                e.preventDefault();
+                if (history.redo()) {
+                    showShortcutHint(key === 'y' ? 'Ctrl+Y' : 'Ctrl+Shift+Z', 'دوباره');
+                }
+                return;
+            }
+
+            // Ctrl+S - Save/Download
+            if (ctrl && key === 's') {
+                e.preventDefault();
+                download();
+                showShortcutHint('Ctrl+S', 'دانلود');
+                return;
+            }
+
+            // Tool shortcuts
+            if (!ctrl && !shift && !e.altKey) {
+                const toolShortcuts = {
+                    'b': 'brush',
+                    'h': 'highlighter',
+                    'e': 'eraser',
+                    'l': 'line',
+                    'a': 'arrow',
+                    'r': 'rectangle',
+                    'c': 'circle',
+                    't': 'text',
+                    'f': 'fill'
+                };
+
+                if (toolShortcuts[key]) {
+                    setTool(toolShortcuts[key]);
+                    showShortcutHint(key.toUpperCase(), toolShortcuts[key]);
+                    return;
+                }
+
+                // Size shortcuts
+                if (key === '[') {
+                    setSize(Math.max(1, State.size - 2));
+                    showShortcutHint('[', 'کوچک‌تر');
+                    return;
+                }
+                if (key === ']') {
+                    setSize(Math.min(50, State.size + 2));
+                    showShortcutHint(']', 'بزرگ‌تر');
+                    return;
+                }
+            }
+
+            // Escape
+            if (e.key === 'Escape') {
+                commitText();
+                stopDraw();
+                return;
+            }
+
+            // Delete - Clear
+            if (e.key === 'Delete') {
+                if (confirm('پاک شود؟')) {
+                    history.saveState(true);
+                    clearCanvas();
+                    history.saveState(true);
+                    showToast('تخته پاک شد');
+                }
+            }
+        }
+
+        /* =============================================
+           Event Bindings
+           ============================================= */
+        function bindEvents() {
+            // Canvas events
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', continueDraw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('mouseleave', stopDraw);
+            
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); continueDraw(e); }, { passive: false });
+            canvas.addEventListener('touchend', stopDraw);
+            canvas.addEventListener('touchcancel', stopDraw);
+            
+            canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+            
+            // Text input
+            textInput.addEventListener('input', updateTextPreview);
+            textInput.addEventListener('keydown', (e) => {
+                e.stopPropagation();
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); commitText(); }
+                if (e.key === 'Escape') { textInput.value = ''; textInput.style.display = 'none'; State.savedState = null; }
+            });
+            
+            document.addEventListener('mousedown', (e) => {
+                if (e.target !== textInput && e.target !== canvas && textInput.style.display === 'block') {
+                    commitText();
+                }
+            });
+            
+            // Tool buttons
+            $$('.tool-btn[data-tool]').forEach(btn => {
+                btn.addEventListener('click', () => setTool(btn.dataset.tool));
+            });
+            
+            // Color & Size
+            $('#colorInput').addEventListener('input', (e) => setColor(e.target.value));
+            $('#colorBtn').addEventListener('click', () => $('#colorInput').click());
+            $('#sizeSlider').addEventListener('input', (e) => setSize(e.target.value));
+            
+            // Undo/Redo/Clear buttons
+            $('#undoBtn').addEventListener('click', () => {
+                if (history.undo()) {
+                    showShortcutHint('Ctrl+Z', 'برگرداندن');
+                }
+            });
+            
+            $('#redoBtn').addEventListener('click', () => {
+                if (history.redo()) {
+                    showShortcutHint('Ctrl+Y', 'دوباره');
+                }
+            });
+            
+            $('#clearBtn').addEventListener('click', () => {
+                if (confirm('پاک شود؟')) {
+                    history.saveState(true);
+                    clearCanvas();
+                    history.saveState(true);
+                    showToast('تخته پاک شد');
+                }
+            });
+            
+            // Side tools
+            $('#screenShareBtn').addEventListener('click', toggleScreenShare);
+            $('#downloadBtn').addEventListener('click', download);
+            
+            // Share
+            $('#shareBtn').addEventListener('click', () => {
+                if (State.isStreaming) {
+                    $('#shareBox').classList.toggle('share-box--visible');
+                } else {
+                    showModal();
+                }
+            });
+            
+            $('#copyLinkBtn').addEventListener('click', copyLink);
+            $('#closeShareBox').addEventListener('click', () => $('#shareBox').classList.remove('share-box--visible'));
+            
+            // Modal
+            $$('.mode-tab').forEach(tab => {
+                tab.addEventListener('click', () => setMode(tab.dataset.mode));
+            });
+            
+            $('#startBtn').addEventListener('click', handleStart);
+            $('#startModal').addEventListener('click', (e) => {
+                if (e.target === $('#startModal')) hideModal();
+            });
+            
+            // Keyboard
+            document.addEventListener('keydown', handleKeyboard);
+            
+            // Resize
+            window.addEventListener('resize', () => {
+                clearTimeout(window.resizeTimer);
+                window.resizeTimer = setTimeout(resizeCanvas, 100);
+            });
+            
+            // Cleanup
+            window.addEventListener('unload', () => {
+                if (frameInterval) clearInterval(frameInterval);
+                if (streamIframe) streamIframe.remove();
+                if (State.screenShare) State.screenShare.getTracks().forEach(t => t.stop());
+            });
+        }
+
+        /* =============================================
+           Initialize Draggable Toolbars
+           ============================================= */
+        function initDraggableToolbars() {
+            // Main Toolbar
+            mainToolbarDrag = new DraggableManager(
+                $('#mainToolbar'),
+                $('#toolbarDragHandle'),
+                {
+                    storageKey: CONFIG.TOOLBAR_STORAGE_KEY,
+                    boundary: '#canvasArea',
+                    positionIndicator: $('#toolbarPositionIndicator'),
+                    resetButton: $('#toolbarResetBtn'),
+                    onDragStart: () => {
+                        // جلوگیری از انتخاب متن هنگام درگ
+                        document.body.style.userSelect = 'none';
+                    },
+                    onDragEnd: (info) => {
+                        document.body.style.userSelect = '';
+                        if (info.moved) {
+                            showToast('موقعیت ذخیره شد', 'success');
+                        }
+                    }
+                }
+            );
+
+            // Side Tools
+            sideToolsDrag = new DraggableManager(
+                $('#sideTools'),
+                $('#sideToolsDragHandle'),
+                {
+                    storageKey: CONFIG.SIDE_TOOLS_STORAGE_KEY,
+                    boundary: '#canvasArea',
+                    onDragStart: () => {
+                        document.body.style.userSelect = 'none';
+                    },
+                    onDragEnd: () => {
+                        document.body.style.userSelect = '';
+                    }
+                }
+            );
+        }
+
+        /* =============================================
+           Initialization
+           ============================================= */
+        function init() {
+            console.log('🎨 RemoteVM Whiteboard - با قابلیت جابجایی نوار ابزار');
+            
+            resizeCanvas();
+            
+            // Initialize History Manager
+            history = new HistoryManager(canvas, CONFIG.MAX_UNDO);
+            history.onUpdate = updateUndoRedoUI;
+            
+            updateUndoRedoUI({
+                canUndo: false,
+                canRedo: false,
+                undoCount: 0,
+                redoCount: 0
+            });
+            
+            // Initialize Draggable Toolbars
+            initDraggableToolbars();
+            
+            bindEvents();
+            
+            // Check URL params
+            const params = new URLSearchParams(window.location.search);
+            const room = params.get('room') || params.get('r');
+            const push = params.get('push') || params.get('id');
+            const password = params.get('password') || params.get('p');
+            
+            if (room || push) {
+                startStream({ mode: 'stream', push: push || generateId(), room, password });
+            } else {
+                showModal();
+            }
+            
+            console.log('✅ نوار ابزار قابل جابجایی فعال شد - از دستگیره سمت راست استفاده کنید');
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>           

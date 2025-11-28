@@ -2,1867 +2,616 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RemoteVM Class - پلتفرم کلاس آنلاین</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <!-- SEO Meta Tags -->
+    <title>RemoteVM Class - پلتفرم آموزش آنلاین حرفه‌ای</title>
+    <meta name="description" content="پلتفرم RemoteVM Class برای برگزاری کلاس‌های آنلاین با کیفیت بالا، مناسب برای اساتید و دانش‌آموزان.">
+    <meta name="keywords" content="کلاس آنلاین, آموزش مجازی, RemoteVM, تدریس آنلاین, وبینار آموزشی">
+    <meta name="author" content="RemoteVM">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="RemoteVM Class - پلتفرم آموزش آنلاین">
+    <meta property="og:description" content="با RemoteVM Class کلاس‌های آنلاین خود را با کیفیت بالا برگزار کنید.">
+    <meta property="og:url" content="https://class.remotevm.ir">
+    <meta property="og:site_name" content="RemoteVM Class">
+    <meta property="og:locale" content="fa_IR">
+    <link rel="stylesheet" href="./assets/main.css">    
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "RemoteVM Class",
+        "description": "پلتفرم آموزش آنلاین برای برگزاری کلاس‌های مجازی",
+        "url": "https://class.remotevm.ir",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web Browser",
+        "inLanguage": "fa-IR"
+    }
+    </script>
+    
+    <!-- Favicon -->
+     <link rel="icon" type="image/png" href="./assets/favicon.png">
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://server.remotevm.ir" crossorigin>
+    <link rel="dns-prefetch" href="https://server.remotevm.ir">
+    
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="./assets/fonts/fonts.css">
+    <link rel="stylesheet" href="./assets/fontawesome/css/all.min.css">
 
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --dark-bg: #0f172a;
-            --card-bg: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: #334155;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #06b6d4;
-            --purple: #8b5cf6;
-            --teacher-color: #f59e0b;
-            --student-color: #06b6d4;
-        }
-
-        body {
-            font-family: 'Vazirmatn', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--card-bg) 100%);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        /* Login Screen */
-        .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-            overflow-y: auto;
-        }
-
-        .login-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 3rem;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            border: 1px solid var(--border-color);
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-logo {
-            font-size: 4rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .login-title {
-            font-size: 2rem;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .login-subtitle {
-            color: var(--text-secondary);
-        }
-
-        .role-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .role-btn {
-            padding: 2rem 1rem;
-            background: var(--dark-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .role-btn:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-        }
-
-        .role-btn.teacher {
-            border-color: var(--teacher-color);
-        }
-
-        .role-btn.student {
-            border-color: var(--student-color);
-        }
-
-        .role-btn i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .role-btn.teacher i {
-            color: var(--teacher-color);
-        }
-
-        .role-btn.student i {
-            color: var(--student-color);
-        }
-
-        .role-btn h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .role-btn p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        /* Form Section */
-        .form-section {
-            display: none;
-        }
-
-        .form-section.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .form-input.error {
-            border-color: var(--danger);
-        }
-
-        .error-message {
-            color: var(--danger);
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .help-text {
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            font-size: 1rem;
-            width: 100%;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--secondary-color);
-        }
-
-        .btn-secondary {
-            background: var(--border-color);
-            color: var(--text-primary);
-            margin-top: 0.5rem;
-        }
-
-        .btn-secondary:hover {
-            background: #475569;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #059669;
-        }
-
-        .btn-sm {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            width: auto;
-        }
-
-        .share-section {
-            background: linear-gradient(135deg, var(--success), var(--primary-color));
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            display: none;
-            animation: slideDown 0.5s ease;
-        }
-
-        .share-section.show {
-            display: block;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .share-title {
-            color: white;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            text-align: center;
-        }
-
-        .link-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .link-label {
-            color: white;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .link-box {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .link-input {
-            flex: 1;
-            padding: 0.5rem;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            color: var(--dark-bg);
-            font-size: 0.85rem;
-            font-family: monospace;
-        }
-
-        .copy-btn {
-            padding: 0.5rem 1rem;
-            background: white;
-            color: var(--primary-color);
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-
-        .copy-btn:hover {
-            background: var(--text-primary);
-            transform: scale(1.05);
-        }
-
-        .info-box {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .info-box p {
-            color: white;
-            margin-bottom: 0.5rem;
-        }
-
-        .info-box strong {
-            color: white;
-        }
-
-        .info-box span {
-            color: var(--warning);
-            font-weight: bold;
-            font-family: monospace;
-            font-size: 1.1rem;
-        }
-
-        .classroom-container {
-            display: none;
-            height: 100vh;
-            position: relative;
-        }
-
-        .classroom-container.active {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .top-bar {
-            height: 60px;
-            background: var(--card-bg);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
-        }
-
-        .class-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .class-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .user-role {
-            background: var(--dark-bg);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        .user-role.teacher {
-            color: var(--teacher-color);
-            border: 1px solid var(--teacher-color);
-        }
-
-        .user-role.student {
-            color: var(--student-color);
-            border: 1px solid var(--student-color);
-        }
-
-        .class-timer {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--dark-bg);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            color: var(--success);
-        }
-
-        .top-controls {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .main-content {
-            flex: 1;
-            display: flex;
-            overflow: hidden;
-        }
-
-        .video-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-            gap: 1rem;
-        }
-
-        .teacher-video-container {
-            flex: 1;
-            background: var(--card-bg);
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid var(--teacher-color);
-        }
-
-        .video-label {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: var(--teacher-color);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: bold;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .video-iframe, .teacher-video, .student-video {
-            width: 100%;
-            height: 100%;
-            border: none;
-            object-fit: cover;
-        }
-
-        .video-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--dark-bg);
-        }
-
-        .video-placeholder i {
-            font-size: 3rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .video-placeholder p {
-            color: var(--text-secondary);
-        }
-
-        .students-grid {
-            height: 180px;
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding: 0.5rem 0;
-        }
-
-        .student-video-card {
-            min-width: 240px;
-            height: 100%;
-            background: var(--card-bg);
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .student-video-card:hover {
-            border-color: var(--primary-color);
-            transform: scale(1.05);
-        }
-
-        .student-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,0.7);
-            padding: 0.5rem;
-            font-size: 0.85rem;
-            text-align: center;
-            color: white;
-        }
-
-        .sidebar {
-            width: 350px;
-            background: var(--card-bg);
-            border-left: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 1rem;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .tab-btn.active {
-            color: var(--primary-color);
-        }
-
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--primary-color);
-        }
-
-        .tab-content {
-            flex: 1;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .tab-content.active {
-            display: flex;
-        }
-
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .message {
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border-radius: 8px;
-        }
-
-        .message.teacher {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), transparent);
-            border: 1px solid var(--teacher-color);
-        }
-
-        .message-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.25rem;
-        }
-
-        .message-author {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .message-body {
-            color: var(--text-primary);
-            font-size: 0.9rem;
-        }
-
-        .chat-input-container {
-            padding: 1rem;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-        }
-
-        .send-btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .participants-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-        }
-
-        .participant-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem;
-            background: var(--dark-bg);
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-        }
-
-        .participant-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .participant-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-        }
-
-        .participant-controls {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .control-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .control-icon.active {
-            background: var(--success);
-            color: white;
-        }
-
-        .control-icon.muted {
-            background: var(--danger);
-            color: white;
-        }
-
-        .control-icon.inactive {
-            background: var(--border-color);
-            color: var(--text-secondary);
-        }
-
-        .control-bar {
-            height: 70px;
-            background: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            padding: 0 2rem;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            font-size: 1.2rem;
-        }
-
-        .control-btn.primary {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .control-btn.danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .control-btn.secondary {
-            background: var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .control-btn.active {
-            background: var(--success);
-            color: white;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .separator {
-            width: 2px;
-            height: 30px;
-            background: var(--border-color);
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-
-        .spinner {
-            border: 3px solid var(--border-color);
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 1rem;
-        }
-
-        .loading-text {
-            color: var(--text-primary);
-            font-size: 1.1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .toast {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display: none;
-            align-items: center;
-            gap: 0.75rem;
-            animation: slideInRight 0.3s ease;
-            z-index: 10000;
-        }
-
-        .toast.show {
-            display: flex;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                right: -350px;
-                transition: right 0.3s;
-                z-index: 90;
-                height: calc(100vh - 130px);
-                top: 60px;
-            }
-
-            .sidebar.open {
-                right: 0;
-            }
-
-            .role-buttons {
-                grid-template-columns: 1fr;
-            }
-
-            .students-grid {
-                height: 120px;
-            }
-
-            .student-video-card {
-                min-width: 180px;
-            }
-
-            .login-card {
-                padding: 2rem;
-            }
-        }
-    </style>
 </head>
 <body>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-        <div class="loading-text">در حال آماده‌سازی کلاس...</div>
-    </div>
-
-    <div class="login-container" id="loginScreen">
-        <div class="login-card">
-            <div class="login-header">
-                <div class="login-logo">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <h1 class="login-title">کلاس آنلاین RemoteVM</h1>
-                <p class="login-subtitle">پلتفرم آموزش مجازی حرفه‌ای</p>
+    <!-- Header -->
+    <header class="header" id="mainHeader">
+        <div class="header__container">
+            <div class="header__brand">
+                <div class="header__logo">🎓</div>
+                <span class="header__title">RemoteVM Class</span>
             </div>
-
-            <div id="roleSelection">
-                <div class="role-buttons">
-                    <div class="role-btn teacher" onclick="selectRole('teacher')">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <h3>ورود به عنوان استاد</h3>
-                        <p>ایجاد کلاس جدید</p>
-                    </div>
-                    <div class="role-btn student" onclick="selectRole('student')">
-                        <i class="fas fa-user-graduate"></i>
-                        <h3>پیوستن به کلاس</h3>
-                        <p>ورود به کلاس موجود</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-section" id="teacherForm">
-                <h2 style="margin-bottom: 1.5rem; color: var(--teacher-color);">
-                    <i class="fas fa-chalkboard-teacher"></i> ایجاد کلاس جدید
-                </h2>
-                
-                <div class="form-group">
-                    <label class="form-label">نام شما</label>
-                    <input type="text" class="form-input" id="teacherName" placeholder="مثال: استاد محمدی">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">نام کلاس</label>
-                    <input type="text" class="form-input" id="className" placeholder="مثال: ریاضی پایه دهم">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">شناسه اتاق (Room ID)</label>
-                    <input type="text" class="form-input" id="roomId" placeholder="مثال: math101" 
-                           oninput="validateRoomId(this)" maxlength="20">
-                    <div class="help-text">
-                        <i class="fas fa-info-circle"></i> فقط حروف انگلیسی (a-z, A-Z) و اعداد (0-9) مجاز است
-                    </div>
-                    <div class="error-message" id="roomIdError">
-                        شناسه اتاق فقط می‌تواند شامل حروف انگلیسی (a-z, A-Z) و اعداد (0-9) باشد
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">رمز عبور اتاق (اختیاری)</label>
-                    <input type="password" class="form-input" id="roomPassword" placeholder="رمز عبور برای امنیت کلاس">
-                </div>
-
-                <button class="btn btn-primary" onclick="createClassroom()">
-                    <i class="fas fa-plus-circle"></i> ایجاد کلاس
-                </button>
-                <button class="btn btn-secondary" onclick="backToRoleSelection()">
-                    <i class="fas fa-arrow-right"></i> بازگشت
-                </button>
-
-                <div class="share-section" id="shareSection">
-                    <h3 class="share-title">
-                        <i class="fas fa-check-circle"></i> کلاس با موفقیت ایجاد شد!
-                    </h3>
-                    
-                    <div class="info-box">
-                        <p><strong>شناسه اتاق:</strong> <span id="roomIdDisplay"></span></p>
-                        <p><strong>رمز عبور:</strong> <span id="roomPassDisplay"></span></p>
-                    </div>
-                    
-                    <div class="link-item">
-                        <div class="link-label">
-                            <i class="fas fa-link"></i> لینک دعوت دانش‌آموزان:
-                        </div>
-                        <div class="link-box">
-                            <input type="text" class="link-input" id="studentLink" readonly>
-                            <button class="copy-btn" onclick="copyLink('studentLink')">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-success" onclick="enterClassAsTeacher()" style="margin-top: 1rem;">
-                        <i class="fas fa-sign-in-alt"></i> ورود به کلاس به عنوان استاد
-                    </button>
-                </div>
-            </div>
-
-            <div class="form-section" id="studentForm">
-                <h2 style="margin-bottom: 1.5rem; color: var(--student-color);">
-                    <i class="fas fa-user-graduate"></i> پیوستن به کلاس
-                </h2>
-                
-                <div class="form-group">
-                    <label class="form-label">نام شما</label>
-                    <input type="text" class="form-input" id="studentName" placeholder="نام و نام خانوادگی">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">شناسه اتاق (Room ID)</label>
-                    <input type="text" class="form-input" id="studentRoomId" placeholder="شناسه‌ای که از استاد دریافت کرده‌اید" oninput="validateRoomId(this)">
-                    <div class="error-message" id="studentRoomIdError">
-                        شناسه اتاق فقط می‌تواند شامل حروف انگلیسی (a-z, A-Z) و اعداد (0-9) باشد
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">رمز عبور اتاق (در صورت نیاز)</label>
-                    <input type="password" class="form-input" id="studentRoomPassword" placeholder="رمز عبور کلاس">
-                </div>
-
-                <button class="btn btn-primary" onclick="joinClassroom()">
-                    <i class="fas fa-sign-in-alt"></i> ورود به کلاس
-                </button>
-                <button class="btn btn-secondary" onclick="backToRoleSelection()">
-                    <i class="fas fa-arrow-right"></i> بازگشت
+            <div class="header__actions">
+                <button class="btn btn--ghost btn--icon" id="menuToggle" aria-label="منو" aria-expanded="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
                 </button>
             </div>
         </div>
-    </div>
+    </header>
 
-    <div class="classroom-container" id="classroomContainer">
-        <div class="top-bar">
-            <div class="class-info">
-                <div class="class-title">
+    <!-- Login Screen -->
+    <main class="login" id="loginScreen">
+        <div class="login__card">
+            <header class="login__header">
+                <div class="login__icon">
                     <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1 class="login__title">کلاس آنلاین RemoteVM</h1>
+                <p class="login__subtitle">پلتفرم آموزش مجازی حرفه‌ای</p>
+            </header>
+
+            <!-- Role Selection -->
+            <section id="roleSelection" aria-label="انتخاب نقش">
+                <div class="role-selection">
+                    <div class="role-card role-card--teacher" tabindex="0" role="button" 
+                         aria-label="ورود به عنوان استاد" data-role="teacher">
+                        <div class="role-card__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3 class="role-card__title">ورود به عنوان استاد</h3>
+                        <p class="role-card__desc">کلاس جدید ایجاد کنید و درس را مدیریت کنید</p>
+                    </div>
+                    
+                    <div class="role-card role-card--student" tabindex="0" role="button" 
+                         aria-label="پیوستن به کلاس" data-role="student">
+                        <div class="role-card__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <h3 class="role-card__title">پیوستن به کلاس</h3>
+                        <p class="role-card__desc">با شناسه و رمز کلاس به درس بپیوندید</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Teacher Form -->
+            <section class="form hidden" id="teacherForm" aria-label="فرم ایجاد کلاس">
+                <div class="form__header form__header--teacher">
+                    <div class="form__header-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h2 class="form__header-title">ایجاد کلاس جدید</h2>
+                </div>
+
+                <form id="teacherFormElement" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="teacherClassHistory">کلاس‌های قبلی</label>
+                        <select class="form-select" id="teacherClassHistory">
+                            <option value="">انتخاب کلاس قبلی (اختیاری)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="teacherName">
+                            نام شما
+                            <span class="form-label__required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="teacherName" 
+                               placeholder="مثال: دکتر احمدی" required
+                               autocomplete="name" maxlength="50">
+                        <p class="form-help">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            نام کامل خود را وارد کنید
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="className">
+                            نام کلاس
+                            <span class="form-label__required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="className" 
+                               placeholder="مثال: Math1404" required
+                               pattern="[a-zA-Z0-9]+" maxlength="30">
+                        <p class="form-help">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            فقط حروف انگلیسی و اعداد
+                        </p>
+                        <p class="form-error" id="classNameError">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                            نام کلاس فقط باید شامل حروف انگلیسی و اعداد باشد
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="roomId">
+                            شناسه اتاق
+                            <span class="form-label__required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="roomId" 
+                               placeholder="مثال: math1404" required
+                               pattern="[a-zA-Z0-9]{6,20}" maxlength="20">
+                        <p class="form-help">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            حداقل ۶ کاراکتر، فقط حروف انگلیسی و اعداد
+                        </p>
+                        <p class="form-error" id="roomIdError">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                            شناسه باید حداقل ۶ کاراکتر باشد
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="roomPassword">
+                            رمز عبور اتاق
+                            <span class="form-label__required">*</span>
+                        </label>
+                        <input type="password" class="form-input" id="roomPassword" 
+                               placeholder="رمز عبور امن وارد کنید" required
+                               minlength="4" maxlength="32" autocomplete="new-password">
+                        <p class="form-help" id="passwordHelp">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            حداقل ۴ کاراکتر
+                        </p>
+                        <p class="form-error" id="roomPasswordError">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                            رمز عبور حداقل ۴ کاراکتر باشد
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="toggle">
+                            <input type="checkbox" class="toggle__input" id="simplePassword" checked>
+                            <span class="toggle__track">
+                                <span class="toggle__thumb"></span>
+                            </span>
+                            <span class="toggle__label">رمز عبور ساده</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="toggle">
+                            <input type="checkbox" class="toggle__input" id="minimalRoom" checked>
+                            <span class="toggle__track">
+                                <span class="toggle__thumb"></span>
+                            </span>
+                            <span class="toggle__label">حالت مینیمال (پیشنهادی)</span>
+                        </label>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn--primary btn--lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                            ایجاد و ورود
+                        </button>
+                        <button type="button" class="btn btn--secondary" id="teacherBackBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            بازگشت
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Success Message -->
+                <div class="success-section hidden" id="successMessage">
+                    <div class="success-section__icon">✓</div>
+                    <h3 class="success-section__title">کلاس با موفقیت ایجاد شد!</h3>
+                    
+                    <div class="info-card">
+                        <div class="info-item">
+                            <span class="info-item__label">شناسه اتاق:</span>
+                            <div class="info-item__value">
+                                <span class="info-item__text" id="roomIdDisplay"></span>
+                                <button type="button" class="btn btn--copy" data-copy="roomIdDisplay" aria-label="کپی شناسه">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-item__label">رمز عبور:</span>
+                            <div class="info-item__value">
+                                <span class="info-item__text" id="roomPassDisplay"></span>
+                                <button type="button" class="btn btn--copy" data-copy="roomPassDisplay" aria-label="کپی رمز">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="success-section__note">این اطلاعات را با دانش‌آموزان به اشتراک بگذارید</p>
+                    
+                    <button type="button" class="btn btn--success btn--lg btn--full" id="enterClassBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                            <polyline points="10 17 15 12 10 7"></polyline>
+                            <line x1="15" y1="12" x2="3" y2="12"></line>
+                        </svg>
+                        ورود به کلاس
+                    </button>
+                </div>
+            </section>
+
+            <!-- Student Form -->
+            <section class="form hidden" id="studentForm" aria-label="فرم پیوستن به کلاس">
+                <div class="form__header form__header--student">
+                    <div class="form__header-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h2 class="form__header-title">پیوستن به کلاس</h2>
+                </div>
+
+                <form id="studentFormElement" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="studentClassHistory">کلاس‌های قبلی</label>
+                        <select class="form-select" id="studentClassHistory">
+                            <option value="">انتخاب کلاس قبلی (اختیاری)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="studentName">
+                            نام شما
+                            <span class="form-label__required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="studentName" 
+                               placeholder="مثال: علی حسینی" required
+                               autocomplete="name" maxlength="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="studentRoomId">
+                            شناسه اتاق
+                            <span class="form-label__required">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="studentRoomId" 
+                               placeholder="شناسه دریافت‌شده از استاد" required
+                               maxlength="20">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="studentRoomPassword">
+                            رمز عبور اتاق
+                            <span class="form-label__required">*</span>
+                        </label>
+                        <input type="password" class="form-input" id="studentRoomPassword" 
+                               placeholder="رمز عبور دریافت‌شده از استاد" required
+                               autocomplete="current-password" maxlength="32">
+                        <p class="form-error" id="studentPasswordError">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                            رمز عبور نمی‌تواند خالی باشد
+                        </p>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn--primary btn--lg">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                <polyline points="10 17 15 12 10 7"></polyline>
+                                <line x1="15" y1="12" x2="3" y2="12"></line>
+                            </svg>
+                            ورود به کلاس
+                        </button>
+                        <button type="button" class="btn btn--secondary" id="studentBackBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            بازگشت
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- Classroom -->
+    <div class="classroom" id="classroom">
+        <header class="classroom__header">
+            <div class="classroom__info">
+                <div class="classroom__title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
                     <span id="classNameDisplay">کلاس آنلاین</span>
                 </div>
-                <div class="user-role" id="userRoleDisplay">
-                    <i class="fas fa-user"></i>
+                <div class="classroom__role" id="userRoleDisplay">
                     <span id="userNameDisplay">کاربر</span>
                 </div>
-                <div class="class-timer">
-                    <i class="fas fa-clock"></i>
+                <div class="classroom__timer">
                     <span id="classTimer">00:00:00</span>
                 </div>
             </div>
             
-            <div class="top-controls">
-                <button class="btn btn-sm btn-secondary" onclick="toggleSidebar()">
-                    <i class="fas fa-comments"></i> چت
+            <div class="classroom__actions">
+                <button class="btn btn--secondary hidden" id="whiteboardBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="9" y1="3" x2="9" y2="21"></line>
+                    </svg>
+                    تخته
                 </button>
-                <button class="btn btn-sm btn-danger" onclick="leaveClass()">
-                    <i class="fas fa-sign-out-alt"></i> خروج
+                <button class="btn btn--ghost btn--icon" id="classroomMenuToggle" aria-label="منو">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <button class="btn btn--danger" id="leaveClassBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    خروج
                 </button>
             </div>
-        </div>
+        </header>
 
-        <div class="main-content">
-            <div class="video-section">
-                <div class="teacher-video-container" id="mainVideoContainer">
-                    <div class="video-label" id="teacherLabel">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <span id="teacherNameLabel">استاد</span>
-                    </div>
-                    <video id="teacherVideo" class="teacher-video" autoplay playsinline muted></video>
-                </div>
-
-                <div class="students-grid" id="studentsGrid"></div>
+        <div class="video-wrapper">
+            <div class="video-label" id="videoLabel">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                </svg>
+                <span id="videoLabelText">در حال اتصال...</span>
             </div>
-
-            <div class="sidebar" id="sidebar">
-                <div class="sidebar-tabs">
-                    <button class="tab-btn active" onclick="switchTab('chat')">
-                        <i class="fas fa-comments"></i> چت
-                    </button>
-                    <button class="tab-btn" onclick="switchTab('participants')">
-                        <i class="fas fa-users"></i> حاضرین
-                    </button>
-                </div>
-
-                <div class="tab-content active" id="chat-tab">
-                    <div class="chat-container">
-                        <div class="chat-messages" id="chatMessages"></div>
-                        <div class="chat-input-container">
-                            <input type="text" class="chat-input" id="chatInput" 
-                                   placeholder="پیام خود را بنویسید..." 
-                                   onkeypress="handleChatKeyPress(event)">
-                            <button class="send-btn" onclick="sendMessage()">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-content" id="participants-tab">
-                    <div class="participants-list" id="participantsList"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="control-bar">
-            <button class="control-btn secondary" id="micBtn" onclick="toggleMic()">
-                <i class="fas fa-microphone-slash"></i>
+            
+            <button class="fullscreen-btn" id="fullscreenBtn" aria-label="تمام صفحه">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="fullscreenIcon">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                </svg>
             </button>
             
-            <button class="control-btn secondary" id="camBtn" onclick="toggleCamera()">
-                <i class="fas fa-video-slash"></i>
-            </button>
-            
-            <div class="separator"></div>
-            
-            <button class="control-btn primary" onclick="shareScreen()">
-                <i class="fas fa-desktop"></i>
-            </button>
-            
-            <button class="control-btn primary" id="recordBtn" onclick="toggleRecord()">
-                <i class="fas fa-record-vinyl"></i>
-            </button>
-            
-            <button class="control-btn primary" onclick="raiseHand()">
-                <i class="fas fa-hand-paper"></i>
-            </button>
-            
-            <div class="separator"></div>
-            
-            <button class="control-btn danger" onclick="leaveClass()">
-                <i class="fas fa-phone-slash"></i>
-            </button>
+            <iframe class="video-frame" id="videoFrame" 
+                    allow="camera; microphone; display-capture; fullscreen" 
+                    allowfullscreen>
+            </iframe>
         </div>
     </div>
 
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">عملیات با موفقیت انجام شد</span>
+    <!-- Side Menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <aside class="side-menu" id="sideMenu" aria-label="منوی جانبی">
+        <div class="side-menu__header">
+            <h2 class="side-menu__title">منو</h2>
+            <button class="btn btn--ghost btn--icon" id="menuClose" aria-label="بستن منو">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="side-menu__content">
+            <nav>
+                <ul class="menu-nav">
+                    <li class="menu-nav__item">
+                        <a href="https://remotevm.ir" target="_blank" rel="noopener noreferrer" class="menu-nav__link">
+                            <span class="menu-nav__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                            </span>
+                            خانه
+                        </a>
+                    </li>
+                    <li class="menu-nav__item">
+                        <a href="./help.html" target="_blank" rel="noopener noreferrer" class="menu-nav__link">
+                            <span class="menu-nav__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                            </span>
+                            راهنما
+                        </a>
+                    </li>
+                    <li class="menu-nav__item">
+                        <a href="https://call.remotevm.ir" target="_blank" rel="noopener noreferrer" class="menu-nav__link">
+                            <span class="menu-nav__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                                </svg>
+                            </span>
+                            ویدیو کال
+                        </a>
+                    </li>
+                    <li class="menu-nav__item">
+                        <a href="https://remotevm.ir/product" target="_blank" rel="noopener noreferrer" class="menu-nav__link">
+                            <span class="menu-nav__icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                            </span>
+                            محصولات
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Teacher Info Box (only visible for teachers) -->
+            <div class="teacher-info hidden" id="teacherInfoBox">
+                <h3 class="teacher-info__title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    اطلاعات کلاس
+                </h3>
+                <div class="teacher-info__item">
+                    <span class="teacher-info__label">شناسه اتاق:</span>
+                    <div class="teacher-info__value">
+                        <span class="teacher-info__text" id="menuRoomId"></span>
+                        <button type="button" class="btn btn--copy" data-copy="menuRoomId" aria-label="کپی">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="teacher-info__item">
+                    <span class="teacher-info__label">رمز عبور:</span>
+                    <div class="teacher-info__value">
+                        <span class="teacher-info__text" id="menuRoomPassword"></span>
+                        <button type="button" class="btn btn--copy" data-copy="menuRoomPassword" aria-label="کپی">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="teacher-info__item">
+                    <span class="teacher-info__label">لینک ورود:</span>
+                    <div class="teacher-info__value">
+                        <span class="teacher-info__text" id="menuDirectLink">کپی لینک</span>
+                        <button type="button" class="btn btn--copy" id="copyDirectLinkBtn" aria-label="کپی لینک">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-menu__footer">
+            <p style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); text-align: center;">
+                RemoteVM Class v2.0
+                <br>
+                ساخته شده با ❤️
+            </p>
+        </div>
+    </aside>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+        <div class="toast__icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <span class="toast__message" id="toastMessage">عملیات موفق</span>
+        <button class="toast__close" id="toastClose" aria-label="بستن">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
     </div>
 
-    <script>
-        const SERVER_URL = 'https://server.remotevm.ir';
-        const SIGNALING_SERVER = 'wss://your-signaling-server.com'; // Replace with actual signaling server
-        let currentRole = null;
-        let roomInfo = {};
-        let userInfo = {};
-        let micEnabled = false;
-        let camEnabled = false;
-        let isRecording = false;
-        let classStartTime = null;
-        let timerInterval = null;
-        let localStream = null;
-        let peerConnections = {};
-        let socket = null;
-        let studentCount = 0;
-        let userId = Date.now().toString();
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading" aria-label="در حال بارگذاری">
+        <div class="loading__spinner"></div>
+        <p class="loading__text" id="loadingText">در حال آماده‌سازی کلاس...</p>
+    </div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Application initialized');
-            checkURLParams();
-        });
 
-        function checkURLParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const room = urlParams.get('room');
-            const password = urlParams.get('password');
-            const role = urlParams.get('role');
-            
-            if (room) {
-                document.getElementById('studentRoomId').value = room;
-                if (password && password !== 'null') {
-                    document.getElementById('studentRoomPassword').value = password;
-                }
-                if (role === 'student') {
-                    selectRole('student');
-                }
-            }
-        }
-
-        function selectRole(role) {
-            console.log('Role selected:', role);
-            currentRole = role;
-            document.getElementById('roleSelection').style.display = 'none';
-            
-            if (role === 'teacher') {
-                document.getElementById('teacherForm').classList.add('active');
-                generateRoomId();
-            } else {
-                document.getElementById('studentForm').classList.add('active');
-            }
-        }
-
-        function generateRoomId() {
-            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-            let roomId = 'class';
-            for (let i = 0; i < 6; i++) {
-                roomId += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            document.getElementById('roomId').value = roomId;
-        }
-
-        function validateRoomId(input) {
-            const value = input.value;
-            const regex = /^[a-zA-Z0-9]*$/;
-            const errorElement = input.id === 'roomId' ? 'roomIdError' : 'studentRoomIdError';
-            
-            if (!regex.test(value)) {
-                input.classList.add('error');
-                document.getElementById(errorElement).classList.add('show');
-                input.value = value.replace(/[^a-zA-Z0-9]/g, '');
-            } else {
-                input.classList.remove('error');
-                document.getElementById(errorElement).classList.remove('show');
-            }
-        }
-
-        function backToRoleSelection() {
-            document.querySelectorAll('.form-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById('shareSection').classList.remove('show');
-            document.getElementById('roleSelection').style.display = 'block';
-            currentRole = null;
-        }
-
-        function createClassroom() {
-            console.log('Creating classroom...');
-            
-            const teacherName = document.getElementById('teacherName').value.trim();
-            const className = document.getElementById('className').value.trim();
-            const roomId = document.getElementById('roomId').value.trim();
-            let password = document.getElementById('roomPassword').value.trim();
-            
-            if (!teacherName || !className || !roomId) {
-                showToast('لطفاً همه فیلدهای اجباری را پر کنید', 'error');
-                return;
-            }
-            
-            const regex = /^[a-zA-Z0-9]+$/;
-            if (!regex.test(roomId)) {
-                showToast('شناسه اتاق فقط می‌تواند شامل حروف انگلیسی (a-z, A-Z) و اعداد (0-9) باشد', 'error');
-                return;
-            }
-            
-            if (!password) {
-                password = 'demo123';
-            }
-            
-            roomInfo = {
-                roomId: roomId,
-                password: password,
-                className: className,
-                teacherName: teacherName
-            };
-            
-            userInfo = {
-                name: teacherName,
-                role: 'teacher',
-                id: userId
-            };
-            
-            const studentLink = `${SERVER_URL}?room=${roomId}&password=${encodeURIComponent(password)}&role=student`;
-            
-            document.getElementById('studentLink').value = studentLink;
-            document.getElementById('roomIdDisplay').textContent = roomId;
-            document.getElementById('roomPassDisplay').textContent = password;
-            
-            const shareSection = document.getElementById('shareSection');
-            shareSection.classList.add('show');
-            
-            setTimeout(() => {
-                shareSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
-            
-            showToast('کلاس با موفقیت ایجاد شد! اطلاعات را برای دانش‌آموزان ارسال کنید', 'success');
-            
-            console.log('Classroom created:', roomInfo);
-        }
-
-        async function enterClassAsTeacher() {
-            console.log('Entering class as teacher...');
-            showLoading(true);
-            
-            try {
-                await initializeWebSocket();
-                await requestMediaPermissions();
-                initializeClassroom();
-            } catch (err) {
-                console.error('Error entering class:', err);
-                showToast('خطا در ورود به کلاس', 'error');
-                showLoading(false);
-            }
-        }
-
-        async function joinClassroom() {
-            console.log('Joining classroom...');
-            
-            const studentName = document.getElementById('studentName').value.trim();
-            const roomId = document.getElementById('studentRoomId').value.trim();
-            let password = document.getElementById('studentRoomPassword').value.trim();
-            
-            if (!studentName || !roomId) {
-                showToast('لطفاً نام خود و شناسه اتاق را وارد کنید', 'error');
-                return;
-            }
-            
-            const regex = /^[a-zA-Z0-9]+$/;
-            if (!regex.test(roomId)) {
-                showToast('شناسه اتاق فقط می‌تواند شامل حروف انگلیسی (a-z, A-Z) و اعداد (0-9) باشد', 'error');
-                return;
-            }
-            
-            if (!password) {
-                password = 'demo123';
-            }
-            
-            roomInfo = {
-                roomId: roomId,
-                password: password,
-                className: `اتاق ${roomId}`,
-                teacherName: 'استاد'
-            };
-            
-            userInfo = {
-                name: studentName,
-                role: 'student',
-                id: userId
-            };
-            
-            showLoading(true);
-            try {
-                await initializeWebSocket();
-                await requestMediaPermissions();
-                initializeClassroom();
-            } catch (err) {
-                console.error('Error joining class:', err);
-                showToast('خطا در پیوستن به کلاس', 'error');
-                showLoading(false);
-            }
-        }
-
-        async function initializeWebSocket() {
-            socket = new WebSocket(SIGNALING_SERVER);
-            
-            socket.onopen = () => {
-                socket.send(JSON.stringify({
-                    type: 'join',
-                    roomId: roomInfo.roomId,
-                    userId: userInfo.id,
-                    role: userInfo.role,
-                    name: userInfo.name,
-                    password: roomInfo.password
-                }));
-            };
-            
-            socket.onmessage = async (event) => {
-                const msg = JSON.parse(event.data);
-                switch (msg.type) {
-                    case 'new-user':
-                        if (msg.userId !== userInfo.id) {
-                            addStudentVideo(msg.userId, msg.name, false);
-                            addParticipant(msg.name, 'student', true, true);
-                            addSystemMessage(`${msg.name} وارد کلاس شد`);
-                            studentCount++;
-                        }
-                        break;
-                    case 'offer':
-                        if (userInfo.role === 'teacher' && msg.userId !== userInfo.id) {
-                            await handleOffer(msg);
-                        }
-                        break;
-                    case 'answer':
-                        if (userInfo.role === 'student' && msg.userId === userInfo.id) {
-                            await handleAnswer(msg);
-                        }
-                        break;
-                    case 'ice-candidate':
-                        await handleIceCandidate(msg);
-                        break;
-                    case 'user-left':
-                        removeStudent(msg.userId);
-                        break;
-                    case 'error':
-                        showToast(msg.message, 'error');
-                        leaveClass();
-                        break;
-                }
-            };
-            
-            socket.onclose = () => {
-                showToast('اتصال به سرور قطع شد', 'error');
-            };
-        }
-
-        async function requestMediaPermissions() {
-            console.log('Requesting media permissions...');
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({
-                    video: { 
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    },
-                    audio: {
-                        echoCancellation: true,
-                        noiseSuppression: true
-                    }
-                });
-                
-                console.log('Media permissions granted');
-                
-                if (currentRole === 'student') {
-                    localStream.getAudioTracks().forEach(track => track.enabled = false);
-                    localStream.getVideoTracks().forEach(track => track.enabled = false);
-                } else {
-                    micEnabled = true;
-                    camEnabled = true;
-                }
-                
-                showToast('دسترسی به دوربین و میکروفون داده شد', 'success');
-                return true;
-            } catch (error) {
-                console.error('Error accessing media devices:', error);
-                showToast('خطا در دسترسی به دستگاه‌های صوتی و تصویری', 'warning');
-                return false;
-            }
-        }
-
-        async function initializeClassroom() {
-            console.log('Initializing classroom...');
-            
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('classroomContainer').classList.add('active');
-            
-            document.getElementById('classNameDisplay').textContent = roomInfo.className;
-            document.getElementById('userNameDisplay').textContent = userInfo.name;
-            document.getElementById('userRoleDisplay').className = `user-role ${userInfo.role}`;
-            
-            if (userInfo.role === 'teacher') {
-                document.getElementById('userRoleDisplay').innerHTML = `
-                    <i class="fas fa-chalkboard-teacher"></i> ${userInfo.name} (استاد)
-                `;
-                document.getElementById('teacherNameLabel').textContent = userInfo.name;
-                initializeTeacherVideo();
-            } else {
-                document.getElementById('userRoleDisplay').innerHTML = `
-                    <i class="fas fa-user-graduate"></i> ${userInfo.name} (دانش‌آموز)
-                `;
-                document.getElementById('teacherNameLabel').textContent = roomInfo.teacherName;
-                await initializeStudentView();
-            }
-            
-            classStartTime = Date.now();
-            startClassTimer();
-            
-            updateControlButtons();
-            loadParticipants();
-            
-            setTimeout(() => {
-                addSystemMessage(`${userInfo.name} به کلاس خوش آمدید!`);
-            }, 1000);
-            
-            showLoading(false);
-            
-            console.log('Classroom initialized successfully');
-        }
-
-        function initializeTeacherVideo() {
-            console.log('Initializing teacher video...');
-            
-            const teacherVideo = document.getElementById('teacherVideo');
-            if (localStream) {
-                teacherVideo.srcObject = localStream;
-            }
-            
-            addStudentPlaceholder('در انتظار دانش‌آموزان...');
-        }
-
-        async function initializeStudentView() {
-            console.log('Initializing student view...');
-            
-            const studentId = userInfo.id;
-            addStudentVideo(studentId, userInfo.name, true);
-            await createOffer();
-        }
-
-        async function createOffer() {
-            const pc = new RTCPeerConnection({
-                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-            });
-            peerConnections[userInfo.id] = pc;
-            
-            localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
-            
-            pc.onicecandidate = (event) => {
-                if (event.candidate) {
-                    socket.send(JSON.stringify({
-                        type: 'ice-candidate',
-                        roomId: roomInfo.roomId,
-                        userId: userInfo.id,
-                        candidate: event.candidate
-                    }));
-                }
-            };
-            
-            pc.ontrack = (event) => {
-                const teacherVideo = document.getElementById('teacherVideo');
-                if (!teacherVideo.srcObject) {
-                    teacherVideo.srcObject = event.streams[0];
-                }
-            };
-            
-            const offer = await pc.createOffer();
-            await pc.setLocalDescription(offer);
-            
-            socket.send(JSON.stringify({
-                type: 'offer',
-                roomId: roomInfo.roomId,
-                userId: userInfo.id,
-                sdp: offer
-            }));
-        }
-
-        async function handleOffer(msg) {
-            const pc = new RTCPeerConnection({
-                iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-            });
-            peerConnections[msg.userId] = pc;
-            
-            pc.onicecandidate = (event) => {
-                if (event.candidate) {
-                    socket.send(JSON.stringify({
-                        type: 'ice-candidate',
-                        roomId: roomInfo.roomId,
-                        userId: msg.userId,
-                        candidate: event.candidate
-                    }));
-                }
-            };
-            
-            pc.ontrack = (event) => {
-                const videoElement = document.getElementById(`studentVideo-${msg.userId}`);
-                if (videoElement && !videoElement.srcObject) {
-                    videoElement.srcObject = event.streams[0];
-                }
-            };
-            
-            await pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
-            localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
-            
-            const answer = await pc.createAnswer();
-            await pc.setLocalDescription(answer);
-            
-            socket.send(JSON.stringify({
-                type: 'answer',
-                roomId: roomInfo.roomId,
-                userId: msg.userId,
-                sdp: answer
-            }));
-        }
-
-        async function handleAnswer(msg) {
-            const pc = peerConnections[userInfo.id];
-            if (pc) {
-                await pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
-            }
-        }
-
-        async function handleIceCandidate(msg) {
-            const pc = peerConnections[msg.userId];
-            if (pc && msg.candidate) {
-                await pc.addIceCandidate(new RTCIceCandidate(msg.candidate));
-            }
-        }
-
-        function addStudentVideo(studentId, studentName, isSelf = false) {
-            const studentsGrid = document.getElementById('studentsGrid');
-            const studentCard = document.createElement('div');
-            studentCard.className = 'student-video-card';
-            studentCard.id = `student_${studentId}`;
-            
-            studentCard.innerHTML = `
-                <video id="studentVideo-${studentId}" class="student-video" autoplay playsinline ${isSelf ? 'muted' : ''}></video>
-                <div class="student-name">${studentName}${isSelf ? ' (شما)' : ''}</div>
-            `;
-            
-            studentsGrid.appendChild(studentCard);
-            
-            if (isSelf && localStream) {
-                const videoElement = document.getElementById(`studentVideo-${studentId}`);
-                videoElement.srcObject = localStream;
-            }
-        }
-
-        function addStudentPlaceholder(name) {
-            const studentsGrid = document.getElementById('studentsGrid');
-            const studentCard = document.createElement('div');
-            studentCard.className = 'student-video-card';
-            
-            studentCard.innerHTML = `
-                <div class="video-placeholder" style="height: 100%;">
-                    <i class="fas fa-users"></i>
-                    <p style="font-size: 0.8rem;">${name}</p>
-                </div>
-                <div class="student-name">${name}</div>
-            `;
-            
-            studentsGrid.appendChild(studentCard);
-        }
-
-        function removeStudent(studentId) {
-            const studentCard = document.getElementById(`student_${studentId}`);
-            if (studentCard) {
-                studentCard.remove();
-            }
-            const participantItem = document.getElementById(`participant_${studentId}`);
-            if (participantItem) {
-                participantItem.remove();
-            }
-            studentCount--;
-            addSystemMessage(`کاربر ${studentId} از کلاس خارج شد`);
-            const pc = peerConnections[studentId];
-            if (pc) {
-                pc.close();
-                delete peerConnections[studentId];
-            }
-        }
-
-        function startClassTimer() {
-            timerInterval = setInterval(() => {
-                const elapsed = Math.floor((Date.now() - classStartTime) / 1000);
-                const hours = Math.floor(elapsed / 3600);
-                const minutes = Math.floor((elapsed % 3600) / 60);
-                const seconds = elapsed % 60;
-                
-                document.getElementById('classTimer').textContent = 
-                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            }, 1000);
-        }
-
-        function toggleMic() {
-            micEnabled = !micEnabled;
-            if (localStream) {
-                localStream.getAudioTracks().forEach(track => track.enabled = micEnabled);
-            }
-            updateControlButtons();
-            updateParticipantStatus();
-            showToast(micEnabled ? 'میکروفون فعال شد' : 'میکروفون غیرفعال شد');
-        }
-
-        function toggleCamera() {
-            camEnabled = !camEnabled;
-            if (localStream) {
-                localStream.getVideoTracks().forEach(track => track.enabled = camEnabled);
-            }
-            updateControlButtons();
-            updateParticipantStatus();
-            showToast(camEnabled ? 'دوربین فعال شد' : 'دوربین غیرفعال شد');
-        }
-
-        async function shareScreen() {
-            try {
-                const screenStream = await navigator.mediaDevices.getDisplayMedia({
-                    video: true,
-                    audio: true
-                });
-                
-                if (userInfo.role === 'teacher') {
-                    const teacherVideo = document.getElementById('teacherVideo');
-                    teacherVideo.srcObject = screenStream;
-                } else {
-                    const studentVideo = document.getElementById(`studentVideo-${userInfo.id}`);
-                    if (studentVideo) {
-                        studentVideo.srcObject = screenStream;
-                    }
-                }
-                
-                screenStream.getVideoTracks()[0].onended = () => {
-                    showToast('اشتراک‌گذاری صفحه پایان یافت');
-                    if (localStream) {
-                        if (userInfo.role === 'teacher') {
-                            document.getElementById('teacherVideo').srcObject = localStream;
-                        } else {
-                            const studentVideo = document.getElementById(`studentVideo-${userInfo.id}`);
-                            if (studentVideo) {
-                                studentVideo.srcObject = localStream;
-                            }
-                        }
-                    }
-                };
-                
-                showToast('اشتراک‌گذاری صفحه شروع شد');
-            } catch (error) {
-                console.error('Error sharing screen:', error);
-                showToast('خطا در اشتراک‌گذاری صفحه', 'error');
-            }
-        }
-
-        function toggleRecord() {
-            isRecording = !isRecording;
-            const btn = document.getElementById('recordBtn');
-            
-            if (isRecording) {
-                btn.classList.add('active');
-                btn.style.background = 'var(--danger)';
-                showToast('ضبط جلسه شروع شد');
-            } else {
-                btn.classList.remove('active');
-                btn.style.background = '';
-                showToast('ضبط جلسه متوقف شد');
-            }
-        }
-
-        function raiseHand() {
-            showToast('دست شما بلند شد');
-            addSystemMessage(`${userInfo.name} دست خود را بلند کرد`);
-        }
-
-        function updateControlButtons() {
-            const micBtn = document.getElementById('micBtn');
-            const camBtn = document.getElementById('camBtn');
-            
-            micBtn.className = `control-btn ${micEnabled ? 'active' : 'secondary'}`;
-            micBtn.innerHTML = `<i class="fas fa-microphone${micEnabled ? '' : '-slash'}"></i>`;
-            
-            camBtn.className = `control-btn ${camEnabled ? 'active' : 'secondary'}`;
-            camBtn.innerHTML = `<i class="fas fa-video${camEnabled ? '' : '-slash'}"></i>`;
-        }
-
-        function loadParticipants() {
-            const participantsList = document.getElementById('participantsList');
-            participantsList.innerHTML = '';
-            
-            if (roomInfo.teacherName || userInfo.role === 'teacher') {
-                addParticipant(roomInfo.teacherName || userInfo.name, 'teacher', userInfo.role === 'teacher' ? micEnabled : true, userInfo.role === 'teacher' ? camEnabled : true);
-            }
-            
-            if (userInfo.role === 'student') {
-                addParticipant(userInfo.name, 'student', micEnabled, camEnabled);
-            }
-        }
-
-        function addParticipant(name, role, micOn, camOn) {
-            const participantsList = document.getElementById('participantsList');
-            const item = document.createElement('div');
-            item.className = 'participant-item';
-            item.id = `participant_${userInfo.id}`;
-            
-            const avatarColor = role === 'teacher' ? 'var(--teacher-color)' : 'var(--student-color)';
-            
-            item.innerHTML = `
-                <div class="participant-info">
-                    <div class="participant-avatar" style="background: ${avatarColor};">
-                        ${role === 'teacher' ? '<i class="fas fa-chalkboard-teacher"></i>' : name.charAt(0)}
-                    </div>
-                    <div>
-                        <div style="font-weight: 600;">${name}</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary);">
-                            ${role === 'teacher' ? 'استاد' : 'دانش‌آموز'}
-                        </div>
-                    </div>
-                </div>
-                <div class="participant-controls">
-                    <button class="control-icon ${micOn ? 'active' : 'muted'}">
-                        <i class="fas fa-microphone${micOn ? '' : '-slash'}"></i>
-                    </button>
-                    <button class="control-icon ${camOn ? 'active' : 'muted'}">
-                        <i class="fas fa-video${camOn ? '' : '-slash'}"></i>
-                    </button>
-                </div>
-            `;
-            
-            participantsList.appendChild(item);
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(`${tabName}-tab`).classList.add('active');
-        }
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('open');
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (message) {
-                addChatMessage(userInfo.name, message, userInfo.role === 'teacher');
-                if (socket) {
-                    socket.send(JSON.stringify({
-                        type: 'message',
-                        roomId: roomInfo.roomId,
-                        userId: userInfo.id,
-                        name: userInfo.name,
-                        message: message,
-                        isTeacher: userInfo.role === 'teacher'
-                    }));
-                }
-                input.value = '';
-            }
-        }
-
-        function handleChatKeyPress(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        }
-
-        function addChatMessage(author, message, isTeacher) {
-            const messagesContainer = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = isTeacher ? 'message teacher' : 'message';
-            
-            const time = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <div class="message-header">
-                    <span class="message-author">${author}</span>
-                    <span class="message-time">${time}</span>
-                </div>
-                <div class="message-body">${message}</div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function addSystemMessage(message) {
-            addChatMessage('سیستم', message, false);
-        }
-
-        function copyLink(inputId) {
-            const input = document.getElementById(inputId);
-            input.select();
-            navigator.clipboard.writeText(input.value).then(() => {
-                showToast('لینک با موفقیت کپی شد!');
-            }).catch(() => {
-                showToast('خطا در کپی کردن لینک', 'error');
-            });
-        }
-
-        function leaveClass() {
-            if (confirm('آیا از خروج از کلاس اطمینان دارید؟')) {
-                if (localStream) {
-                    localStream.getTracks().forEach(track => track.stop());
-                }
-                Object.values(peerConnections).forEach(pc => pc.close());
-                peerConnections = {};
-                if (socket) {
-                    socket.send(JSON.stringify({
-                        type: 'leave',
-                        roomId: roomInfo.roomId,
-                        userId: userInfo.id
-                    }));
-                    socket.close();
-                }
-                if (timerInterval) {
-                    clearInterval(timerInterval);
-                }
-                showToast('در حال خروج از کلاس...');
-                setTimeout(() => {
-                    window.location.href = SERVER_URL;
-                }, 1500);
-            }
-        }
-
-        function showLoading(show) {
-            document.getElementById('loadingOverlay').classList.toggle('active', show);
-        }
-
-        function showToast(message, type = 'success') {
-            console.log('Toast:', message, type);
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            toastMessage.textContent = message;
-            toast.style.background = type === 'error' ? 'var(--danger)' : type === 'warning' ? 'var(--warning)' : 'var(--success)';
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                console.log('User switched tabs');
-            } else {
-                console.log('User returned to class');
-            }
-        });
-
-        window.addEventListener('beforeunload', (e) => {
-            if (localStream) {
-                e.preventDefault();
-                e.returnValue = 'آیا از خروج از کلاس اطمینان دارید؟';
-            }
-        });
-
-        window.addEventListener('online', () => {
-            showToast('اتصال اینترنت برقرار شد', 'success');
-        });
-
-        window.addEventListener('offline', () => {
-            showToast('اتصال اینترنت قطع شد', 'error');
-        });
-
-        console.log('RemoteVM Class Platform v1.0 loaded');
-    </script>
+    <script src="./assets/main.js"></script>
 </body>
 </html>
